@@ -1,6 +1,22 @@
 " vim-plug stuff
 call plug#begin('~/.vim/darlingVimPlugins')
 
+" To add a plugin:
+" 1. Add a Plug statement for the plugin to .vimrc
+" Plug DEV/REPO
+" Note: The plugin is indicated by the end of the repositories git url.
+"       So a plugin from https://www.github.com/sevidmusic/plugin would
+"       be indicated by:
+"       Plug 'sevidmusic/plugin'
+" 2. Once Plug statement is added to .vimrc, restart vim.
+" 3. Once vim has restarted, use the PlugInstall command, this
+"    will look at the .vimrc and will install any plugins not
+"    yet installed.
+" 4. Restart vim.
+" 5. Once vim has restarted, run PlugUpdate and PlugUpgrade to make
+"    sure all plugins are up to date
+" 6. (optional) Run PlugClean to do any necessary cleanup.
+"
 " Example Plug: Plug 'foo/bar' would fetch https://github.com/foo/bar
 
 " Supertab: Allows tab to be used for autocompletion @see https://github.com/ervandew/supertab
@@ -15,10 +31,44 @@ Plug 'scrooloose/nerdtree'
 " Smooth scroll
 Plug 'terryma/vim-smooth-scroll'
 
+" Adds a tag navigator, specifically shows variables, functions, etc. for
+" current file
 Plug 'majutsushi/tagbar'
+
+" Displays color preview of hex colors
+Plug 'gko/vim-coloresque'
+
+" Addes selectable color schemes to vim "
+Plug 'flazz/vim-colorschemes'
+
+" Easy color switching for the colorschemes plugin
+" Commands:
+"   F8                next scheme
+"   Shift-F8          previous scheme
+"   Alt-F8            random scheme
+" Set the list of color schemes used by the above (default is 'all'):
+"   :SetColors all              (all $VIMRUNTIME/colors/*.vim)
+"   :SetColors my               (names built into script)
+"   :SetColors blue slate ron   (these schemes)
+"   :SetColors                  (display current scheme names)
+" Set the current color scheme based on time of day:
+"   :SetColors now
+Plug 'felixhummel/setcolors.vim'
+
+" Cool toolbar/statusline thats shows useful info such as current mode,
+" branch/vcs info, file name, file type, current position, etc.
+Plug 'vim-airline/vim-airline'
+
+" Next Plug...
 
 call plug#end()
 " end vim-plug stuffg
+
+" Tell vim to always use a 256 color mode, this helps insure colors
+" display properly even when vim is used in color limited terminals.
+" The vim-colorschemes plugin for instance will work better if vim
+" uses a 256 color mode.
+set t_Co=256
 
 " Search file system recursivly for all file related tasks
 " Provides tab-complete for all file-related tasks
@@ -106,3 +156,5 @@ noremap <silent> <c-d> :call smooth_scroll#down(&scroll, 0, 2)<CR>
 noremap <silent> <c-b> :call smooth_scroll#up(&scroll*2, 0, 4)<CR>
 noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
+" Force lines to NOT wrap "
+set nowrap

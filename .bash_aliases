@@ -39,6 +39,7 @@ alias editVimrc="vim ~/.vimrc"
 # Show all attached drives
 alias showDrives="lsblk"
 
+alias editI3Config="vim /home/sevidmusic/.config/i3/config"
 
 # Rsync #
 

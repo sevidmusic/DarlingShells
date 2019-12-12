@@ -158,3 +158,4 @@ noremap <silent> <c-f> :call smooth_scroll#down(&scroll*2, 0, 4)<CR>
 
 " Force lines to NOT wrap "
 set nowrap
+

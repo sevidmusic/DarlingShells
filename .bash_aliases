@@ -13,7 +13,7 @@ alias vsh="vagrant ssh"
 # Git Aliases
 alias gst="git status"
 alias gpo="git push -u origin"
-alias gpa="git push -u origin master abstractions unitTests"
+alias gpa="git push -u origin unitTests interfaces abstractions classes master"
 alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"
@@ -41,6 +41,8 @@ alias showDrives="lsblk"
 
 
 # Rsync #
+
+alias buI3="rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3config"
 
 # Backup .vimrc to DarlingShells on startup
 echo "Backing up .vimrc file...";

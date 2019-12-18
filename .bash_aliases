@@ -60,4 +60,17 @@ echo "Backing up i3 config file...";
 echo "";
 rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
 
+# Force programs to use vim when a terminal based text editor is needed
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# Useful shortcuts specifically intended for use while developing the DarlingCmsRedesign
+alias dcmsListIdentifiable="find ./core -name 'Identifiable*.php' | grep 'Identifiable'"
+alias dcmsListClassifiable="find ./core -name 'Classifiable*.php' | grep 'Classifiable'"
+alias dcmsListExportable="find ./core -name 'Exportable*.php' | grep 'Exportable'"
+
+alias dcmsListIdentifiableTests="find ./Tests -name 'Identifiable*.php' | grep 'Identifiable'"
+alias dcmsListClassifiableTests="find ./Tests -name 'Classifiable*.php' | grep 'Classifiable'"
+alias dcmsListExportableTests="find ./Tests -name 'Exportable*.php' | grep 'Exportable'"
+
 

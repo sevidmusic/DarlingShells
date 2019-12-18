@@ -55,4 +55,9 @@ echo "Backing up .bash_aliases file...";
 echo "";
 rsync -cvv /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases;
 
+# Backup i3 config
+echo "Backing up i3 config file...";
+echo "";
+rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
+
 

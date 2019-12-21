@@ -68,9 +68,21 @@ export EDITOR="$VISUAL"
 alias dcmsListIdentifiable="find ./core -name 'Identifiable*.php' | grep 'Identifiable'"
 alias dcmsListClassifiable="find ./core -name 'Classifiable*.php' | grep 'Classifiable'"
 alias dcmsListExportable="find ./core -name 'Exportable*.php' | grep 'Exportable'"
+alias dcmsListStorable="find ./core -name 'Storable*.php' | grep 'Storable'"
+alias dcmsListSwitchable="find ./core -name 'Switchable*.php' | grep 'Switchable'"
 
 alias dcmsListIdentifiableTests="find ./Tests -name 'Identifiable*.php' | grep 'Identifiable'"
 alias dcmsListClassifiableTests="find ./Tests -name 'Classifiable*.php' | grep 'Classifiable'"
 alias dcmsListExportableTests="find ./Tests -name 'Exportable*.php' | grep 'Exportable'"
+alias dcmsListStorableTests="find ./Tests -name 'Storable*.php' | grep 'Storable'"
+alias dcmsListSwitchableTests="find ./Tests -name 'Switchable*.php' | grep 'Switchable'"
 
+# Use feh to assign desktop bg
+feh --bg-fill ~/Pictures/matrixCodeBG.jpeg
+
+# Find aliases
+alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -o"
+
+# Reload bash aliases
+alias rbash="source ~/.bash_aliases"
 

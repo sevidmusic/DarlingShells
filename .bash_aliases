@@ -92,3 +92,4 @@ alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -
 # Reload bash aliases
 alias rbash="source ~/.bash_aliases"
 
+alias compton="killall compton; compton -b;"

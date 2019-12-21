@@ -60,6 +60,12 @@ echo "Backing up i3 config file...";
 echo "";
 rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
 
+# Backup i3status config
+echo "Backing up i3status config file...";
+echo "";
+rsync -cvv /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt;
+
+
 # Force programs to use vim when a terminal based text editor is needed
 export VISUAL=vim
 export EDITOR="$VISUAL"

@@ -39,7 +39,11 @@ alias editVimrc="vim ~/.vimrc"
 # Show all attached drives
 alias showDrives="lsblk"
 
+
 alias editI3Config="vim /home/sevidmusic/.config/i3/config"
+alias editI3Status="sudo vim /etc/i3status.conf"
+
+alias editComptonConfig="vim /home/sevidmusic/.config/compton.conf"
 
 # Rsync #
 
@@ -89,7 +93,7 @@ alias dcmsListStorableTests="find ./Tests -name 'Storable*.php' | grep 'Storable
 alias dcmsListSwitchableTests="find ./Tests -name 'Switchable*.php' | grep 'Switchable'"
 
 # Use feh to assign desktop bg
-feh --bg-fill ~/Pictures/matrixCodeBG.jpeg
+feh --bg-fill ~/Pictures/DarlingDesktopBg1.png;
 
 # Find aliases
 alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -o"
@@ -98,3 +102,7 @@ alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -
 alias rbash="source ~/.bash_aliases"
 
 alias compton="killall compton; compton -b;"
+
+alias sysUpdate="sudo apt update; sudo apt upgrade; sudo snap refresh"
+
+alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"

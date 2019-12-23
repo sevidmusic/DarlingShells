@@ -189,4 +189,5 @@ bar {
 bindsym $mod+Shift+f exec firefox
 bindsym $mod+Shift+z exec killall compton
 bindsym $mod+Shift+x exec compton -b
+bindsym $mod+Shift+p exec phpstorm
 

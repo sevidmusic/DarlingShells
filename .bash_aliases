@@ -1,5 +1,8 @@
+export PATH="${PATH}:${HOME}/.local/bin"
+# Play fun animation
+sl -al;
 # Move into ~/Codes/DarlingCmsRedesign directory
-cd ~/Code/DarlingCmsRedesign
+cd ~/Code/DarlingCmsRedesign;
 
 # System Aliases
 alias lsa="ls -al"
@@ -21,7 +24,7 @@ alias gmr="git merge"
 alias gdf="git diff"
 
 # Vi Mode (Allows vim commands to be used in bash)
-set -o vi
+set -o vi;
 
 # Ctags (needed for vim autocompletion, though not necessarily related to vim)
 # Note: Both ctags and exuberant ctags are accomodated, the ectagsUpdate will

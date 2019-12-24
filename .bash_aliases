@@ -109,3 +109,6 @@ alias compton="killall compton; compton -b;"
 alias sysUpdate="sudo apt update; sudo apt upgrade; sudo snap refresh"
 
 alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"
+
+# startup pywal and select random wallpaper form ~/Wallpapers
+wal -i ~/Wallpapers;

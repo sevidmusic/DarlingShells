@@ -32,6 +32,12 @@ floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
+bindsym $mod+Shift+Return exec --no-startup-id i3-sensible-terminal -T "darlingTerm"
+# Hint:
+# To determine window class and instance use command : xprop | grep WM_CLASS
+# The instance will be the first string after the =, the class will be the second string
+# outputs something like: WM_CLASS(STRING) = "INSTANCE", "CLASS"
+for_window [instance="gnome-terminal-server" title="darlingTerm"] floating enable
 
 # kill focused window
 bindsym $mod+Shift+q kill

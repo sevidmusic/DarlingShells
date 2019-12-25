@@ -95,9 +95,6 @@ alias dcmsListExportableTests="find ./Tests -name 'Exportable*.php' | grep 'Expo
 alias dcmsListStorableTests="find ./Tests -name 'Storable*.php' | grep 'Storable'"
 alias dcmsListSwitchableTests="find ./Tests -name 'Switchable*.php' | grep 'Switchable'"
 
-# Use feh to assign desktop bg
-feh --bg-fill ~/Pictures/DarlingDesktopBg1.png;
-
 # Find aliases
 alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -o"
 
@@ -110,5 +107,4 @@ alias sysUpdate="sudo apt update; sudo apt upgrade; sudo snap refresh"
 
 alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"
 
-# startup pywal and select random wallpaper form ~/Wallpapers
-wal -i ~/Wallpapers;
+alias ct="wal -i ~/Wallpapers"

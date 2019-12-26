@@ -196,4 +196,5 @@ bindsym $mod+Shift+f exec firefox
 bindsym $mod+Shift+z exec killall compton
 bindsym $mod+Shift+x exec compton -b
 bindsym $mod+Shift+p exec phpstorm
-bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers; restart
+bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers; exec compton -b; restart
+bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/DarlingBG3.png; exec compton -b; restart

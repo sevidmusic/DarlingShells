@@ -30,6 +30,8 @@ font pango:DejaVu Sans Mono Bold 12
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
+# Disable all title bars for new windows
+new_window 1pixel
 # start a terminal
 bindsym $mod+Return exec i3-sensible-terminal
 bindsym $mod+Shift+Return exec --no-startup-id i3-sensible-terminal -T "darlingTerm"

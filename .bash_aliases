@@ -1,12 +1,12 @@
 export PATH="${PATH}:${HOME}/.local/bin"
-# Play fun animation
-sl -al;
+
 # Move into ~/Codes/DarlingCmsRedesign directory
 cd ~/Code/DarlingCmsRedesign;
 
 # System Aliases
 alias lsa="ls -al"
 alias lsr="ls -AR --group-directories-first"
+alias c="clear"
 # Vagrant Aliases
 alias vup="vagrant up"
 alias vdn="vagrant halt"
@@ -50,32 +50,30 @@ alias editComptonConfig="vim /home/sevidmusic/.config/compton.conf"
 
 # Rsync #
 
-alias buI3="rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3config"
-
 # Backup .vimrc to DarlingShells on startup
-echo "Backing up .vimrc file...";
-echo "";
-rsync -cvv /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc;
+#echo "Backing up .vimrc file...";
+#echo "";
+rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc;
 
 # Backup .bash_aliases
-echo "Backing up .bash_aliases file...";
-echo "";
-rsync -cvv /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases;
+#echo "Backing up .bash_aliases file...";
+#echo "";
+rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases;
 
 # Backup i3 config
-echo "Backing up i3 config file...";
-echo "";
-rsync -cvv /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
+#echo "Backing up i3 config file...";
+#echo "";
+rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
 
 # Backup i3status config
-echo "Backing up i3status config file...";
-echo "";
-rsync -cvv /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt;
+#echo "Backing up i3status config file...";
+#echo "";
+rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt;
 
 # Backup i3status config
-echo "Backing up compton config file...";
-echo "";
-rsync -cvv /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf;
+#echo "Backing up compton config file...";
+#echo "";
+rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf;
 
 
 # Force programs to use vim when a terminal based text editor is needed
@@ -108,3 +106,19 @@ alias sysUpdate="sudo apt update; sudo apt upgrade; sudo snap refresh"
 alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"
 
 alias ct="wal -i ~/Wallpapers"
+
+alias wthr="curl wttr.in?format=3"
+
+# Take a screenshot, date it, and save to ~/Screenshots
+SSDATE=$(date +"/home/sevidmusic/Screenshots/%Y%m%d_%I%M%S%P.png");
+alias ss="import ${SSDATE}; notify-send -t 2500 ${SSDATE}";
+
+# Play fun animation
+sl -al;
+
+clear;
+
+# Show wheather
+curl wttr.in?format=2;
+
+

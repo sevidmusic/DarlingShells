@@ -110,8 +110,7 @@ alias ct="wal -i ~/Wallpapers"
 alias wthr="curl wttr.in?format=3"
 
 # Take a screenshot, date it, and save to ~/Screenshots
-SSDATE=$(date +"/home/sevidmusic/Screenshots/%Y%m%d_%I%M%S%P.png");
-alias ss="import ${SSDATE}; notify-send -t 2500 ${SSDATE}";
+alias scs="/home/sevidmusic/Code/DarlingShells/manualScreenshot.sh"
 
 # Play fun animation
 sl -al;

@@ -130,6 +130,7 @@ bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wa
 # Take a screenshot via imagemagick's import command
 bindsym $mod+p exec /home/sevidmusic/Code/DarlingShells/screenshot.sh
 
+bindsym $mod+Shift+t exec /home/sevidmusic/Code/DarlingShells/weather.sh
 # Start i3bar
 bar {
     status_command i3status

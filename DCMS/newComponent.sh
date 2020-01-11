@@ -9,20 +9,14 @@ promptUser() {
     read -p 'Prompt: ' USER_INPUT;
 }
 
-notifyUser "Creating new Darling Cms Component";
-
-while :
-do
-
+askUserForComponentName() {
     while :
     do
 
         # 1. Ask for Object Name
         promptUser "Please enter a name for the Component";
 
-#        read -p 'Pleae enter a name for the Component' COMPONENT_NAME;
-
-        printf "You entered \"${USER_INPUT}\"...is this correct";
+        notifyUser  "You entered \"${USER_INPUT}\"...is this correct";
 
         read -p "Enter \"Y\" to continue, \"N\" to change name..." NAME_IS_CORRECT;
 
@@ -31,6 +25,16 @@ do
         fi
 
     done;
+
+}
+
+notifyUser "Creating new Darling Cms Component";
+
+while :
+do
+
+    askUserForComponentName;
+
     # 2. Ask for object namespace
 
     # 3. Generate Interface

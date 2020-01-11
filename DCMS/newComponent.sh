@@ -18,9 +18,9 @@ askUserForComponentName() {
 
         notifyUser  "You entered \"${USER_INPUT}\"...is this correct";
 
-        read -p "Enter \"Y\" to continue, \"N\" to change name..." NAME_IS_CORRECT;
+        promptUser "Enter \"Y\" to continue, \"N\" to change name...";
 
-        if [ "${NAME_IS_CORRECT}" = "Y" ]; then
+        if [ "${USER_INPUT}" = "Y" ]; then
             break;
         fi
 

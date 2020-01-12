@@ -23,6 +23,11 @@ promptUserAndVerifyInput() {
 
         notifyUser  "You entered \"${USER_INPUT}\"\n\nIs this correct?";
 
+        if [ "${USER_INPUT}" = "Y" ]; then
+            clear;
+            break;
+        fi
+
         promptUser "If so, type \"Y\" and press <enter> to continue,\npress <enter> repeat last step.";
 
         if [ "${USER_INPUT}" = "Y" ]; then
@@ -35,7 +40,7 @@ promptUserAndVerifyInput() {
 
 generateTestTrait() {
     TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/USER_DEFINED_COMPONENT_SUBTYPE/g; s/DS_COMPONENT_NAME/USER_DEFINED_COMPONENT_NAME/g" "/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php");
-    promptUserAndVerifyInput "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\n"
+    promptUserAndVerifyInput "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
 }
 
 

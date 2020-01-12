@@ -40,21 +40,29 @@ promptUserAndVerifyInput() {
 }
 
 generateTestTrait() {
-    TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/USER_DEFINED_COMPONENT_SUBTYPE/g; s/DS_COMPONENT_NAME/USER_DEFINED_COMPONENT_NAME/g" "/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php");
+    TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g" "/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php");
     promptUserAndVerifyInput "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
+    printf "${TEST_TRAIT_CODE}" > ./TEMP_GEN_FILE.php;
 }
 
+askUserForComponentName() {
+    promptUserAndVerifyInput "Please enter a name for the component";
+    USER_DEFINED_COMPONENT_NAME="${PREVIOUS_USER_INPUT}";
+}
+
+askUserForComponentSubtype() {
+    promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type\ndetermines the namespace pattern used to define the namespaces\nof the interface, implementations, test trait, and test classes\nrelated to the component.\n\nExample namespace pattern:\n\\DarlingCms\\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME}\n\nNote: You must escape backslash characters.\n\nNote: Do not inlcude a preceding backslash in the sub-type.\nWrong: \\\\Foo\\\\Bar\nRight: Foo\\\\Bar\n";
+    USER_DEFINED_COMPONENT_SUBTYPE="${PREVIOUS_USER_INPUT}";
+}
 
 while :
 do
     # 0. SHOW WELCOME MESSAGE
     # 1. Ask user for Component name
-    promptUserAndVerifyInput "Please enter a name for the component";
-    USER_DEFINED_COMPONENT_NAME="${PREVIOUS_USER_INPUT}";
+    askUserForComponentName;
     # 2. Ask user for Component sub-type (used to determine the namespaces of
+    askUserForComponentSubtype;
     #    the classes and test clases that define and test the component.
-    promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type\ndetermines the namespace pattern used to define the namespaces\nof the interface, implementations, test trait, and test classes\nrelated to the component.\n\nExample namespace pattern:\n\\DarlingCms\\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME}\n\nNote: You must escape backslash characters.\n\nNote: Do not inlcude a preceding backslash in the sub-type.\nWrong: \\\\Foo\\\\Bar\nRight: Foo\\\\Bar\n";
-    USER_DEFINED_COMPONENT_SUBTYPE="${PREVIOUS_USER_INPUT}";
     # 3. Generate Interface
     # 4. Generate Abstraction
     # 5. Generate Class

@@ -12,8 +12,6 @@ promptUser() {
 promptUserAndVerifyInput() {
     while :
     do
-
-        # 1. Ask for Object Name
         promptUser "${1}";
 
         notifyUser  "You entered \"${USER_INPUT}\"...is this correct";
@@ -36,6 +34,7 @@ do
     promptUserAndVerifyInput "Please enter a name for the component";
     # 2. Ask user for Component sub-type (used to determine the namespaces of
     #    the classes and test clases that define and test the component.
+    promptUserAndVerifyInput "Please enter the component's sub type, used to determine approproate namespaces.";
     # 3. Generate Interface
     # 4. Generate Abstraction
     # 5. Generate Class

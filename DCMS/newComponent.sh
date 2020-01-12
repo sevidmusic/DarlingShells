@@ -9,12 +9,12 @@ promptUser() {
     read -p 'Prompt: ' USER_INPUT;
 }
 
-askUserForComponentName() {
+promptUserAndVerifyInput() {
     while :
     do
 
         # 1. Ask for Object Name
-        promptUser "Please enter a name for the Component";
+        promptUser "${1}";
 
         notifyUser  "You entered \"${USER_INPUT}\"...is this correct";
 
@@ -32,23 +32,16 @@ notifyUser "Creating new Darling Cms Component";
 
 while :
 do
-
-    askUserForComponentName;
-
-    # 2. Ask for object namespace
-
+    # 1. Ask user for Component name
+    promptUserAndVerifyInput "Please enter a name for the component";
+    # 2. Ask user for Component sub-type (used to determine the namespaces of
+    #    the classes and test clases that define and test the component.
     # 3. Generate Interface
-
     # 4. Generate Abstraction
-
     # 5. Generate Class
-
     # 6. Generate TestTrait
-
     # 7. Generate Abstract Test
-
     # 8. Generate Test
-
     # 9. Optionally, run phpunit
 
     break;

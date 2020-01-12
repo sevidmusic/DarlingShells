@@ -9,6 +9,7 @@ notifyUser() {
 promptUser() {
     notifyUser "${1}";
     PROMPT_MSG=$(printf "\n\$dsh: ");
+    PREVIOUS_USER_INPUT="${USER_INPUT}";
     read -p "${PROMPT_MSG}" USER_INPUT;
 }
 
@@ -49,11 +50,11 @@ do
     # 0. SHOW WELCOME MESSAGE
     # 1. Ask user for Component name
     promptUserAndVerifyInput "Please enter a name for the component";
-    USER_DEFINED_COMPONENT_NAME="${USER_INPUT}";
+    USER_DEFINED_COMPONENT_NAME="${PREVIOUS_USER_INPUT}";
     # 2. Ask user for Component sub-type (used to determine the namespaces of
     #    the classes and test clases that define and test the component.
-    promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type\ndetermines the namespace pattern used to define the namespaces\nof the interface, implementations, test trait, and test classes\nrelated to the component.\n\nExample namespace pattern:\n\\DarlingCms\\\*\\component\\SUB\\TYPE\\COMPONENT_NAME\n\nNote: You must escape backslash characters.\n\nNote: Do not inlcude a preceding backslash in the sub-type.\nWrong: \\\\Foo\\\\Bar\nRight: Foo\\\\Bar\n";
-    USER_DEFINED_COMPONENT_SUBTYPE="${USER_INPUT}";
+    promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type\ndetermines the namespace pattern used to define the namespaces\nof the interface, implementations, test trait, and test classes\nrelated to the component.\n\nExample namespace pattern:\n\\DarlingCms\\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME}\n\nNote: You must escape backslash characters.\n\nNote: Do not inlcude a preceding backslash in the sub-type.\nWrong: \\\\Foo\\\\Bar\nRight: Foo\\\\Bar\n";
+    USER_DEFINED_COMPONENT_SUBTYPE="${PREVIOUS_USER_INPUT}";
     # 3. Generate Interface
     # 4. Generate Abstraction
     # 5. Generate Class

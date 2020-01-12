@@ -1,14 +1,15 @@
 #!/bin/sh
 
 notifyUser() {
-    MSG=$(printf "\n${1}\n\n");
-    printf "${1}";
+    MSG=$(printf "\n\n${1}\n\n");
+    printf "\n\n${1}\n\n";
     notify-send "${MSG}";
 }
 
 promptUser() {
     notifyUser "${1}";
-    PROMPT_MSG=$(printf "\nPrompt: ");
+    PROMPT_MSG=$(printf "\n\$dsh: ");
+    printf "\n(To use the Darling Shell: Type input if asked | Press <enter> to submit or continue)\n";
     read -p "${PROMPT_MSG}" USER_INPUT;
 }
 
@@ -19,9 +20,9 @@ promptUserAndVerifyInput() {
 
         promptUser "${1}";
 
-        notifyUser  "You entered \"${USER_INPUT}\"...is this correct";
+        notifyUser  "You entered \"${USER_INPUT}\"\n\nIs this correct?";
 
-        promptUser "Enter \"Y\" to continue, \"N\" to change...";
+        promptUser "If everything looks ok, enter \"Y\" to continue,\npress any other key to repeat last step.";
 
         if [ "${USER_INPUT}" = "Y" ]; then
             clear;

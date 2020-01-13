@@ -1,5 +1,7 @@
 #!/bin/sh
 
+TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+
 notifyUser() {
     MSG=$(printf "\n${1}\n");
     printf "\n${1}\n";
@@ -58,7 +60,7 @@ promptUserAndNotify() {
 }
 
 generateTestTrait() {
-    TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g" "/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php");
+    TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g" "${TEMPLATE_FILE_PATH}");
     promptUserAndNotify "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
     printf "${TEST_TRAIT_CODE}" > ./TEMP_GEN_FILE.php;
 }

@@ -39,9 +39,27 @@ promptUserAndVerifyInput() {
 
 }
 
+promptUserAndNotify() {
+    while :
+    do
+        clear;
+
+        promptUser "${1}";
+
+        clear;
+
+        if [ "${USER_INPUT}" = "Y" ]; then
+            clear;
+            break;
+        fi
+
+    done;
+
+}
+
 generateTestTrait() {
     TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g" "/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php");
-    promptUserAndVerifyInput "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
+    promptUserAndNotify "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
     printf "${TEST_TRAIT_CODE}" > ./TEMP_GEN_FILE.php;
 }
 
@@ -58,15 +76,12 @@ askUserForComponentSubtype() {
 while :
 do
     # 0. SHOW WELCOME MESSAGE
-    # 1. Ask user for Component name
     askUserForComponentName;
-    # 2. Ask user for Component sub-type (used to determine the namespaces of
     askUserForComponentSubtype;
     #    the classes and test clases that define and test the component.
     # 3. Generate Interface
     # 4. Generate Abstraction
     # 5. Generate Class
-    # 6. Generate TestTrait
     generateTestTrait;
     # 7. Generate Abstract Test
     # 8. Generate Test

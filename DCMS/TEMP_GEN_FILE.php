@@ -1,22 +1,22 @@
 <?php
 
-namespace UnitTests\interfaces\component\EEE\TTTT\GGGG\TestTraits;
+namespace UnitTests\interfaces\component\TestTraits;
 
-use DarlingCms\interfaces\component\EEE\TTTT\GGGG\Sec;
+use DarlingCms\interfaces\component\OutputComponent;
 
-trait SecTestTrait
+trait OutputComponentTestTrait
 {
 
-    private $Sec;
+    private $OutputComponent;
 
-    public function getSec(): Sec
+    public function getOutputComponent(): OutputComponent
     {
-        return $this->Sec;
+        return $this->OutputComponent;
     }
 
-    public function setSec(Sec $Sec)
+    public function setOutputComponent(OutputComponent $OutputComponent)
     {
-        $this->Sec = $Sec;
+        $this->OutputComponent = $OutputComponent;
     }
 
 }

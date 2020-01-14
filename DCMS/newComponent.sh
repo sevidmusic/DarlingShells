@@ -59,14 +59,8 @@ promptUserAndNotify() {
 
 }
 
-generateTestTrait() {
-    TEST_TRAIT_CODE=$(sed "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g" "${1}");
-    promptUserAndNotify "The following code was generated for the Test Trait, please review it to make sure there are not any errors\n\n${TEST_TRAIT_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
-    printf "${TEST_TRAIT_CODE}" > ./TEMP_GEN_FILE.php;
-}
-
 generatePHPCodeFromTemplate() {
-    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/ComponentType/g; s/DS_COMPONENT_NAME/ComponentName/g; s/[\$_][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
+    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[\$_][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
     promptUserAndNotify "The following code was generated, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
     printf "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
 }
@@ -90,7 +84,6 @@ do
     # 3. Generate Interface
     # 4. Generate Abstraction
     # 5. Generate Class
-    generateTestTrait "${TEMPLATE_FILE_PATH}";
     generatePHPCodeFromTemplate "${TEMPLATE_FILE_PATH}";
     # 7. Generate Abstract Test
     # 8. Generate Test

@@ -1,22 +1,22 @@
 <?php
 
-namespace UnitTests\interfaces\component\Fii\TestTraits;
+namespace UnitTests\interfaces\component\ComponentType\TestTraits;
 
-use DarlingCms\interfaces\component\Fii\SEvi;
+use DarlingCms\interfaces\component\ComponentType\ComponentName;
 
-trait SEviTestTrait
+trait ComponentNameTestTrait
 {
 
-    private $SEvi;
+    private $componentName;
 
-    public function getSEvi(): SEvi
+    public function getComponentName(): ComponentName
     {
-        return $this->SEvi;
+        return $this->componentName;
     }
 
-    public function setSEvi(SEvi $SEvi)
+    public function setComponentName(ComponentName $componentName)
     {
-        $this->SEvi = $SEvi;
+        $this->componentName = $componentName;
     }
 
 }

@@ -25,7 +25,7 @@ sleepWriteWordSleep() {
 }
 
 showLoadingBar() {
-    sleepWriteWordSleep "Loading" .3;
+    sleepWriteWordSleep "${1}" .3;
     INC=0;
     while [ $INC -le 42 ]
     do
@@ -38,7 +38,7 @@ showLoadingBar() {
 notifyUser() {
     MSG=$(printf "\n${1}\n");
     printf "\n${1}\n";
-    notify-send "${MSG}";
+#    notify-send "${MSG}";
 }
 
 promptUser() {
@@ -84,7 +84,7 @@ promptUserAndNotify() {
         clear;
 
         if [ "${USER_INPUT}" = "Y" ]; then
-            showLoadingBar;
+            showLoadingBar "${2}";
             clear;
             break;
         fi
@@ -95,7 +95,7 @@ promptUserAndNotify() {
 
 generatePHPCodeFromTemplate() {
     PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[\$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
-    promptUserAndNotify "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
+    promptUserAndNotify "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>" "Writing FILE";
     printf "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
 }
 
@@ -136,12 +136,11 @@ showWelcomeMessage() {
     sleepWriteWordSleep "e" .03;
     sleepWriteWordSleep "l" .03;
     sleepWriteWordSleep "l\n" .03;
-    showLoadingBar;
+    showLoadingBar "Loading New Component Module";
 }
 
 while :
 do
-
     showWelcomeMessage;
     askUserForComponentName;
     askUserForComponentSubtype;
@@ -151,10 +150,8 @@ do
     #generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
     #generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
     #generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
-
     break;
 
 done;
 
-notifyUser "\n\n\n------- All done. Thank you for using the Darling Shell -------\n\n\n";
 

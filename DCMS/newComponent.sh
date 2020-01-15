@@ -1,6 +1,39 @@
 #!/bin/sh
 
-TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+
+TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+INTERFACE_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+ABSTRACTION_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+CLASS_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/TestTraits/Component.php";
+
+writeWordSleep() {
+    printf "${1}";
+    sleep "${2}";
+}
+
+sleepWriteWord() {
+    sleep "${2}";
+    printf "${1}";
+}
+
+sleepWriteWordSleep() {
+    sleep "${2}";
+    printf "${1}";
+    sleep "${2}";
+}
+
+showLoadingBar() {
+    sleepWriteWordSleep "Loading" .3;
+    INC=0;
+    while [ $INC -le 42 ]
+    do
+        sleepWriteWordSleep "." .05;
+        INC=$(($INC + 1));
+    done;
+    clear;
+}
 
 notifyUser() {
     MSG=$(printf "\n${1}\n");
@@ -51,6 +84,7 @@ promptUserAndNotify() {
         clear;
 
         if [ "${USER_INPUT}" = "Y" ]; then
+            showLoadingBar;
             clear;
             break;
         fi
@@ -60,8 +94,8 @@ promptUserAndNotify() {
 }
 
 generatePHPCodeFromTemplate() {
-    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[\$_][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
-    promptUserAndNotify "The following code was generated, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
+    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[\$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
+    promptUserAndNotify "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>"
     printf "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
 }
 
@@ -75,19 +109,48 @@ askUserForComponentSubtype() {
     USER_DEFINED_COMPONENT_SUBTYPE=$(echo "${PREVIOUS_USER_INPUT}" | sed 's,\\,\\\\,g');
 }
 
+showWelcomeMessage() {
+    clear;
+    sleepWriteWordSleep "\nW" .03;
+    sleepWriteWordSleep "e" .03;
+    sleepWriteWordSleep "l" .03;
+    sleepWriteWordSleep "c" .03;
+    sleepWriteWordSleep "o" .03;
+    sleepWriteWordSleep "m" .03;
+    sleepWriteWordSleep "e" .03;
+    sleepWriteWordSleep " " .03;
+    sleepWriteWordSleep "t" .03;
+    sleepWriteWordSleep "h" .03;
+    sleepWriteWordSleep "e" .03;
+    sleepWriteWordSleep " " .03;
+    sleepWriteWordSleep "D" .03;
+    sleepWriteWordSleep "a" .03;
+    sleepWriteWordSleep "r" .03;
+    sleepWriteWordSleep "l" .03;
+    sleepWriteWordSleep "i" .03;
+    sleepWriteWordSleep "n" .03;
+    sleepWriteWordSleep "g" .03;
+    sleepWriteWordSleep " " .03;
+    sleepWriteWordSleep "S" .03;
+    sleepWriteWordSleep "h" .03;
+    sleepWriteWordSleep "e" .03;
+    sleepWriteWordSleep "l" .03;
+    sleepWriteWordSleep "l\n" .03;
+    showLoadingBar;
+}
+
 while :
 do
-    # 0. SHOW WELCOME MESSAGE
+
+    showWelcomeMessage;
     askUserForComponentName;
     askUserForComponentSubtype;
-    #    the classes and test clases that define and test the component.
-    # 3. Generate Interface
-    # 4. Generate Abstraction
-    # 5. Generate Class
-    generatePHPCodeFromTemplate "${TEMPLATE_FILE_PATH}";
-    # 7. Generate Abstract Test
-    # 8. Generate Test
-    # 9. Optionally, run phpunit
+    generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}";
+    #generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
+    #generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
+    #generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
+    #generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
+    #generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
 
     break;
 

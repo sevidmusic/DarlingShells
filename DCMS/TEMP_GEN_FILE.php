@@ -1,28 +1,26 @@
-<?php
-
-namespace UnitTests\interfaces\componentsdf\TestTraits;
-
-use DarlingCms\interfaces\componentsdfsdfY;
-
-trait asdfYTestTrait
-{
-
-    private $asdfY;
-
-    protected function setasdfYParentTestInstances(): void
-    {
-        $this->setComponent($this->getasdfY());
-        $this->setComponentParentTestInstances();
-    }
-
-    public function getasdfY(): asdfY
-    {
-        return $this->asdfY;
-    }
-
-    public function setasdfY(asdfY $asdfY)
-    {
-        $this->asdfY = $asdfY;
-    }
-
-}
+s\a
+s\b
+s\c
+s\d
+s\e
+s\f
+s\g
+s\h
+s\i
+s\j
+s\k
+s\l
+s\m
+s\n
+s\o
+s\p
+s\q
+s\r
+s\s
+s\t
+s\u
+s\v
+s\w
+s\x
+s\y
+s\z

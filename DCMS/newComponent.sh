@@ -1,12 +1,12 @@
-#!/bin/sh
+#!/bin/bash
 
 
 TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
-ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/abstractions/component/ComponentTest.php";
-TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/classes/component/ComponentTest.php";
-INTERFACE_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/core/interfaces/component/Component.php";
-ABSTRACTION_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/core/abstractions/TestTraits/Component.php";
-CLASS_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/core/classes/Component.php";
+ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/AbstractTest.php";
+TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
+INTERFACE_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
+ABSTRACTION_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
+CLASS_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
 
 writeWordSleep() {
     printf "${1}";
@@ -94,9 +94,9 @@ promptUserAndNotify() {
 }
 
 generatePHPCodeFromTemplate() {
-    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[\$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
+    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
     promptUserAndNotify "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>" "Writing FILE";
-    printf "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
+    echo "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
 }
 
 askUserForComponentName() {
@@ -145,11 +145,11 @@ do
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}";
-    #generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
-    #generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
-    #generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
-    #generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
-    #generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
     break;
 
 done;

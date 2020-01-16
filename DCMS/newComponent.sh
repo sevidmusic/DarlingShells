@@ -95,8 +95,10 @@ promptUserAndNotify() {
 
 generatePHPCodeFromTemplate() {
     PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
-    promptUserAndNotify "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n${PHP_CODE}\n\nIf everything looks ok type \"Y\" and press <enter>" "Writing FILE";
-    echo "${PHP_CODE}" > ./TEMP_GEN_FILE.php;
+    printf "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n";
+    echo "${PHP_CODE}";
+    promptUser "\n\nIf everything looks ok press <enter>";
+    echo "${PHP_CODE}" > ./REAL_GEN_FILE.php;
 }
 
 askUserForComponentName() {

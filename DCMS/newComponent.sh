@@ -99,7 +99,13 @@ generatePHPCodeFromTemplate() {
     echo "${PHP_CODE}";
     promptUser "\n\nIf everything looks ok press <enter>";
     showLoadingBar "Writing file";
-    echo "${PHP_CODE}" > ./REAL_GEN_FILE.php;
+    GENERATED_FILE_ROOT_DIR_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/tmp";
+    CONVERTED_SUBTYPE=$(echo "${USER_DEFINED_COMPONENT_SUBTYPE}" | sed -E "s,\\\,/,g");
+    GENERATED_FILE_SUB_DIR_PATH="${GENERATED_FILE_ROOT_DIR_PATH}/${CONVERTED_SUBTYPE}";
+    notify-send "${GENERATED_FILE_SUB_DIR_PATH}";
+    mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}";
+    GENERATED_FILE_PATH="${GENERATED_FILE_SUB_DIR_PATH}/${USER_DEFINED_COMPONENT_NAME}.php";
+    echo "${PHP_CODE}" > "${GENERATED_FILE_PATH}";
 }
 
 askUserForComponentName() {
@@ -148,11 +154,11 @@ do
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}";
-    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
-    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
-    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
-    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
-    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
+#    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
     break;
 
 done;

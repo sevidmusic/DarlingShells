@@ -98,6 +98,7 @@ generatePHPCodeFromTemplate() {
     printf "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n";
     echo "${PHP_CODE}";
     promptUser "\n\nIf everything looks ok press <enter>";
+    showLoadingBar "Writing file";
     echo "${PHP_CODE}" > ./REAL_GEN_FILE.php;
 }
 

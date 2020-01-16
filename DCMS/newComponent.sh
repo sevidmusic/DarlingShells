@@ -1,7 +1,7 @@
 #!/bin/sh
 
 
-TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/interfaces/component/TestTraits/ComponentTestTrait.php";
+TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
 ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/abstractions/component/ComponentTest.php";
 TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/Tests/Unit/classes/component/ComponentTest.php";
 INTERFACE_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/core/interfaces/component/Component.php";
@@ -27,9 +27,9 @@ sleepWriteWordSleep() {
 showLoadingBar() {
     sleepWriteWordSleep "${1}" .3;
     INC=0;
-    while [ $INC -le 42 ]
+    while [ $INC -le 23 ]
     do
-        sleepWriteWordSleep "." .05;
+        sleepWriteWordSleep "." .03;
         INC=$(($INC + 1));
     done;
     clear;

@@ -1,26 +1,28 @@
 <?php
 
-namespace UnitTests\interfaces\component\Fo\BB\TestTraits;
+namespace UnitTests\interfaces\componentsdf\TestTraits;
 
-use DarlingCms\interfaces\component\Fo\BB\Sevi;
+use DarlingCms\interfaces\componentsdfsdfY;
 
-// DS_USED_TEST_TRAIT_ALIASES;
-
-trait SeviTestTrait
+trait asdfYTestTrait
 {
 
-    // DS_USED_TEST_TRAITS
+    private $asdfY;
 
-    private $sevi;
-
-    public function getSevi(): Sevi
+    protected function setasdfYParentTestInstances(): void
     {
-        return $this->sevi;
+        $this->setComponent($this->getasdfY());
+        $this->setComponentParentTestInstances();
     }
 
-    public function setSevi(Sevi $sevi)
+    public function getasdfY(): asdfY
     {
-        $this->sevi = $sevi;
+        return $this->asdfY;
+    }
+
+    public function setasdfY(asdfY $asdfY)
+    {
+        $this->asdfY = $asdfY;
     }
 
 }

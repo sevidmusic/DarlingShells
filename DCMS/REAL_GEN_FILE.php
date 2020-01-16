@@ -1,26 +1,24 @@
-s\a
-s\b
-s\c
-s\d
-s\e
-s\f
-s\g
-s\h
-s\i
-s\j
-s\k
-s\l
-s\m
-s\n
-s\o
-s\p
-s\q
-s\r
-s\s
-s\t
-s\u
-s\v
-s\w
-s\x
-s\y
-s\z
+<?php
+
+namespace UnitTests\classes\component\BAR\BAZ;
+
+use DarlingCms\classes\component\BAR\BAZ\FOO;
+use DarlingCms\classes\primary\Storable;
+use UnitTests\abstractions\component\BAR\BAZ\FOOTest as AbstractFOOTest;
+
+class FOOTest extends AbstractFOOTest
+{
+    public function setUp(): void
+    {
+        $this->setFOO(
+            new FOO(
+                new Storable(
+                    'FOOName',
+                    'FOOLocation',
+                    'FOOContainer'
+                ),
+            )
+        );
+        $this->setFOOParentTestInstances();
+    }
+}

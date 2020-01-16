@@ -1,9 +1,9 @@
 #!/bin/bash
 
 
-TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
-ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/AbstractTest.php";
-TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
+TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTestTrait.php";
+ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewAbstractComponentTest.php";
+TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTest.php";
 INTERFACE_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
 ABSTRACTION_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
 CLASS_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/TestTraitTemplate.php";
@@ -148,8 +148,8 @@ do
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
+    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
+    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
 #    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
 #    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
 #    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";

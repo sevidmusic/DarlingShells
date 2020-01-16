@@ -1,24 +1,16 @@
 <?php
 
-namespace UnitTests\classes\component\BAR\BAZ;
 
-use DarlingCms\classes\component\BAR\BAZ\FOO;
-use DarlingCms\classes\primary\Storable;
-use UnitTests\abstractions\component\BAR\BAZ\FOOTest as AbstractFOOTest;
+namespace DarlingCms\classes\component\BAR\BAZ\BAZZER;
 
-class FOOTest extends AbstractFOOTest
+use DarlingCms\abstractions\component\BAR\BAZ\BAZZER\FOO as FOOBase;
+use DarlingCms\interfaces\component\BAR\BAZ\BAZZER\FOO as FOOInterface;
+
+class FOO extends FOOBase implements FOOInterface
 {
-    public function setUp(): void
-    {
-        $this->setFOO(
-            new FOO(
-                new Storable(
-                    'FOOName',
-                    'FOOLocation',
-                    'FOOContainer'
-                ),
-            )
-        );
-        $this->setFOOParentTestInstances();
-    }
+    /**
+     * This is a generic implementation, it does not require
+     * any additional logic, the FOOBase class
+     * fulfills the requirements of the FOOInterface.
+     */
 }

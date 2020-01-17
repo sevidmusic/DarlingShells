@@ -1,6 +1,11 @@
 #!/bin/bash
 
 COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./tmp/Tests/Unit/interfaces/component";
+COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./tmp/Tests/Unit/abstractions/component";
+COMPONENT_TEST_TARGET_ROOT_DIR="./tmp/Tests/Unit/classes/component";
+COMPONENT_INTERFACE_TARGET_ROOT_DIR="./tmp/core/interfaces/component";
+COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./tmp/core/abstractions/component";
+COMPONENT_CLASS_TARGET_ROOT_DIR="./tmp/core/abstractions/component";
 TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTestTrait.php";
 ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewAbstractComponentTest.php";
 TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTest.php";
@@ -157,11 +162,11 @@ do
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait";
-#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/abstractions/component";
-#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/classes/component";
-#    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}" "./tmp/core/interfaces/component";
-#    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}" "./tmp/core/abstractions/component";
-#    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}" "./tmp/core/classes/component";
+    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/abstractions/component" "Test";
+    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/classes/component" "Test";
+    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}" "./tmp/core/interfaces/component" "";
+    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}" "./tmp/core/abstractions/component" "";
+    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}" "./tmp/core/classes/component" "";
     break;
 
 done;

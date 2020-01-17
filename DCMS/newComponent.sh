@@ -1,6 +1,6 @@
 #!/bin/bash
 
-
+COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./tmp/Tests/Unit/interfaces/component";
 TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTestTrait.php";
 ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewAbstractComponentTest.php";
 TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTest.php";
@@ -29,7 +29,7 @@ showLoadingBar() {
     INC=0;
     while [ $INC -le 23 ]
     do
-        sleepWriteWordSleep "." .03;
+        sleepWriteWordSleep ">" .03;
         INC=$(($INC + 1));
     done;
     clear;
@@ -99,12 +99,15 @@ generatePHPCodeFromTemplate() {
     echo "${PHP_CODE}";
     promptUser "\n\nIf everything looks ok press <enter>";
     showLoadingBar "Writing file";
-    GENERATED_FILE_ROOT_DIR_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/tmp";
+    GENERATED_FILE_ROOT_DIR_PATH="${2}";
+    notify-send "${GENERATED_FILE_ROOT_DIR_PATH}";
     CONVERTED_SUBTYPE=$(echo "${USER_DEFINED_COMPONENT_SUBTYPE}" | sed -E "s,\\\,/,g");
-    GENERATED_FILE_SUB_DIR_PATH="${GENERATED_FILE_ROOT_DIR_PATH}/${CONVERTED_SUBTYPE}";
+    notify-send "${CONVERTED_SUBTYPE}";
+    GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${CONVERTED_SUBTYPE}" | sed "s,//,/,g");
     notify-send "${GENERATED_FILE_SUB_DIR_PATH}";
     mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}";
-    GENERATED_FILE_PATH="${GENERATED_FILE_SUB_DIR_PATH}/${USER_DEFINED_COMPONENT_NAME}.php";
+    GENERATED_FILE_PATH="${GENERATED_FILE_SUB_DIR_PATH}/${USER_DEFINED_COMPONENT_NAME}${3}.php";
+    notify-send "${GENERATED_FILE_PATH}";
     echo "${PHP_CODE}" > "${GENERATED_FILE_PATH}";
 }
 
@@ -153,12 +156,12 @@ do
     showWelcomeMessage;
     askUserForComponentName;
     askUserForComponentSubtype;
-    generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}";
-#    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}";
+    generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait";
+#    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/abstractions/component";
+#    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/classes/component";
+#    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}" "./tmp/core/interfaces/component";
+#    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}" "./tmp/core/abstractions/component";
+#    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}" "./tmp/core/classes/component";
     break;
 
 done;

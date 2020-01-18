@@ -1,11 +1,11 @@
 #!/bin/bash
 
-COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./tmp/Tests/Unit/interfaces/component";
-COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./tmp/Tests/Unit/abstractions/component";
-COMPONENT_TEST_TARGET_ROOT_DIR="./tmp/Tests/Unit/classes/component";
-COMPONENT_INTERFACE_TARGET_ROOT_DIR="./tmp/core/interfaces/component";
-COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./tmp/core/abstractions/component";
-COMPONENT_CLASS_TARGET_ROOT_DIR="./tmp/core/abstractions/component";
+COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component";
+COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component";
+COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component";
+COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component";
+COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component";
+COMPONENT_CLASS_TARGET_ROOT_DIR="./core/abstractions/component";
 TEST_TRAIT_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTestTrait.php";
 ABSTRACT_TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewAbstractComponentTest.php";
 TEST_TEMPLATE_FILE_PATH="/home/sevidmusic/Code/DarlingShells/DCMS/templates/NewComponentTest.php";
@@ -99,21 +99,18 @@ promptUserAndNotify() {
 }
 
 generatePHPCodeFromTemplate() {
+    TEMPLATE="${1}";
+    GENERATED_FILE_ROOT_DIR_PATH="${2}";
+    FILE_NAME_SUFFIX="${3}";
+    GENERATED_FILE_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${USER_DEFINED_COMPONENT_SUBTYPE}/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php" | sed -E "s,\\\,/,g; s,//,/,g;");
     PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}");
-    printf "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n";
+    printf "The following code was generated using the ${TEMPLATE} template, please review it to make sure there are not any errors:\n\n";
     echo "${PHP_CODE}";
     promptUser "\n\nIf everything looks ok press <enter>";
     showLoadingBar "Writing file";
-    GENERATED_FILE_ROOT_DIR_PATH="${2}";
-    notify-send "${GENERATED_FILE_ROOT_DIR_PATH}";
-    CONVERTED_SUBTYPE=$(echo "${USER_DEFINED_COMPONENT_SUBTYPE}" | sed -E "s,\\\,/,g");
-    notify-send "${CONVERTED_SUBTYPE}";
-    GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${CONVERTED_SUBTYPE}" | sed "s,//,/,g");
-    notify-send "${GENERATED_FILE_SUB_DIR_PATH}";
-    mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}";
-    GENERATED_FILE_PATH="${GENERATED_FILE_SUB_DIR_PATH}/${USER_DEFINED_COMPONENT_NAME}${3}.php";
-    notify-send "${GENERATED_FILE_PATH}";
-    echo "${PHP_CODE}" > "${GENERATED_FILE_PATH}";
+#    mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}";
+#    echo "${PHP_CODE}" > "${GENERATED_FILE_PATH}";
+    notify-send "Created file: ${GENERATED_FILE_PATH}";
 }
 
 askUserForComponentName() {
@@ -162,11 +159,11 @@ do
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait";
-    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/abstractions/component" "Test";
-    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}" "./tmp/Tests/Unit/classes/component" "Test";
-    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}" "./tmp/core/interfaces/component" "";
-    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}" "./tmp/core/abstractions/component" "";
-    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}" "./tmp/core/classes/component" "";
+    generatePHPCodeFromTemplate "${ABSTRACT_TEST_TEMPLATE_FILE_PATH}" "${COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR}" "Test";
+    generatePHPCodeFromTemplate "${TEST_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TARGET_ROOT_DIR}" "Test";
+    generatePHPCodeFromTemplate "${INTERFACE_TEMPLATE_FILE_PATH}" "${COMPONENT_INTERFACE_TARGET_ROOT_DIR}" "";
+    generatePHPCodeFromTemplate "${ABSTRACTION_TEMPLATE_FILE_PATH}" "${COMPONENT_ABSTRACTION_TARGET_ROOT_DIR}" "";
+    generatePHPCodeFromTemplate "${CLASS_TEMPLATE_FILE_PATH}" "${COMPONENT_CLASS_TARGET_ROOT_DIR}" "";
     break;
 
 done;

@@ -34,7 +34,7 @@ showLoadingBar() {
     INC=0;
     while [ $INC -le 23 ]
     do
-        sleepWriteWordSleep ">" .03;
+        sleepWriteWordSleep ":" .03;
         INC=$(($INC + 1));
     done;
     clear;
@@ -99,7 +99,7 @@ promptUserAndNotify() {
 }
 
 generatePHPCodeFromTemplate() {
-    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g" "${1}");
+    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}");
     printf "The following code was generated using the ${1} template, please review it to make sure there are not any errors\n\n";
     echo "${PHP_CODE}";
     promptUser "\n\nIf everything looks ok press <enter>";

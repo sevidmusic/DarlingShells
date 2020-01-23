@@ -1,13 +1,5 @@
 #!/bin/bash
 
-TEMPLATE="Component";
-TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php";
-ABSTRACT_TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/AbstractTest.php";
-TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Test.php";
-INTERFACE_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Interface.php";
-ABSTRACTION_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Abstraction.php";
-CLASS_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Class.php";
-
 COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component";
 COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component";
 COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component";
@@ -159,9 +151,27 @@ showWelcomeMessage() {
     showLoadingBar "Loading New Component Module";
 }
 
+askUserForTemplateDirectoryName() {
+    promptUserAndVerifyInput "Please enter the name of the directory where the appropriate php code templates are located:";
+    TEMPLATE="${PREVIOUS_USER_INPUT}";
+
+    while [ ! -d "./templates/${TEMPLATE}" ]
+    do
+        promptUserAndVerifyInput "The specified template directory does not exist, please enter an existing template directory's name";
+        TEMPLATE="${PREVIOUS_USER_INPUT}";
+    done;
+
+    TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php";
+    ABSTRACT_TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/AbstractTest.php";
+    TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Test.php";
+    INTERFACE_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Interface.php";
+    ABSTRACTION_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Abstraction.php";
+    CLASS_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Class.php";
+}
 while :
 do
     showWelcomeMessage;
+    askUserForTemplateDirectoryName;
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait";

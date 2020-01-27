@@ -1,11 +1,13 @@
 #!/bin/bash
 
-COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component";
-COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component";
-COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component";
-COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component";
-COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component";
-COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component";
+initVars() {
+    COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component";
+    COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component";
+    COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component";
+    COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component";
+    COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component";
+    COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component";
+}
 
 writeWordSleep() {
     printf "${1}";
@@ -101,7 +103,7 @@ generatePHPCodeFromTemplate() {
     if [ "${FILE_NAME_SUFFIX}" = "TestTrait" ]; then
         GENERATED_FILE_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${USER_DEFINED_COMPONENT_SUBTYPE}/TestTraits/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php" | sed -E "s,\\\,/,g; s,//,/,g;");
     fi;
-    PHP_CODE=$(sed -E "s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}");
+    PHP_CODE=$(sed -E "s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}");
     GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_PATH}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php//g");
     printf "The following code was generated using the ${TEMPLATE} template, please review it to make sure there are not any errors:\n\n";
     echo "${PHP_CODE}";
@@ -119,6 +121,16 @@ askUserForComponentName() {
 askUserForComponentSubtype() {
     promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type\ndetermines the namespace pattern used to define the namespaces\nof the interface, implementations, test trait, and test classes\nrelated to the component.\n\nExample namespace pattern:\n\\DarlingCms\\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME}\n\nNote: You must escape backslash characters.\n\nNote: Do not inlcude a preceding backslash in the sub-type.\nWrong: \\\\Foo\\\\Bar\nRight: Foo\\\\Bar\n";
     USER_DEFINED_COMPONENT_SUBTYPE=$(echo "${PREVIOUS_USER_INPUT}" | sed 's,\\,\\\\,g');
+}
+
+askUserForParentComponentName() {
+    promptUserAndVerifyInput "Please enter the name of the component this component extends:";
+    USER_DEFINED_PARENT_COMPONENT_NAME="${PREVIOUS_USER_INPUT}";
+}
+
+askUserForParentComponentSubtype() {
+    promptUserAndVerifyInput "Please enter the subtype of the component this component extends:";
+    USER_DEFINED_PARENT_COMPONENT_SUBTYPE="${PREVIOUS_USER_INPUT}";
 }
 
 showWelcomeMessage() {
@@ -170,8 +182,11 @@ askUserForTemplateDirectoryName() {
 }
 while :
 do
+    initVars;
     showWelcomeMessage;
     askUserForTemplateDirectoryName;
+    askUserForParentComponentName;
+    askUserForParentComponentSubtype;
     askUserForComponentName;
     askUserForComponentSubtype;
     generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait";

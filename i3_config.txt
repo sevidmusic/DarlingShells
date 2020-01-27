@@ -125,7 +125,7 @@ bindsym $mod+Shift+p exec phpstorm
 bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers; exec compton -b; restart
 
 # Assign favorite  wallpaper and restart compton and i3
-bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/DarlingBG3.png; exec compton -b; restart
+bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi5.jpg; exec compton -b; restart
 
 # Take a screenshot via imagemagick's import command
 bindsym $mod+p exec /home/sevidmusic/Code/DarlingShells/screenshot.sh

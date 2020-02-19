@@ -125,4 +125,4 @@ clear;
 # Show wheather
 curl wttr.in?format=2;
 
-
+neofetch;

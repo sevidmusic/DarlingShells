@@ -124,8 +124,12 @@ bindsym $mod+Shift+p exec phpstorm
 # Assign random wallpaper and restart compton and i3
 bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers; exec compton -b; restart
 
-# Assign favorite  wallpaper and restart compton and i3
-bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi5.jpg; exec compton -b; restart
+# Assign favorite wallpaper 1 and restart compton and i3
+bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/Dorian_Roady1.jpg; exec compton -b; restart
+# Assign favorite wallpaper 2 and restart compton and i3
+bindsym $mod+Shift+n exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi7.jpg; exec compton -b; restart
+# Assign favorite wallpaper 3 and restart compton and i3
+bindsym $mod+Shift+m exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi1.jpg; exec compton -b; restart
 
 # Take a screenshot via imagemagick's import command
 bindsym $mod+p exec /home/sevidmusic/Code/DarlingShells/screenshot.sh

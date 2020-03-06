@@ -7,6 +7,8 @@ cd ~/Code/DarlingCmsRedesign;
 alias lsa="ls -al"
 alias lsr="ls -AR --group-directories-first"
 alias c="clear"
+alias d="diff -y --suppress-common-lines"
+
 # Vagrant Aliases
 alias vup="vagrant up"
 alias vdn="vagrant halt"
@@ -16,7 +18,7 @@ alias vsh="vagrant ssh"
 # Git Aliases
 alias gst="git status"
 alias gpo="git push -u origin"
-alias gpa="git push -u origin unitTests interfaces abstractions classes master"
+alias gpa="git push -u origin unitTests interfaces abstractions classes WorkingDemo master"
 alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"

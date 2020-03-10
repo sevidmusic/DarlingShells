@@ -1,5 +1,33 @@
 #!/bin/bash
 
+# OPTIONS=("Foo" "Bar" "Baz");
+# responses=('Bar-Bazzer-Foo' 'Foo-Bazzer-Bar' 'Bazzer-Bar-Foo');
+# askUserForSelection $OPTIONS $responses;
+askUserForSelection() {
+    PS3='Please enter your choice: ';
+    OPTIONS=$1;
+    responses=$2;
+    select opt in "${OPTIONS[@]}"
+    do
+        case $opt in
+            ${OPTIONS[$(expr ${REPLY} - 1)]})
+            if [ -n "${opt}" ]; then
+                RESPONSE_INDEX=$(expr ${REPLY} - 1);
+                RESPONSE=$(echo ${responses[${RESPONSE_INDEX}]} | sed -E "s,-, ,g;");
+                PREVIOUS_USER_INPUT="${opt}";
+                printf "\nREPLY: ${REPLY}\nOPT: ${opt}\nRESPONSE_INDEX: ${RESPONSE_INDEX}\nRESPONSE: ${RESPONSE}\nPREVIOUS_USER_INPUT: ${PREVIOUS_USER_INPUT}\n";
+                break;
+            fi
+            echo "${REPLY} is not a valid option, please enter the number that corresponds to your selction.";
+            ;;
+        esac
+    done
+}
+ OPTIONS=("Foo" "Bar" "Baz");
+ responses=('Bar-Bazzer-Foo' 'Foo-Bazzer-Bar' 'Bazzer-Bar-Foo');
+ askUserForSelection $OPTIONS $responses;
+ exit;
+
 initVars() {
     COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component";
     COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component";

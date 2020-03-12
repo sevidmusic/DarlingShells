@@ -9,6 +9,10 @@ alias lsr="ls -AR --group-directories-first"
 alias c="clear"
 alias d="diff -y --suppress-common-lines"
 
+# IntellijPyWalGen Aliases
+alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config"
+rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
+
 # Vagrant Aliases
 alias vup="vagrant up"
 alias vdn="vagrant halt"

@@ -36,24 +36,24 @@ initVars() {
   RESPONSES=("${WARNINGCOLOR}WARNING:-Defing-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!\n\nIt-is-recomendd-that-you-define-new-Componets-as-part-of-an-Extension.\n\nIf-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-\n\nAre-you-sure-you-want-to-proceed?\n(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>\n")
   askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" $OPTIONS $RESPONSES
   if [ "${PREVIOUS_USER_INPUT}" == "Core" ]; then
-
+      EXTENSION_NAME=""
       COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component"
       COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component"
       COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component"
       COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component"
       COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component"
       COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component"
-      echo "${COMPONENT_CLASS_TARGET_ROOT_DIR}"
   fi
 
   if [ "${PREVIOUS_USER_INPUT}" == "Extension" ]; then
       promptUserAndVerifyInput "What is the name of the Extension this Component will belong to?"
-      COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/Tests/Unit/interfaces/component"
-      COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/Tests/Unit/abstractions/component"
-      COMPONENT_TEST_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/Tests/Unit/classes/component"
-      COMPONENT_INTERFACE_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/core/interfaces/component"
-      COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/core/abstractions/component"
-      COMPONENT_CLASS_TARGET_ROOT_DIR="./Extensions/${PREVIOUS_USER_INPUT}/core/classes/component"
+      EXTENSION_NAME="${PREVIOUS_USER_INPUT}"
+      COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/interfaces/component"
+      COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/abstractions/component"
+      COMPONENT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/classes/component"
+      COMPONENT_INTERFACE_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/interfaces/component"
+      COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/abstractions/component"
+      COMPONENT_CLASS_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/classes/component"
   fi
 }
 
@@ -238,8 +238,8 @@ askUserForTemplateDirectoryName() {
   #  TEMPLATE="${PREVIOUS_USER_INPUT}"
   #done
 
-  OPTIONS=("Component" "Primary" "OutputComponent" "SwitchableComponent");
-  RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-Primary-template,-is-that-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?');
+  OPTIONS=("Component" "OutputComponent" "SwitchableComponent");
+  RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?');
   askUserForSelection "Please select the template that should be used to generate the php files." $OPTIONS $RESPONSES;
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"

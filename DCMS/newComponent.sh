@@ -13,7 +13,6 @@ askUserForSelection() {
       if [ -n "${opt}" ]; then
         RESPONSE_INDEX=$(("${REPLY}" - 1))
         RESPONSE=$(echo "${RESPONSES[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
-        # printf "\nREPLY: ${REPLY}\nOPT: ${opt}\nRESPONSE_INDEX: ${RESPONSE_INDEX}\nRESPONSE: ${RESPONSE}\nPREVIOUS_USER_INPUT: ${PREVIOUS_USER_INPUT}\n"
         promptUserAndNotify "${RESPONSE}"
         PREVIOUS_USER_INPUT="${opt}"
         break
@@ -35,7 +34,8 @@ initVars() {
   OPTIONS=("Core" "Extension")
   RESPONSES=("${WARNINGCOLOR}WARNING:-Defing-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!\n\nIt-is-recomendd-that-you-define-new-Componets-as-part-of-an-Extension.\n\nIf-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-\n\nAre-you-sure-you-want-to-proceed?\n(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>\n")
   askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" $OPTIONS $RESPONSES
-  if [ "${PREVIOUS_USER_INPUT}" == "Core" ]; then
+  COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
+  if [ "${COMPONENT_EXTENDS}" == "Core" ]; then
       EXTENSION_NAME=""
       COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component"
       COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component"
@@ -143,7 +143,7 @@ generatePHPCodeFromTemplate() {
   if [ "${FILE_NAME_SUFFIX}" = "TestTrait" ]; then
     GENERATED_FILE_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${USER_DEFINED_COMPONENT_SUBTYPE}/TestTraits/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php" | sed -E "s,\\\,/,g; s,//,/,g;")
   fi
-  PHP_CODE=$(sed -E "s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
+  PHP_CODE=$(sed -E "s/DS_EXTENSION_NAME/${EXTENSION_NAME}/g; s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
   GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_PATH}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php//g")
   printf "${NOTIFYCOLOR}The following code was generated using the ${INPUTCOLOR}${TEMPLATE}${NOTIFYCOLOR} template, please review it to make sure there are not any errors:${CLEARCOLOR}\n\n"
   echo "${PHPCODECOLOR}${PHP_CODE}"
@@ -230,14 +230,6 @@ showWelcomeMessage() {
 }
 
 askUserForTemplateDirectoryName() {
-  #promptUserAndVerifyInput "Please enter the name of the directory where the appropriate php code templates are located:"
-  #TEMPLATE="${PREVIOUS_USER_INPUT}"
-
-  #while [ ! -d "./templates/${TEMPLATE}" ]; do
-  #  promptUserAndVerifyInput "The specified template directory does not exist, please enter an existing template directory's name"
-  #  TEMPLATE="${PREVIOUS_USER_INPUT}"
-  #done
-
   OPTIONS=("Component" "OutputComponent" "SwitchableComponent");
   RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?');
   askUserForSelection "Please select the template that should be used to generate the php files." $OPTIONS $RESPONSES;

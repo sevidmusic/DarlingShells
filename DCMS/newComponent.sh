@@ -36,45 +36,44 @@ initVars() {
   askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" $OPTIONS $RESPONSES
   COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
   if [ "${COMPONENT_EXTENDS}" == "Core" ]; then
-      EXTENSION_NAME=""
-      COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component"
-      COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component"
-      COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component"
-      COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component"
-      COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component"
-      COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component"
+    EXTENSION_NAME=""
+    COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component"
+    COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component"
+    COMPONENT_TEST_TARGET_ROOT_DIR="./Tests/Unit/classes/component"
+    COMPONENT_INTERFACE_TARGET_ROOT_DIR="./core/interfaces/component"
+    COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./core/abstractions/component"
+    COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component"
   fi
 
   if [ "${PREVIOUS_USER_INPUT}" == "Extension" ]; then
-      promptUserAndVerifyInput "What is the name of the Extension this Component will belong to?"
-      EXTENSION_NAME="${PREVIOUS_USER_INPUT}"
-      COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/interfaces/component"
-      COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/abstractions/component"
-      COMPONENT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/classes/component"
-      COMPONENT_INTERFACE_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/interfaces/component"
-      COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/abstractions/component"
-      COMPONENT_CLASS_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/classes/component"
+    promptUserAndVerifyInput "What is the name of the Extension this Component will belong to?"
+    EXTENSION_NAME="${PREVIOUS_USER_INPUT}"
+    COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/interfaces/component"
+    COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/abstractions/component"
+    COMPONENT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/classes/component"
+    COMPONENT_INTERFACE_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/interfaces/component"
+    COMPONENT_ABSTRACTION_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/abstractions/component"
+    COMPONENT_CLASS_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/core/classes/component"
   fi
 }
 
 setColor() {
-  COLOR="\e[${1}m"
-  printf "${COLOR}"
+  printf "\e[%sm" "${1}"
 }
 
 writeWordSleep() {
-  printf "${1}"
+  printf "%s" "${1}"
   sleep "${2}"
 }
 
 sleepWriteWord() {
   sleep "${2}"
-  printf "${1}"
+  printf "%s" "${1}"
 }
 
 sleepWriteWordSleep() {
   sleep "${2}"
-  printf "${1}"
+  printf "%s" "${1}"
   sleep "${2}"
 }
 
@@ -93,12 +92,12 @@ showLoadingBar() {
 }
 
 notifyUser() {
-  printf "\n${NOTIFYCOLOR}${1}${CLEARCOLOR}\n"
+  printf "\n%s%s%s\n" "${NOTIFYCOLOR}" "${1}" "${CLEARCOLOR}"
 }
 
 promptUser() {
   notifyUser "${1}"
-  PROMPT_MSG=$(printf "\n${DSHCOLOR}\$dsh: ${USRPRMPTCOLOR}")
+  PROMPT_MSG=$(printf "\n%s\$dsh: %s" "${DSHCOLOR}" "${USRPRMPTCOLOR}")
   PREVIOUS_USER_INPUT="${USER_INPUT}"
   read -p "${PROMPT_MSG}" USER_INPUT
   setColor 0
@@ -145,7 +144,7 @@ generatePHPCodeFromTemplate() {
   fi
   PHP_CODE=$(sed -E "s/DS_EXTENSION_NAME/${EXTENSION_NAME}/g; s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
   GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_PATH}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php//g")
-  printf "${NOTIFYCOLOR}The following code was generated using the ${INPUTCOLOR}${TEMPLATE}${NOTIFYCOLOR} template, please review it to make sure there are not any errors:${CLEARCOLOR}\n\n"
+  printf "%sThe following code was generated using the %s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${NOTIFYCOLOR}" "${INPUTCOLOR}" "${TEMPLATE}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
   echo "${PHPCODECOLOR}${PHP_CODE}"
   promptUser "\n\nIf everything looks ok press <enter>"
   showLoadingBar "Writing file ${GENERATED_FILE_PATH} "
@@ -175,8 +174,9 @@ askUserForParentComponentSubtype() {
 
 showWelcomeMessage() {
   clear
+  printf "\n"
   setColor 32
-  sleepWriteWordSleep "\nW" .03
+  sleepWriteWordSleep "W" .03
   setColor 34
   sleepWriteWordSleep "e" .03
   setColor 36
@@ -189,6 +189,12 @@ showWelcomeMessage() {
   sleepWriteWordSleep "m" .03
   setColor 32
   sleepWriteWordSleep "e" .03
+  setColor 34
+  sleepWriteWordSleep " " .03
+  setColor 36
+  sleepWriteWordSleep "t" .03
+  setColor 32
+  sleepWriteWordSleep "o" .03
   setColor 34
   sleepWriteWordSleep " " .03
   setColor 36
@@ -224,15 +230,16 @@ showWelcomeMessage() {
   setColor 36
   sleepWriteWordSleep "l" .03
   setColor 32
-  sleepWriteWordSleep "l\n" .03
+  sleepWriteWordSleep "l" .03
   setColor 36
+  printf "\n"
   showLoadingBar "Loading New Component Module"
 }
 
 askUserForTemplateDirectoryName() {
-  OPTIONS=("Component" "OutputComponent" "SwitchableComponent");
-  RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?');
-  askUserForSelection "Please select the template that should be used to generate the php files." $OPTIONS $RESPONSES;
+  OPTIONS=("Component" "OutputComponent" "SwitchableComponent")
+  RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?')
+  askUserForSelection "Please select the template that should be used to generate the php files." $OPTIONS $RESPONSES
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"
   ABSTRACT_TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/AbstractTest.php"

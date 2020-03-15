@@ -25,7 +25,10 @@ askUserForSelection() {
     esac
   done
 }
+
 initVars() {
+  local _iv_options
+  local _iv_responses
   WARNINGCOLOR=$(setColor 32)
   CLEARCOLOR=$(setColor 0)
   NOTIFYCOLOR=$(setColor 33)
@@ -33,9 +36,9 @@ initVars() {
   USRPRMPTCOLOR=$(setColor 44)
   INPUTCOLOR=$(setColor 34)
   PHPCODECOLOR=$(setColor 35)
-  OPTIONS=("Core" "Extension")
-  RESPONSES=("${WARNINGCOLOR}WARNING:-Defining-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!-It-is-recommended-that-you-define-new-Components-as-part-of-an-Extension.-If-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-Are-you-sure-you-want-to-proceed?-(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>")
-  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" OPTIONS RESPONSES
+  _iv_options=("Core" "Extension")
+  _iv_responses=("${WARNINGCOLOR}WARNING:-Defining-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!-It-is-recommended-that-you-define-new-Components-as-part-of-an-Extension.-If-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-Are-you-sure-you-want-to-proceed?-(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>")
+  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" _iv_options _iv_responses
   COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
   if [[ "${COMPONENT_EXTENDS}" == "Core" ]]; then
     EXTENSION_NAME=""

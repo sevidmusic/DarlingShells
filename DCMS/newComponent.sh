@@ -3,16 +3,19 @@
 # OPTIONS=("Foo" "Bar" "Baz");
 # RESPONSES=('Bar-Bazzer-Foo' 'Foo-Bazzer-Bar' 'Bazzer-Bar-Foo');
 # askUserForSelection $OPTIONS $RESPONSES;
+
 askUserForSelection() {
+  local -n _aufs_options=$2
+  local -n _aufs_responses=$3
+  local RESPONSE_INDEX
+  local RESPONSE
   PS3=$(printf "%s\n%s" "${1}" "${DSHCOLOR}\$dsh: ${INPUTCOLOR}")
-  OPTIONS=$2
-  RESPONSES=$3
-  select opt in "${OPTIONS[@]}"; do
+  select opt in "${_aufs_options[@]}"; do
     case $opt in
-    ${OPTIONS[$(("${REPLY}" - 1))]})
+    ${_aufs_options[$(("${REPLY}" - 1))]})
       if [[ -n "${opt}" ]]; then
         RESPONSE_INDEX=$(("${REPLY}" - 1))
-        RESPONSE=$(echo "${RESPONSES[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
+        RESPONSE=$(echo "${_aufs_responses[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
         promptUserAndNotify "${RESPONSE}"
         PREVIOUS_USER_INPUT="${opt}"
         break
@@ -22,7 +25,6 @@ askUserForSelection() {
     esac
   done
 }
-
 initVars() {
   WARNINGCOLOR=$(setColor 32)
   CLEARCOLOR=$(setColor 0)
@@ -33,7 +35,7 @@ initVars() {
   PHPCODECOLOR=$(setColor 35)
   OPTIONS=("Core" "Extension")
   RESPONSES=("${WARNINGCOLOR}WARNING:-Defining-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!-It-is-recommended-that-you-define-new-Components-as-part-of-an-Extension.-If-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-Are-you-sure-you-want-to-proceed?-(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>")
-  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" $OPTIONS $RESPONSES
+  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" OPTIONS RESPONSES
   COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
   if [[ "${COMPONENT_EXTENDS}" == "Core" ]]; then
     EXTENSION_NAME=""
@@ -239,9 +241,11 @@ showWelcomeMessage() {
 }
 
 askUserForTemplateDirectoryName() {
-  OPTIONS=("Component" "OutputComponent" "SwitchableComponent")
-  RESPONSES=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?')
-  askUserForSelection "Please select the template that should be used to generate the php files." $OPTIONS $RESPONSES
+  local _auftdn_options
+  local _auftdn_responses
+  _auftdn_options=("Component" "OutputComponent" "SwitchableComponent")
+  _auftdn_responses=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?')
+  askUserForSelection "Please select the template that should be used to generate the php files." _auftdn_options _auftdn_responses
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"
   ABSTRACT_TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/AbstractTest.php"

@@ -9,7 +9,7 @@ askUserForSelection() {
   local -n _aufs_responses=$3
   local RESPONSE_INDEX
   local RESPONSE
-  PS3=$(printf "%s\n%s" "${1}" "${DSHCOLOR}\$dsh: ${INPUTCOLOR}")
+  PS3=$(printf "%s\n%s" "${1}" "${DSHCOLOR}\$dsh: ${USRPRMPTCOLOR}")
   select opt in "${_aufs_options[@]}"; do
     case $opt in
     ${_aufs_options[$(("${REPLY}" - 1))]})
@@ -20,7 +20,7 @@ askUserForSelection() {
         PREVIOUS_USER_INPUT="${opt}"
         break
       fi
-      echo "${WARNINGCOLOR}${REPLY} is not a valid option, please enter the number that corresponds to your selection."
+      echo "${CLEARCOLOR}${HIGHLIGHTCOLOR2}${REPLY}${CLEARCOLOR}${WARNINGCOLOR} is not a valid option, please enter the number that corresponds to your selection.${CLEARCOLOR}"
       ;;
     esac
   done
@@ -29,16 +29,20 @@ askUserForSelection() {
 initVars() {
   local _iv_options
   local _iv_responses
-  WARNINGCOLOR=$(setColor 32)
+  WARNINGCOLOR=$(setColor 35)
   CLEARCOLOR=$(setColor 0)
   NOTIFYCOLOR=$(setColor 33)
-  DSHCOLOR=$(setColor 36)
-  USRPRMPTCOLOR=$(setColor 44)
-  INPUTCOLOR=$(setColor 34)
-  PHPCODECOLOR=$(setColor 35)
+  DSHCOLOR=$(setColor 41)
+  USRPRMPTCOLOR=$(setColor 41)
+  PHPCODECOLOR=$(setColor 42)
+  HIGHLIGHTCOLOR=$(setColor 41)
+  HIGHLIGHTCOLOR2=$(setColor 45)
+  ATTENTIONEFFECT=$(setColor 5)
+  ATTENTIONEFFECTCOLOR=$(setColor 36)
+  DARKTEXTCOLOR=$(setColor 30)
   _iv_options=("Core" "Extension")
-  _iv_responses=("${WARNINGCOLOR}WARNING:-Defining-new-Components-for-core-should-only-be-done-if-absolutely-necessary,-and-you-should-only-do-so-if-you-are-sure-you-know-what-you-are-doing-and-understand-the-consequences!-It-is-recommended-that-you-define-new-Components-as-part-of-an-Extension.-If-you-chose-to-proceed,-you-have-been-warned,-good-luck-with-your-new-component,-know-bad-things-may-happen,-and-if-they-do-it-will-probably-be-your-new-components-fault.-Are-you-sure-you-want-to-proceed?-(Type-Y-and-press-<enter>-to-continue,-press-<ctrl>-c-to-quit-and-start-over." "You-have-chosen-to-create-a-new-Component-for-an-Extension,-if-this-is-not-correct-press-<ctrl>-c-to-quit,-otherwise-type-Y-and-press-<enter>")
-  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of Core or as part of an Extension?" _iv_options _iv_responses
+  _iv_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "You have chosen to create a new Component for an Extension, if this is not correct press <ctrl> c to quit, otherwise type Y and press <enter>")
+  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${NOTIFYCOLOR}${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _iv_options _iv_responses
   COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
   if [[ "${COMPONENT_EXTENDS}" == "Core" ]]; then
     EXTENSION_NAME=""
@@ -84,7 +88,7 @@ sleepWriteWordSleep() {
 
 showLoadingBar() {
   sleepWriteWordSleep "${1}" .3
-  setColor 44
+  setColor 43
   INC=0
   while [[ ${INC} -le 42 ]]; do
     sleepWriteWordSleep ":" .009
@@ -102,9 +106,9 @@ notifyUser() {
 
 promptUser() {
   notifyUser "${1}"
-  PROMPT_MSG=$(printf "\n%s\$dsh: %s" "${DSHCOLOR}" "${USRPRMPTCOLOR}")
-  PREVIOUS_USER_INPUT="${USER_INPUT}"
-  read -p "${PROMPT_MSG}" USER_INPUT
+  PROMPT_MSG=$(printf "%s\n%s\$dsh: %s" "${CLEARCOLOR}" "${DSHCOLOR}" "${USRPRMPTCOLOR}")
+  PREVIOUS_USER_INPUT="${CURRENT_USER_INPUT}"
+  read -p "${PROMPT_MSG}" CURRENT_USER_INPUT
   setColor 0
 }
 
@@ -113,13 +117,13 @@ promptUserAndVerifyInput() {
     clear
     promptUser "${1}"
     clear
-    notifyUser "You entered \"${INPUTCOLOR}${USER_INPUT}${NOTIFYCOLOR}\"Is this correct?"
-    if [[ "${USER_INPUT}" == "Y" ]]; then
+    notifyUser "You entered \"${CLEARCOLOR}${HIGHLIGHTCOLOR}${CURRENT_USER_INPUT}${CLEARCOLOR}${NOTIFYCOLOR}\"Is this correct?${CLEARCOLOR}"
+    if [[ "${CURRENT_USER_INPUT}" == "Y" ]]; then
       clear
       break
     fi
-    promptUser "If so, type ${INPUTCOLOR}\"Y\"${NOTIFYCOLOR} and press ${INPUTCOLOR}<enter>${NOTIFYCOLOR} to continue to next step, or just press ${INPUTCOLOR}<enter>${NOTIFYCOLOR} to repeat the last step."
-    if [[ "${USER_INPUT}" == "Y" ]]; then
+    promptUser "If so, type ${CLEARCOLOR}${HIGHLIGHTCOLOR}\"Y\"${CLEARCOLOR}${NOTIFYCOLOR} and press ${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR} to continue to next step, or just press ${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR} to repeat the last step.${CLEARCOLOR}"
+    if [[ "${CURRENT_USER_INPUT}" == "Y" ]]; then
       clear
       break
     fi
@@ -127,11 +131,12 @@ promptUserAndVerifyInput() {
 }
 
 promptUserAndNotify() {
+  setColor 0
   while :; do
     clear
     promptUser "${1}"
     clear
-    if [[ "${USER_INPUT}" == "Y" ]]; then
+    if [[ "${CURRENT_USER_INPUT}" == "Y" ]]; then
       showLoadingBar "${2}"
       clear
       break
@@ -149,7 +154,7 @@ generatePHPCodeFromTemplate() {
   fi
   PHP_CODE=$(sed -E "s/DS_EXTENSION_NAME/${EXTENSION_NAME}/g; s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
   GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_PATH}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php//g")
-  printf "\n\n%sThe following code was generated using the %s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${NOTIFYCOLOR}" "${INPUTCOLOR}" "${TEMPLATE}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
+  printf "%s\n\n%sThe following code was generated using the %s%s%s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR}" "${TEMPLATE}" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
   echo "${PHPCODECOLOR}${PHP_CODE}"
   promptUser "If everything looks ok press <enter>"
   showLoadingBar "Writing file ${GENERATED_FILE_PATH} "
@@ -240,6 +245,7 @@ showWelcomeMessage() {
   sleepWriteWordSleep "l" .03
   setColor 36
   printf "\n"
+  printf "\n"
   showLoadingBar "Loading New Component Module"
 }
 
@@ -247,7 +253,7 @@ askUserForTemplateDirectoryName() {
   local _auftdn_options
   local _auftdn_responses
   _auftdn_options=("Component" "OutputComponent" "SwitchableComponent")
-  _auftdn_responses=('You-selected-the-Component-template,-is-this-correct?' 'You-selected-the-OutputComponent-template,-is-that-correct?' 'You-selected-the-SwitchableComponent-template,-is-that-correct?')
+  _auftdn_responses=('You selected the Component template, is this correct?' 'You selected the OutputComponent template, is that correct?' 'You selected the SwitchableComponent template, is that correct?')
   askUserForSelection "Please select the template that should be used to generate the php files." _auftdn_options _auftdn_responses
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"

@@ -13,6 +13,9 @@ alias d="diff -y --suppress-common-lines"
 alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config"
 rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
 
+# w3m aliases
+alias dcms="w3m 192.168.33.10"
+
 # Vagrant Aliases
 alias vup="vagrant up"
 alias vdn="vagrant halt"

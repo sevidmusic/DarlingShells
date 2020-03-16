@@ -9,18 +9,19 @@ askUserForSelection() {
   local -n _aufs_responses=$3
   local RESPONSE_INDEX
   local RESPONSE
-  PS3=$(printf "%s\n%s" "${1}" "${DSHCOLOR}\$dsh: ${USRPRMPTCOLOR}")
+  printf "\n"
+  PS3=$(printf "\n%s\n\n%s" "${1}" "${DSHCOLOR}\$dsh: ${USRPRMPTCOLOR}")
   select opt in "${_aufs_options[@]}"; do
     case $opt in
     ${_aufs_options[$(("${REPLY}" - 1))]})
       if [[ -n "${opt}" ]]; then
         RESPONSE_INDEX=$(("${REPLY}" - 1))
-        RESPONSE=$(echo "${_aufs_responses[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
-        promptUserAndNotify "${RESPONSE}"
+        RESPONSE=$(echo -e "${_aufs_responses[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
+        promptUserAndNotify "${RESPONSE}" "One moment please"
         PREVIOUS_USER_INPUT="${opt}"
         break
       fi
-      echo "${CLEARCOLOR}${HIGHLIGHTCOLOR2}${REPLY}${CLEARCOLOR}${WARNINGCOLOR} is not a valid option, please enter the number that corresponds to your selection.${CLEARCOLOR}"
+      printf "\n%s%s%s%s%s%s is not a valid option.\n\nPlease enter the %s%snumber%s%s that corresponds to your selection.%s\n" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR2}" "${DARKTEXTCOLOR}" "${REPLY}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}"
       ;;
     esac
   done
@@ -40,9 +41,12 @@ initVars() {
   ATTENTIONEFFECT=$(setColor 5)
   ATTENTIONEFFECTCOLOR=$(setColor 36)
   DARKTEXTCOLOR=$(setColor 30)
+}
+
+askUserIfComponentForCoreOrExtension() {
   _iv_options=("Core" "Extension")
-  _iv_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "You have chosen to create a new Component for an Extension, if this is not correct press <ctrl> c to quit, otherwise type Y and press <enter>")
-  askUserForSelection "${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${NOTIFYCOLOR}${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _iv_options _iv_responses
+  _iv_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${CLEARCOLOR}${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You have chosen to ${CLEARCOLOR}${HIGHLIGHTCOLOR}create a new Component for an Extension${CLEARCOLOR}${NOTIFYCOLOR}, if this is not correct press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit, otherwise type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\".${CLEARCOLOR}")
+  askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _iv_options _iv_responses
   COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
   if [[ "${COMPONENT_EXTENDS}" == "Core" ]]; then
     EXTENSION_NAME=""
@@ -87,16 +91,17 @@ sleepWriteWordSleep() {
 }
 
 showLoadingBar() {
-  sleepWriteWordSleep "${1}" .3
+  printf "\n"
+  sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
   setColor 43
   INC=0
-  while [[ ${INC} -le 42 ]]; do
+  while [[ ${INC} -le 27 ]]; do
     sleepWriteWordSleep ":" .009
     INC=$((INC + 1))
   done
   echo "[100%]"
   setColor 0
-  sleep 0.42
+  sleep 0.72
   clear
 }
 
@@ -157,7 +162,7 @@ generatePHPCodeFromTemplate() {
   printf "%s\n\n%sThe following code was generated using the %s%s%s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR}" "${TEMPLATE}" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
   echo "${PHPCODECOLOR}${PHP_CODE}"
   promptUser "If everything looks ok press <enter>"
-  showLoadingBar "Writing file ${GENERATED_FILE_PATH} "
+  showLoadingBar "Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${GENERATED_FILE_PATH}${CLEARCOLOR} "
   mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}"
   echo "${PHP_CODE}" >"${GENERATED_FILE_PATH}"
 }
@@ -246,15 +251,15 @@ showWelcomeMessage() {
   setColor 36
   printf "\n"
   printf "\n"
-  showLoadingBar "Loading New Component Module"
+  showLoadingBar "Loading new component module"
 }
 
 askUserForTemplateDirectoryName() {
   local _auftdn_options
   local _auftdn_responses
   _auftdn_options=("Component" "OutputComponent" "SwitchableComponent")
-  _auftdn_responses=('You selected the Component template, is this correct?' 'You selected the OutputComponent template, is that correct?' 'You selected the SwitchableComponent template, is that correct?')
-  askUserForSelection "Please select the template that should be used to generate the php files." _auftdn_options _auftdn_responses
+  _auftdn_responses=("${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}Component${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}" "You selected the OutputComponent template, is that correct?" "${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}SwitchableComponent${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}")
+  askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Please select the template that should be used to generate the php files.${CLEARCOLOR}" _auftdn_options _auftdn_responses
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"
   ABSTRACT_TEST_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/AbstractTest.php"
@@ -264,8 +269,9 @@ askUserForTemplateDirectoryName() {
   CLASS_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/Class.php"
 }
 
-showWelcomeMessage
 initVars
+showWelcomeMessage
+askUserIfComponentForCoreOrExtension
 askUserForTemplateDirectoryName
 askUserForParentComponentName
 askUserForParentComponentSubtype

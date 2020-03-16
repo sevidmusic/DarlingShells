@@ -139,3 +139,5 @@ clear;
 curl wttr.in?format=2;
 
 neofetch;
+alias dshells="cd ~/Code/DarlingShells"
+alias dcmsDev="cd ~/Code/DarlingCmsRedesign"

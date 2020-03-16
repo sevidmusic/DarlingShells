@@ -138,6 +138,15 @@ clear;
 # Show wheather
 curl wttr.in?format=2;
 
+# Run neofetch on login (fun)
 neofetch;
+
+### MISC ####
 alias dshells="cd ~/Code/DarlingShells"
 alias dcmsDev="cd ~/Code/DarlingCmsRedesign"
+alias locate="locate -e"
+alias locateCount="locate -c"
+alias locateBlob="locate -0"
+alias locateExactMatch="locate -r"
+alias locateExactMatchCount="locate -cr"
+alias museScore="/home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage"

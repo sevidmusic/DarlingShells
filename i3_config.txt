@@ -112,6 +112,9 @@ bindsym $mod+y resize grow height 3 px or 3 ppt
 # Open Firefox
 bindsym $mod+Shift+f exec firefox
 
+# Open MusScore
+bindsym $mod+Shift+m exec /home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage
+
 # Kill compton
 bindsym $mod+Shift+z exec killall compton
 

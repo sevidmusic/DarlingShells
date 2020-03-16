@@ -28,8 +28,6 @@ askUserForSelection() {
 }
 
 initVars() {
-  local _iv_options
-  local _iv_responses
   WARNINGCOLOR=$(setColor 35)
   CLEARCOLOR=$(setColor 0)
   NOTIFYCOLOR=$(setColor 33)
@@ -44,6 +42,8 @@ initVars() {
 }
 
 askUserIfComponentForCoreOrExtension() {
+   local _iv_options
+   local _iv_responses
   _iv_options=("Core" "Extension")
   _iv_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${CLEARCOLOR}${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You have chosen to ${CLEARCOLOR}${HIGHLIGHTCOLOR}create a new Component for an Extension${CLEARCOLOR}${NOTIFYCOLOR}, if this is not correct press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit, otherwise type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\".${CLEARCOLOR}")
   askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _iv_options _iv_responses
@@ -258,7 +258,7 @@ askUserForTemplateDirectoryName() {
   local _auftdn_options
   local _auftdn_responses
   _auftdn_options=("Component" "OutputComponent" "SwitchableComponent")
-  _auftdn_responses=("${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}Component${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}" "You selected the OutputComponent template, is that correct?" "${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}SwitchableComponent${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}")
+  _auftdn_responses=("${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}Component${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You selected the \"${CLEARCOLOR}${HIGHLIGHTCOLOR}OutputComponent${CLEARCOLOR}${NOTIFYCOLOR}\" template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You selected the ${CLEARCOLOR}${HIGHLIGHTCOLOR}SwitchableComponent${CLEARCOLOR}${NOTIFYCOLOR} template, if this is correct enter \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\", otherwise press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit and start over.${CLEARCOLOR}")
   askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Please select the template that should be used to generate the php files.${CLEARCOLOR}" _auftdn_options _auftdn_responses
   TEMPLATE="${PREVIOUS_USER_INPUT}"
   TEST_TRAIT_TEMPLATE_FILE_PATH="./templates/${TEMPLATE}/TestTrait.php"

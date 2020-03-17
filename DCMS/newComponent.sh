@@ -7,17 +7,17 @@
 askUserForSelection() {
   local -n _aufs_options=$2
   local -n _aufs_responses=$3
-  local RESPONSE_INDEX
-  local RESPONSE
+  local _aufs_responseIndex
+  local _aufs_response
   printf "\n"
   PS3=$(printf "\n%s\n\n%s" "${1}" "${DSHCOLOR}\$dsh: ${USRPRMPTCOLOR}")
   select opt in "${_aufs_options[@]}"; do
     case $opt in
     ${_aufs_options[$(("${REPLY}" - 1))]})
       if [[ -n "${opt}" ]]; then
-        RESPONSE_INDEX=$(("${REPLY}" - 1))
-        RESPONSE=$(echo -e "${_aufs_responses[${RESPONSE_INDEX}]}" | sed -E "s,-, ,g;")
-        promptUserAndNotify "${RESPONSE}" "One moment please"
+        _aufs_responseIndex=$(("${REPLY}" - 1))
+        _aufs_response=$(echo -e "${_aufs_responses[${_aufs_responseIndex}]}" | sed -E "s,-, ,g;")
+        promptUserAndNotify "${_aufs_response}" "One moment please"
         PREVIOUS_USER_INPUT="${opt}"
         break
       fi
@@ -42,13 +42,14 @@ initVars() {
 }
 
 askUserIfComponentForCoreOrExtension() {
-   local _iv_options
-   local _iv_responses
-  _iv_options=("Core" "Extension")
-  _iv_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${CLEARCOLOR}${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You have chosen to ${CLEARCOLOR}${HIGHLIGHTCOLOR}create a new Component for an Extension${CLEARCOLOR}${NOTIFYCOLOR}, if this is not correct press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit, otherwise type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\".${CLEARCOLOR}")
-  askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _iv_options _iv_responses
-  COMPONENT_EXTENDS="${PREVIOUS_USER_INPUT}"
-  if [[ "${COMPONENT_EXTENDS}" == "Core" ]]; then
+  local _auicfcoe_componentExtends
+  local _auicfcoe_options
+  local _auicfcoe_responses
+  _auicfcoe_options=("Core" "Extension")
+  _auicfcoe_responses=("${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}WARNING${CLEARCOLOR}${WARNINGCOLOR}: Defining new Components for core should only be done if absolutely necessary, and you should only do so if you are sure you know what you are doing and understand the consequences! ${CLEARCOLOR}${DARKTEXTCOLOR}${HIGHLIGHTCOLOR2}It is recommended that you define new Components as part of an Extension. Modifying Core can break Core!${CLEARCOLOR}${WARNINGCOLOR} Are you sure you want to proceed? (Type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${WARNINGCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${WARNINGCOLOR}\" to continue, press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${WARNINGCOLOR}\" to quit and start over.${CLEARCOLOR}" "${CLEARCOLOR}${NOTIFYCOLOR}You have chosen to ${CLEARCOLOR}${HIGHLIGHTCOLOR}create a new Component for an Extension${CLEARCOLOR}${NOTIFYCOLOR}, if this is not correct press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<ctrl> c${CLEARCOLOR}${NOTIFYCOLOR}\" to quit, otherwise type \"${CLEARCOLOR}${HIGHLIGHTCOLOR}Y${CLEARCOLOR}${NOTIFYCOLOR}\" and press \"${CLEARCOLOR}${HIGHLIGHTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR}\".${CLEARCOLOR}")
+  askUserForSelection "${CLEARCOLOR}${NOTIFYCOLOR}Is this Component being defined as part of ${CLEARCOLOR}${HIGHLIGHTCOLOR}Core${CLEARCOLOR}${NOTIFYCOLOR} or as part of an ${CLEARCOLOR}${HIGHLIGHTCOLOR}Extension${CLEARCOLOR}${NOTIFYCOLOR}?${CLEARCOLOR}" _auicfcoe_options _auicfcoe_responses
+  _auicfcoe_componentExtends="${PREVIOUS_USER_INPUT}"
+  if [[ "${_auicfcoe_componentExtends}" == "Core" ]]; then
     EXTENSION_NAME=""
     COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Tests/Unit/interfaces/component"
     COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Tests/Unit/abstractions/component"
@@ -58,8 +59,8 @@ askUserIfComponentForCoreOrExtension() {
     COMPONENT_CLASS_TARGET_ROOT_DIR="./core/classes/component"
   fi
 
-  if [[ "${PREVIOUS_USER_INPUT}" == "Extension" ]]; then
-    promptUserAndVerifyInput "What is the name of the Extension this Component will belong to?"
+  if [[ "${_auicfcoe_componentExtends}" == "Extension" ]]; then
+    promptUserAndVerifyInput "${CLEARCOLOR}${NOTIFYCOLOR}What is the ${CLEARCOLOR}${HIGHLIGHTCOLOR}name of the Extension${CLEARCOLOR}${NOTIFYCOLOR} this Component will belong to?${CLEARCOLOR}"
     EXTENSION_NAME="${PREVIOUS_USER_INPUT}"
     COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/interfaces/component"
     COMPONENT_ABSTRACT_TEST_TARGET_ROOT_DIR="./Extensions/${EXTENSION_NAME}/Tests/Unit/abstractions/component"
@@ -91,17 +92,18 @@ sleepWriteWordSleep() {
 }
 
 showLoadingBar() {
+  local _slb_inc
   printf "\n"
   sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
   setColor 43
-  INC=0
-  while [[ ${INC} -le 27 ]]; do
+  _slb_inc=0
+  while [[ ${_slb_inc} -le 27 ]]; do
     sleepWriteWordSleep ":" .009
-    INC=$((INC + 1))
+    _slb_inc=$((_slb_inc + 1))
   done
-  echo "[100%]"
+  echo "${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
   setColor 0
-  sleep 0.72
+  sleep 1
   clear
 }
 
@@ -110,10 +112,11 @@ notifyUser() {
 }
 
 promptUser() {
+  local _pu_promptMessage
   notifyUser "${1}"
-  PROMPT_MSG=$(printf "%s\n%s\$dsh: %s" "${CLEARCOLOR}" "${DSHCOLOR}" "${USRPRMPTCOLOR}")
+  _pu_promptMessage=$(printf "%s\n%s\$dsh: %s" "${CLEARCOLOR}" "${DSHCOLOR}" "${USRPRMPTCOLOR}")
   PREVIOUS_USER_INPUT="${CURRENT_USER_INPUT}"
-  read -p "${PROMPT_MSG}" CURRENT_USER_INPUT
+  read -p "${_pu_promptMessage}" CURRENT_USER_INPUT
   setColor 0
 }
 
@@ -150,42 +153,47 @@ promptUserAndNotify() {
 }
 
 generatePHPCodeFromTemplate() {
-  TEMPLATE="${1}"
-  GENERATED_FILE_ROOT_DIR_PATH="${2}"
-  FILE_NAME_SUFFIX="${3}"
-  GENERATED_FILE_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${USER_DEFINED_COMPONENT_SUBTYPE}/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php" | sed -E "s,\\\,/,g; s,//,/,g;")
-  if [[ "${FILE_NAME_SUFFIX}" == "TestTrait" ]]; then
-    GENERATED_FILE_PATH=$(echo "${GENERATED_FILE_ROOT_DIR_PATH}/${USER_DEFINED_COMPONENT_SUBTYPE}/TestTraits/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php" | sed -E "s,\\\,/,g; s,//,/,g;")
+  local _gpcft_template
+  local _gpcft_fileRootDirectoryPath
+  local _gpcft_fileName
+  local _gpcft_filePath
+  local _gpcft_phpCode
+  local _gpcft_fileSubDirectoryPath
+  _gpcft_template="${1}"
+  _gpcft_fileRootDirectoryPath="${2}"
+  _gpcft_fileName="${3}"
+  _gpcft_filePath=$(echo "${_gpcft_fileRootDirectoryPath}/${USER_DEFINED_COMPONENT_SUBTYPE}/${USER_DEFINED_COMPONENT_NAME}${_gpcft_fileName}.php" | sed -E "s,\\\,/,g; s,//,/,g;")
+  if [[ "${_gpcft_fileName}" == "TestTrait" ]]; then
+    _gpcft_filePath=$(echo "${_gpcft_fileRootDirectoryPath}/${USER_DEFINED_COMPONENT_SUBTYPE}/TestTraits/${USER_DEFINED_COMPONENT_NAME}${_gpcft_fileName}.php" | sed -E "s,\\\,/,g; s,//,/,g;")
   fi
-  PHP_CODE=$(sed -E "s/DS_EXTENSION_NAME/${EXTENSION_NAME}/g; s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
-  GENERATED_FILE_SUB_DIR_PATH=$(echo "${GENERATED_FILE_PATH}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${FILE_NAME_SUFFIX}.php//g")
-  printf "%s\n\n%sThe following code was generated using the %s%s%s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR}" "${TEMPLATE}" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
-  echo "${PHPCODECOLOR}${PHP_CODE}"
+  _gpcft_phpCode=$(sed -E "s/DS_EXTENSION_NAME/${EXTENSION_NAME}/g; s/DS_PARENT_COMPONENT_SUBTYPE/${USER_DEFINED_PARENT_COMPONENT_SUBTYPE}/g; s/DS_PARENT_COMPONENT_NAME/${USER_DEFINED_PARENT_COMPONENT_NAME}/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/\\\\\\\/\\\/g; s/\\\;/;/g;" "${1}")
+  _gpcft_fileSubDirectoryPath=$(echo "${_gpcft_filePath}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${_gpcft_fileName}.php//g")
+  printf "%s\n\n%sThe following code was generated using the %s%s%s%s%s template, please review it to make sure there are not any errors:%s\n\n" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}" "${HIGHLIGHTCOLOR}" "${_gpcft_template}" "${CLEARCOLOR}" "${NOTIFYCOLOR}" "${CLEARCOLOR}"
+  echo "${PHPCODECOLOR}${_gpcft_phpCode}"
   promptUser "If everything looks ok press <enter>"
-  showLoadingBar "Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${GENERATED_FILE_PATH}${CLEARCOLOR} "
-  mkdir -p "${GENERATED_FILE_SUB_DIR_PATH}"
-  echo "${PHP_CODE}" >"${GENERATED_FILE_PATH}"
+  showLoadingBar "Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${_gpcft_filePath}${CLEARCOLOR} "
+  mkdir -p "${_gpcft_fileSubDirectoryPath}"
+  echo "${_gpcft_phpCode}" >"${_gpcft_filePath}"
 }
 
 askUserForComponentName() {
-  promptUserAndVerifyInput "Please enter a name for the component"
+  promptUserAndVerifyInput "${CLEARCOLOR}${NOTIFYCOLOR}Please enter a ${CLEARCOLOR}${HIGHLIGHTCOLOR}name for the new component:${CLEARCOLOR}"
   USER_DEFINED_COMPONENT_NAME="${PREVIOUS_USER_INPUT}"
 }
 
 askUserForComponentSubtype() {
-  promptUserAndVerifyInput "Please enter the component's sub-type, the sub-type determines the namespace pattern used to define the namespaces of the interface, implementations, test trait, and test classes related to the component. Example namespace pattern: \\DarlingCms\\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME} Note: You must escape backslash characters. Note: Do not include a preceding backslash in the sub-type. Wrong: \\\\Foo\\\\Bar Right: Foo\\\\Bar"
+  promptUserAndVerifyInput "${CLEARCOLOR}${NOTIFYCOLOR}Please enter the component's ${CLEARCOLOR}${HIGHLIGHTCOLOR}sub-type${CLEARCOLOR}${NOTIFYCOLOR}, the ${CLEARCOLOR}${HIGHLIGHTCOLOR}sub-type${CLEARCOLOR}${NOTIFYCOLOR} is used to construct namespaces for the Component. Example: ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}\\DarlingCms\\*\\component\\SUB\\TYPE\\${USER_DEFINED_COMPONENT_NAME}${CLEARCOLOR}${NOTIFYCOLOR} Note: You must escape backslash characters. Note: Do not include a preceding backslash in the sub-type. ${CLEARCOLOR}${ATTENTIONEFFECTCOLOR}Wrong: \\\\Foo\\\\Bar ${CLEARCOLOR}${HIGHLIGHTCOLOR}Right: Foo\\\\Bar${CLEARCOLOR}"
   #USER_DEFINED_COMPONENT_SUBTYPE=$(echo "${PREVIOUS_USER_INPUT}" | sed 's,\\,\\\\,g')
   USER_DEFINED_COMPONENT_SUBTYPE=${PREVIOUS_USER_INPUT/\\/\\\\}
 }
 
 askUserForParentComponentName() {
-  promptUserAndVerifyInput "Please enter the name of the component this component extends:"
+  promptUserAndVerifyInput "${CLEARCOLOR}${NOTIFYCOLOR}Please enter the ${CLEARCOLOR}${HIGHLIGHTCOLOR}name of the component this component extends${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR}"
   USER_DEFINED_PARENT_COMPONENT_NAME="${PREVIOUS_USER_INPUT}"
 }
 
 askUserForParentComponentSubtype() {
-  promptUserAndVerifyInput "Please enter the subtype of the component this component extends:"
-  #USER_DEFINED_PARENT_COMPONENT_SUBTYPE=$(echo "${PREVIOUS_USER_INPUT}" | sed 's,\\,\\\\,g')
+  promptUserAndVerifyInput "${CLEARCOLOR}${NOTIFYCOLOR}Please enter the ${CLEARCOLOR}${HIGHLIGHTCOLOR}subtype of the component this component extends:${CLEARCOLOR}"
   USER_DEFINED_PARENT_COMPONENT_SUBTYPE=${PREVIOUS_USER_INPUT/\\/\\\\}
 }
 

@@ -125,9 +125,7 @@ showLoadingBar() {
 }
 
 notifyUser() {
-  if [[ "${2}" == "showInfo" ]]; then
-    showInfoPanel
-  fi
+  [[ "${2}" == "showInfo" ]] && showInfoPanel
   printf "\n%s%s%s\n" "${NOTIFYCOLOR}" "${1}" "${CLEARCOLOR}"
 }
 

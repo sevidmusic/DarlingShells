@@ -139,8 +139,9 @@ clear;
 curl wttr.in?format=2;
 
 # Run neofetch on login (fun)
-neofetch;
-
+#neofetch;
+#Use following while corona virus is fucking up the world
+printf "\n%s\n--------------------\n" "Corona Virus Update"
 ### MISC ####
 alias dshells="cd ~/Code/DarlingShells"
 alias dcmsDev="cd ~/Code/DarlingCmsRedesign"
@@ -151,3 +152,20 @@ alias locateExactMatch="locate -r"
 alias locateExactMatchCount="locate -cr"
 alias museScore="/home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage"
 alias q="exit"
+alias cvWorld="curl -s https://corona-stats.online/"
+alias cvUS="curl -s https://corona-stats.online/US"
+alias cvUpdates="curl -s https://corona-stats.online/updates"
+alias cvUSStatus="cvUS | grep 'Week\|US' | head -2 | column"
+alias cvWorldStatus="cvWorld | grep 'Week\|World' | head -2 | column"
+alias cvNYStatus="cvUS | grep 'Week\|New York' | head -2 | column"
+alias cvTop="cvWorld | grep 'Week\|1 ' | head -2 | column"
+
+printf "\n%s\n" "$(cvWorldStatus)" &&
+printf "\n%s\n" "$(cvTop)" &&
+printf "\n%s\n" "$(cvUSStatus)" &&
+printf "\n%s\n" "$(cvNYStatus)" &&
+printf "\n%s\n" "$(cvUpdates | head -7)"
+
+
+
+

@@ -1,5 +1,14 @@
 export PATH="${PATH}:${HOME}/.local/bin"
 
+#### FUNCTIONS ####
+
+setTextColor() {
+  printf "\e[%sm" "${1}"
+}
+
+
+###################
+
 # Move into ~/Codes/DarlingCmsRedesign directory
 cd ~/Code/DarlingCmsRedesign;
 
@@ -143,8 +152,8 @@ curl wttr.in?format=2;
 #Use following while corona virus is fucking up the world
 printf "\n%s\n--------------------\n" "Corona Virus Update"
 ### MISC ####
-alias dshells="cd ~/Code/DarlingShells"
-alias dcmsDev="cd ~/Code/DarlingCmsRedesign"
+alias dshells="cd ~/Code/DarlingShells && pwd"
+alias dcmsDev="cd ~/Code/DarlingCmsRedesign && pwd"
 alias locate="locate -e"
 alias locateCount="locate -c"
 alias locateBlob="locate -0"
@@ -158,14 +167,12 @@ alias cvUpdates="curl -s https://corona-stats.online/updates"
 alias cvUSStatus="cvUS | grep 'Week\|US' | head -2 | column"
 alias cvWorldStatus="cvWorld | grep 'Week\|World' | head -2 | column"
 alias cvNYStatus="cvUS | grep 'Week\|New York' | head -2 | column"
-alias cvTop="cvWorld | grep 'Week\|1 ' | head -2 | column"
+alias cvTop="cvWorld | grep 'Week\|1 ' | head -3 | column"
 
-printf "\n%s\n" "$(cvWorldStatus)" &&
 printf "\n%s\n" "$(cvTop)" &&
 printf "\n%s\n" "$(cvUSStatus)" &&
 printf "\n%s\n" "$(cvNYStatus)" &&
 printf "\n%s\n" "$(cvUpdates | head -7)"
+printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setTextColor 0)"
 
-
-
-
+alias sdm="cd /home/sevidmusic/Music && pwd"

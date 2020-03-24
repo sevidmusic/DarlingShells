@@ -19,7 +19,7 @@ alias c="clear"
 alias d="diff -y --suppress-common-lines"
 
 # IntellijPyWalGen Aliases
-alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config"
+alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config && rbash"
 rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
 
 # w3m aliases

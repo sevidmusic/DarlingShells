@@ -34,7 +34,7 @@ alias vsh="vagrant ssh"
 # Git Aliases
 alias gst="git status"
 alias gpo="git push -u origin"
-alias gpa="git push -u origin unitTests interfaces abstractions classes WorkingDemo master"
+alias gpa="git push -u origin Extensions WorkingDemo abstractions classes dsh interfaces master unitTests"
 alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"

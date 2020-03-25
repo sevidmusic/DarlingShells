@@ -6,7 +6,55 @@ setTextColor() {
   printf "\e[%sm" "${1}"
 }
 
+writeWordSleep() {
+  printf "%s" "${1}"
+  sleep "${2}"
+}
 
+sleepWriteWord() {
+  sleep "${2}"
+  printf "%s" "${1}"
+}
+
+sleepWriteWordSleep() {
+  sleep "${2}"
+  printf "%s" "${1}"
+  sleep "${2}"
+}
+
+
+initColors() {
+  WARNINGCOLOR=$(setTextColor 35)
+  CLEARCOLOR=$(setTextColor 0)
+  NOTIFYCOLOR=$(setTextColor 33)
+  DSHCOLOR=$(setTextColor 41)
+  USRPRMPTCOLOR=$(setTextColor 41)
+  HIGHLIGHTCOLOR=$(setTextColor 41)
+  HIGHLIGHTCOLOR2=$(setTextColor 45)
+  ATTENTIONEFFECT=$(setTextColor 5)
+  ATTENTIONEFFECTCOLOR=$(setTextColor 36)
+  DARKTEXTCOLOR=$(setTextColor 30)
+}
+
+initColors
+
+showLoadingBar() {
+  local _slb_inc
+  printf "\n"
+  sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
+  setTextColor 43
+  _slb_inc=0
+  while [[ ${_slb_inc} -le 27 ]]; do
+    sleepWriteWordSleep ":" .009
+    _slb_inc=$((_slb_inc + 1))
+  done
+  echo "${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
+  setTextColor 0
+  sleep 1
+  if [[ "${2}" != "dontClear" ]]; then
+    clear
+  fi
+}
 ###################
 
 # Move into ~/Codes/DarlingCmsRedesign directory
@@ -128,7 +176,7 @@ alias rbash="source ~/.bash_aliases"
 
 alias compton="killall compton; compton -b;"
 
-alias sysUpdate="sudo apt update; sudo apt upgrade; sudo snap refresh"
+alias sysUpdate="sudo timeshift --create --comments 'Pre sysUpdate' && sudo apt update && sudo apt upgrade && sudo snap refresh"
 
 alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"
 
@@ -168,7 +216,7 @@ alias cvUSStatus="cvUS | grep 'Week\|US' | head -2 | column"
 alias cvWorldStatus="cvWorld | grep 'Week\|World' | head -2 | column"
 alias cvNYStatus="cvUS | grep 'Week\|New York' | head -2 | column"
 alias cvTop="cvWorld | grep 'Week\|1 ' | head -3 | column"
-
+showLoadingBar "Loading" "dontClear"
 printf "\n%s\n" "$(cvTop)" &&
 printf "\n%s\n" "$(cvUSStatus)" &&
 printf "\n%s\n" "$(cvNYStatus)" &&

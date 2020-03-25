@@ -1,5 +1,8 @@
 export PATH="${PATH}:${HOME}/.local/bin"
 
+# Always start with fresh history
+history -c
+
 #### FUNCTIONS ####
 
 setTextColor() {

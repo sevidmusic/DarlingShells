@@ -215,14 +215,11 @@ alias q="exit"
 alias cvWorld="curl -s https://corona-stats.online/"
 alias cvUS="curl -s https://corona-stats.online/US"
 alias cvUpdates="curl -s https://corona-stats.online/updates"
-alias cvUSStatus="cvUS | grep 'Week\|US' | head -2 | column"
-alias cvWorldStatus="cvWorld | grep 'Week\|World' | head -2 | column"
-alias cvNYStatus="cvUS | grep 'Week\|New York' | head -2 | column"
-alias cvTop="cvWorld | grep 'Week\|1 ' | head -3 | column"
+alias cvUSStatus="cvUS | grep 'US' | head -2 | column"
+alias cvWorldStatus="cvWorld | grep 'World' | head -2 | column"
+alias cvNYStatus="cvUS | grep 'York' | head -2 | column"
 showLoadingBar "Loading" "dontClear"
-printf "\n%s\n" "$(cvTop)" &&
 printf "\n%s\n" "$(cvUSStatus)" &&
-printf "\n%s\n" "$(cvNYStatus)" &&
 printf "\n%s\n" "$(cvUpdates | head -7)"
 printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setTextColor 0)"
 

@@ -304,9 +304,9 @@ do
         c)
             USER_DEFINED_COMPONENT_NAME="${OPTARG}"
             ;;
-#        s)
-#            USER_DEFINED_COMPONENT_SUBTYPE="${OPTARG}"
-#            ;;
+        s)
+            USER_DEFINED_COMPONENT_SUBTYPE="${OPTARG}"
+            ;;
         *)
             printf "\n%s%s%sWARNING:%s%s You must porvide a value for any flags you set, and you can't set invalid flags.\nThe following flags are possible:\n    -x <arg> (Set <arg> to \"Core\" if extending \"core\", set to \"Extension\" if extending an Extension)%s\n\n" "${CLEARCOLOR}" "${ATTENTIONEFFECTCOLOR}" "${ATTENTIONEFFECT}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}"
             exit
@@ -318,7 +318,7 @@ showWelcomeMessage
 [[ -z $EXTENSION_NAME ]] && [[ "${EXTENDING}" != "Core" ]] && askUserForExtensionName
 [[ -z $TEMPLATE ]] && askUserForTemplateDirectoryName
 [[ -z $USER_DEFINED_COMPONENT_NAME ]] && askUserForComponentName
-[[ -z $USER_DEFINED_COMPONENT_SUBTYPE ]] && askUserForComponentSubtype
+[[ -z "$USER_DEFINED_COMPONENT_SUBTYPE" ]] && askUserForComponentSubtype
 setTemplatePaths
 setDirecotryPaths
 generatePHPCodeFromTemplate "${TEST_TRAIT_TEMPLATE_FILE_PATH}" "${COMPONENT_TEST_TRAIT_TARGET_ROOT_DIR}" "TestTrait"

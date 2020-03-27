@@ -318,6 +318,7 @@ showWelcomeMessage
 [[ -z $EXTENSION_NAME ]] && [[ "${EXTENDING}" != "Core" ]] && askUserForExtensionName
 [[ -z $TEMPLATE ]] && askUserForTemplateDirectoryName
 [[ -z $USER_DEFINED_COMPONENT_NAME ]] && askUserForComponentName
+# @devNote: The use of "" is intentional here, we want to allow an empty string to be passed to the -s flag and only ask user for subtype if the $USER_DEFINED_SUBTYPE var is truly not set at this point in the script, i.e. -s was not passed, as opppsed to -s "" which should be valid and not require user to be asked for subtype. @see the following stackoverflow post on the difference between using [ -z $VAR ] and [ -z "$VAR" ] : https://stackoverflow.com/questions/3601515/how-to-check-if-a-variable-is-set-in-bash
 [[ -z "$USER_DEFINED_COMPONENT_SUBTYPE" ]] && askUserForComponentSubtype
 setTemplatePaths
 setDirecotryPaths

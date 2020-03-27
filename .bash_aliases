@@ -224,4 +224,4 @@ printf "\n%s\n" "$(cvUpdates | head -7)"
 printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setTextColor 0)"
 
 alias sdm="cd /home/sevidmusic/Music && pwd"
-alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "SwitchableComponent" -e "Bazzer" -c "Foo"'
+alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "CoreSwitchableComponent" -e "Bazzer" -c "Foo"'

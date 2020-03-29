@@ -180,11 +180,11 @@ generatePHPCodeFromTemplate() {
     _gpcft_phpCode=$(sed -E "s/DS_CORE_NAMESPACE_PREFIX/Extensions${_namespace_seperator}${EXTENSION_NAME}${_namespace_seperator}core/g; s/DS_TESTS_NAMESPACE_PREFIX/Extensions${_namespace_seperator}${EXTENSION_NAME}${_namespace_seperator}Tests${_namespace_seperator}Unit/g; s/DS_COMPONENT_SUBTYPE/${USER_DEFINED_COMPONENT_SUBTYPE}/g; s/DS_COMPONENT_NAME/${USER_DEFINED_COMPONENT_NAME}/g; s/[$][A-Z]/\L&/g; s/->[A-Z]/\L&/g; s/DS_NAMESPACE_SEPERATOR/\\\/g; s/\\\;/;/g; s,[\][\],\\\,g;" "${1}")
   fi
   _gpcft_fileSubDirectoryPath=$(echo "${_gpcft_filePath}" | sed -E "s/\/${USER_DEFINED_COMPONENT_NAME}${_gpcft_fileName}.php//g")
-  if [[ "${CURRENT_USER_INPUT}" != "make" ]]; then
+  if [[ "${CURRENT_USER_INPUT}" != "make" ]] && [[ $FORCE_MAKE -ne 1 ]]; then
     promptUser "${CLEARCOLOR}${NOTIFYCOLOR}Please review the ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}Info Panel${CLEARCOLOR}${NOTIFYCOLOR} to make sure you entered everything correctly, if everything looks ok type ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}make${CLEARCOLOR}${NOTIFYCOLOR} and press ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}<enter>${CLEARCOLOR}${NOTIFYCOLOR} to generaate your new Component's Php files, otherwise press ${CLEARCOLOR}${NOTIFYCOLOR}<Ctrl> c${CLEARCOLOR}${NOTIFYCOLOR} to quit and start over." "showInfo"
     showLoadingBar "Preparing to write php files to appropriate directories"
   fi
-  if [[ "${CURRENT_USER_INPUT}" == "make" ]]; then
+  if [[ "${CURRENT_USER_INPUT}" == "make" ]] || [[ $FORCE_MAKE -eq 1 ]]; then
     showLoadingBar "Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${DARKTEXTCOLOR}${_gpcft_filePath}${CLEARCOLOR} " "dontClear"
     mkdir -p "${_gpcft_fileSubDirectoryPath}"
     echo "${_gpcft_phpCode}" >"${_gpcft_filePath}"
@@ -291,7 +291,7 @@ askUserForExtensionName() {
 clear
 
 initVars
-while getopts "x:t:e:c:s:" OPTION
+while getopts "x:t:e:c:s:f" OPTION
 do
     case "${OPTION}" in
         x)
@@ -310,6 +310,9 @@ do
             USER_DEFINED_COMPONENT_SUBTYPE=$(echo "${OPTARG}" | sed -E "s,[\],DS_NAMESPACE_SEPERATOR,g")
             # To allow an empty string be passed to the -s , use var to determine if this flag is set instead of [[ -z "${USER_DEFINED_COMPONENT_SUBTYPE}" ]]
             USER_SUBTYPE_SET_WITH_FLAG=1
+            ;;
+        f)
+            FORCE_MAKE=1
             ;;
         *)
             printf "\n%s%s%sWARNING:%s%s You must porvide a value for any flags you set, and you can't set invalid flags.\nThe following flags are possible:\n    -x <arg> (Set <arg> to \"Core\" if extending \"core\", set to \"Extension\" if extending an Extension)%s\n\n" "${CLEARCOLOR}" "${ATTENTIONEFFECTCOLOR}" "${ATTENTIONEFFECT}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}"

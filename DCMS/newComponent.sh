@@ -321,7 +321,7 @@ do
     esac
 done
 
-showWelcomeMessage
+[[ $FORCE_MAKE -ne 1 ]] && showWelcomeMessage
 [[ -z $EXTENDING ]] && askUserIfComponentForCoreOrExtension
 [[ -z $EXTENSION_NAME ]] && [[ "${EXTENDING}" != "Core" ]] && askUserForExtensionName
 [[ -z $TEMPLATE ]] && askUserForTemplateDirectoryName

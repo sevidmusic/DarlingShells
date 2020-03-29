@@ -313,7 +313,7 @@ do
             ;;
         f)
             [[ "${EXTENDING}" != "Core" ]] && [[ -n "${EXTENDING}" ]] && [[ -n "${TEMPLATE}" ]] && [[ -n "${EXTENSION_NAME}" ]] &&  [[ -n "${USER_DEFINED_COMPONENT_NAME}" ]] &&  [[ $USER_SUBTYPE_SET_WITH_FLAG -eq 1  ]] && FORCE_MAKE=1 || USER_ERROR=1
-            [[ $USER_ERROR -eq 1 ]] && printf "\n%s%s%sWarning:%s%sYou must set all flags (-x -e -t -c -s) to use the -f flag, the -f flag MUST be the LAST flag, and you cannot use the -f flag to extend Core!\n\nThe new component module will start in a moment and will guide you through the steps to create a new Component.\n%s" "${CLEARCOLOR}" "${ATTENTIONEFFECTCOLOR}" "${DARKTEXTCOLOR}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}" && exit
+            [[ $USER_ERROR -eq 1 ]] && printf "\n%sWarning:%s You must set all flags (-x -e -t -c -s) to use the -f flag, the -f flag MUST be the LAST flag, and you cannot use the -f flag to extend Core!\n\n%s" "${CLEARCOLOR}${ATTENTIONEFFECTCOLOR}${ATTENTIONEFFECT}" "${CLEARCOLOR}${WARNINGCOLOR}" "${CLEARCOLOR}" && exit
             ;;
         *)
             printf "\n%s%s%sWARNING:%s%s You must porvide a value for any flags you set, and you can't set invalid flags.\nThe following flags are possible:\n    -x <arg> (Set <arg> to \"Core\" if extending \"core\", set to \"Extension\" if extending an Extension)%s\n\n" "${CLEARCOLOR}" "${ATTENTIONEFFECTCOLOR}" "${ATTENTIONEFFECT}" "${CLEARCOLOR}" "${WARNINGCOLOR}" "${CLEARCOLOR}"

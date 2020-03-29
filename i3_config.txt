@@ -115,6 +115,9 @@ bindsym $mod+Shift+f exec firefox
 # Open MusScore
 bindsym $mod+Shift+m exec /home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage
 
+# Open Kazam
+bindsym $mod+Shift+y exec /usr/bin/kazam
+
 # Kill compton
 bindsym $mod+Shift+z exec killall compton
 

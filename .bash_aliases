@@ -226,3 +226,4 @@ printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setText
 alias sdm="cd /home/sevidmusic/Music && pwd"
 alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "CoreSwitchableComponent" -e "Bazzer" -c "Foo"'
 alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh
+alias lsNewComponents='lsr Extensions/ | grep "[/]*[php]" | sed -E "s,component,,g; s,abstractions,abstractions/component,g; s,classes,classes/component,g; s,interfaces,interfaces/component,g; s,Extensions/Foo/Tests/Unit/interfaces/component/:,,g; s,//,/,g;" && printf "\n\n"'

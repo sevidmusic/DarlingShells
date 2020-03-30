@@ -1,6 +1,6 @@
 #!/bin/bash
 clear
-printf "\nThe following is a demonstration of the various ways newComponent.sh can be used define new Components for the Darling Data Management System.\n\n"
+printf "\nThe following is a demonstration of the various ways newComponent.sh can be used define new Components for the Darling Data Management System.\n\nVisit https://github.com/sevidmusic/DarlingCmsRedesign for more info on the development of the Darling Data Managemnt System (D.D.M.S.), which is currently being developed as the Darling Cms Experimental Re-Design.\n\n"
 sleep 7
 clear
 printf "\n\nOk, lets begin.\n\n"
@@ -14,4 +14,9 @@ clear
 printf "\n\nFinally,lets extend core.\n\nWARNING: It is always better to define new Components as part of an Extension.\n\nThere is really no reason to define new Components for Core unless you are one of the maintainers of the Darling Data Management System.\n\nIf you really want to define new Components for Core newComponent.sh will let you, but you must accept that there may be unintended consequences.\n\nIf you wish to hack at Core for your own education then happy hacking, breaking your DDMS installation is a great way to learn to use it. : )"
 sleep 15
 /home/sevidmusic/Code/DarlingShells/DCMS/demoExtendingCore.sh
-printf "\n\nThanks for watching the demo. Visit https://github.com/sevidmusic/DarlingCmsRedesign for more info on the development of the DDMS.\n\n"
+clear
+printf "\n\nCool, let's look at some of the Components we just created:\n\n"
+sleep 15
+printf "\n\nOk, so now that we have created some new Components, let's run phpunit to make sure our new Components pass the tests defined for their parents.\n"
+sleep 7
+clear

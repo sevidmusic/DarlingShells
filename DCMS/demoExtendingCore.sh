@@ -1,7 +1,6 @@
 #!/bin/bash
 
 clear
-printf "\nOk, let's call: ./newComponent.sh -x \"Core\" -c \"Bar\" -s \"Foo\\Bar\\Bazzer\" -t \"CoreSwitchableComponent\""
+printf "\nOk, let's call: ./newComponent.sh -x \"Core\" -e \"Foo\" -s \"Baz\\Bar\\Bazzer\" -t \"CoreSwitchableComponent\""
 sleep 7
-/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Core" -c "Bar" -s "Foo\\Bar\\Bazzer" -t "CoreSwitchableComponent"
-
+/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Core" -e "Foo" -s "Baz\\Bar\\Bazzer" -t "CoreSwitchableComponent"

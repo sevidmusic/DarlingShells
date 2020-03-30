@@ -225,3 +225,4 @@ printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setText
 
 alias sdm="cd /home/sevidmusic/Music && pwd"
 alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "CoreSwitchableComponent" -e "Bazzer" -c "Foo"'
+alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh

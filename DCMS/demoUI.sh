@@ -34,13 +34,13 @@ printf "\n\n    ./newComponent ... -f\n\n    The -f flag does not accept an arug
 sleep 10
 
 clear
-printf "\n\nThese flags are all optional, except when the -f flag is used, and if you prefer a UI you can run newComponent.sh without any flags, or you can spedify a few flags and finish in the UI,\n\n\n\n"
+printf "\n\nThese flags are all optional, except when the -f flag is used, and if you prefer a UI you can run newComponent.sh without any flags, or you can specify a few flags and finish in the UI,\n\n\n\n"
 sleep 10
 
 clear
 printf "\n\n Ok, to demo some flags lets call: ./newComponent.sh -x \"Extension\" -t \"CoreComponent\" -c \"Bar\" -s \"bazzer\"\n\n(You will notice newComponent.sh will only ask you for the Component's name since we set flags for everything else)\n\n\n\n"
 sleep 4
 
-./newComponent.sh -x "Extension" -t "CoreComponent" -c "Bar" -s "bazzer"
+./newComponent.sh -x "Extension" -t "CoreComponent" -e "Foo" -s "bar\\baz\\fooBaz"
 
 clear

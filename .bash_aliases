@@ -1,9 +1,8 @@
+#!/bin/bash
+
 export PATH="${PATH}:${HOME}/.local/bin"
 
-# Always start with fresh history
-history -c
-
-#### FUNCTIONS ####
+### Functions ###
 
 setTextColor() {
   printf "\e[%sm" "${1}"
@@ -39,7 +38,6 @@ initColors() {
   DARKTEXTCOLOR=$(setTextColor 30)
 }
 
-initColors
 
 showLoadingBar() {
   local _slb_inc
@@ -58,31 +56,105 @@ showLoadingBar() {
     clear
   fi
 }
-###################
+
+### Do on login ###
+
+# If not in a tmux session, use pywal to set color scheme to random wallpaper in ~/Wallpapers
+# (if were in tmux weve already loggend in so there is no need to run this)
+[[ -z "${TMUX}" ]] && wal -q -i /home/sevidmusic/Wallpapers
+
+# Initialize colors for use with printf and echo
+initColors
 
 # Move into ~/Codes/DarlingCmsRedesign directory
-cd ~/Code/DarlingCmsRedesign;
+cd ~/Code/DarlingCmsRedesign
 
-# System Aliases
+# Vi Mode (Allows vim commands to be used in bash)
+set -o vi
+
+# Force programs to use vim when a terminal based text editor is needed
+export VISUAL=vim
+export EDITOR="$VISUAL"
+
+# Rsync #
+
+# Backup color scheme created by pywal for phpstorm, this color scheme is generated whenever wal is run.
+rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
+
+# Backup .vimrc to DarlingShells on startup
+rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc
+
+# Backup .bash_aliases
+rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases
+
+# Backup i3 config
+rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
+
+# Backup i3status config
+rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt
+
+# Backup i3status config
+rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf
+
+# Copy current newComponent.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
+rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/newComponent.sh
+
+# Copy current newPrimary.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
+rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newPrimary.sh /home/sevidmusic/Code/DarlingCmsRedesign/newPrimary.sh
+
+# Copy current component code templates from DarlingShells to DarlingCmsRedesign to keep DarlingCms's versions up to date.
+rsync -cdr /home/sevidmusic/Code/DarlingShells/DCMS/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
+
+# Play fun animation
+sl -al
+clear
+
+# Show wheather
+curl wttr.in?format=2;
+
+# Run neofetch on login (fun)
+neofetch
+
+# Always start with fresh history
+history -c
+
+### aliases ###
+
+# System aliases
 alias lsa="ls -al"
 alias lsr="ls -AR --group-directories-first"
 alias c="clear"
 alias d="diff -y --suppress-common-lines"
+alias q="exit"
 
-# IntellijPyWalGen Aliases
+# System info aliases
+## Show all attached drives
+alias showDrives="lsblk"
+
+# System update aliases
+alias sysUpdate="sudo timeshift --create --comments 'Pre sysUpdate' && sudo apt update && sudo apt upgrade && sudo snap refresh"
+alias sysUpdateNoBu="sudo apt update && sudo apt upgrade && sudo snap refresh"
+
+# pywal aliases
+## Regenerate pywal color scheme for PhpStorm and place it in PhpStorm config dir, then call rbash whih will backup new scheme
 alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config && rbash"
-rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
 
-# w3m aliases
-alias dcms="w3m 192.168.33.10/index.php"
+# Darling dev aliases
+alias ddms="w3m 192.168.33.10/index.php"
+alias lsAllExtCompPHPFiles='lsr Extensions/ | grep "[/]*[php]" | sed -E "s,component,,g; s,abstractions,abstractions/component,g; s,classes,classes/component,g; s,interfaces,interfaces/component,g; s,Extensions/Foo/Tests/Unit/interfaces/component/:,,g; s,//,/,g;" && printf "\n\n"'
+alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh
 
-# Vagrant Aliases
+# Quick cd aliases
+alias dshells="cd ~/Code/DarlingShells && pwd"
+alias dcmsDev="cd ~/Code/DarlingCmsRedesign && pwd"
+alias sdm="cd /home/sevidmusic/Music && pwd"
+
+# Vagrant aliases
 alias vup="vagrant up"
 alias vdn="vagrant halt"
-alias vkill="vagrant destroy"
 alias vsh="vagrant ssh"
 
-# Git Aliases
+# Git aliases
 alias gst="git status"
 alias gpo="git push -u origin"
 alias gpa="git push -u origin Extensions WorkingDemo abstractions classes dsh interfaces master unitTests"
@@ -92,139 +164,46 @@ alias gco="git checkout"
 alias gmr="git merge"
 alias gdf="git diff"
 
-# Vi Mode (Allows vim commands to be used in bash)
-set -o vi;
-
-# Ctags (needed for vim autocompletion, though not necessarily related to vim)
+# ctags aliases
+# (ctags is needed for vim autocompletion, though not necessarily related to vim)
 # Note: Both ctags and exuberant ctags are accomodated, the ectagsUpdate will
 # update the tag file named "php.tags". The ctagsUpdate will update the tag file
 # named "ctags.tags". (Exuberant is an improvment of ctagsh, so i prefer it.)
 alias ectagsUpdate="ctags-exuberant -R -V --languages=PHP -f php.tags ./"
 alias ctagsUpdate="ctags -R -V --languages=PHP -f ctags.tags ./"
 
-# Edit .bash_aliases via vim
+# Edit config aliases
 alias editAliases="vim ~/.bash_aliases"
-
-# edit .vimrc via vim
 alias editVimrc="vim ~/.vimrc"
-
-# Show all attached drives
-alias showDrives="lsblk"
-
-
 alias editI3Config="vim /home/sevidmusic/.config/i3/config"
 alias editI3Status="sudo vim /etc/i3status.conf"
-
 alias editComptonConfig="vim /home/sevidmusic/.config/compton.conf"
-
-# Rsync #
-
-# Backup .vimrc to DarlingShells on startup
-#echo "Backing up .vimrc file...";
-#echo "";
-rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc;
-
-# Backup .bash_aliases
-#echo "Backing up .bash_aliases file...";
-#echo "";
-rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases;
-
-# Backup i3 config
-#echo "Backing up i3 config file...";
-#echo "";
-rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt;
-
-# Backup i3status config
-#echo "Backing up i3status config file...";
-#echo "";
-rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt;
-
-# Backup i3status config
-#echo "Backing up compton config file...";
-#echo "";
-rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf;
-
-# Copy current newComponent.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/newComponent.sh;
-
-# Copy current newPrimary.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newPrimary.sh /home/sevidmusic/Code/DarlingCmsRedesign/newPrimary.sh;
-
-
-# Copy current component code templates from DarlingShells to DarlingCmsRedesign to keep DarlingCms's versions up to date.
-rsync -cdr /home/sevidmusic/Code/DarlingShells/DCMS/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates;
-
-# Force programs to use vim when a terminal based text editor is needed
-export VISUAL=vim
-export EDITOR="$VISUAL"
-
-# Useful shortcuts specifically intended for use while developing the DarlingCmsRedesign
-alias dcmsListIdentifiable="find ./core -name 'Identifiable*.php' | grep 'Identifiable'"
-alias dcmsListClassifiable="find ./core -name 'Classifiable*.php' | grep 'Classifiable'"
-alias dcmsListExportable="find ./core -name 'Exportable*.php' | grep 'Exportable'"
-alias dcmsListStorable="find ./core -name 'Storable*.php' | grep 'Storable'"
-alias dcmsListSwitchable="find ./core -name 'Switchable*.php' | grep 'Switchable'"
-
-alias dcmsListIdentifiableTests="find ./Tests -name 'Identifiable*.php' | grep 'Identifiable'"
-alias dcmsListClassifiableTests="find ./Tests -name 'Classifiable*.php' | grep 'Classifiable'"
-alias dcmsListExportableTests="find ./Tests -name 'Exportable*.php' | grep 'Exportable'"
-alias dcmsListStorableTests="find ./Tests -name 'Storable*.php' | grep 'Storable'"
-alias dcmsListSwitchableTests="find ./Tests -name 'Switchable*.php' | grep 'Switchable'"
 
 # Find aliases
 alias sRoot="find / \( -path /timeshift -o -path /tmp -o -path /proc \) -prune -o"
 
-# Reload bash aliases
+# Restart/reload aliases
 alias rbash="source ~/.bash_aliases"
-
 alias compton="killall compton; compton -b;"
 
-alias sysUpdate="sudo timeshift --create --comments 'Pre sysUpdate' && sudo apt update && sudo apt upgrade && sudo snap refresh"
-
+# Launch app aliases
 alias phpStorm="/snap/phpstorm/136/bin/phpstorm.sh"
+alias museScore="/home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage"
 
-alias ct="wal -i ~/Wallpapers"
-
+# Fun aliases
 alias wthr="curl wttr.in?format=3"
+
+# Note: This expects you to pipe to it, i.e., echo "Text to say" | say
+alias say="spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w && sleep 2"
 
 # Take a screenshot, date it, and save to ~/Screenshots
 alias scs="/home/sevidmusic/Code/DarlingShells/manualScreenshot.sh"
 
-# Play fun animation
-sl -al;
-
-clear;
-
-# Show wheather
-curl wttr.in?format=2;
-
-# Run neofetch on login (fun)
-#neofetch;
-#Use following while corona virus is fucking up the world
-printf "\n%s\n--------------------\n" "Corona Virus Update"
-### MISC ####
-alias dshells="cd ~/Code/DarlingShells && pwd"
-alias dcmsDev="cd ~/Code/DarlingCmsRedesign && pwd"
+# locate aliases
 alias locate="locate -e"
 alias locateCount="locate -c"
 alias locateBlob="locate -0"
 alias locateExactMatch="locate -r"
 alias locateExactMatchCount="locate -cr"
-alias museScore="/home/sevidmusic/AppImages/MuseScore-3.4.2-x86_64.AppImage"
-alias q="exit"
-alias cvWorld="curl -s https://corona-stats.online/"
-alias cvUS="curl -s https://corona-stats.online/US"
-alias cvUpdates="curl -s https://corona-stats.online/updates"
-alias cvUSStatus="cvUS | grep 'US' | head -2 | column"
-alias cvWorldStatus="cvWorld | grep 'World' | head -2 | column"
-alias cvNYStatus="cvUS | grep 'York' | head -2 | column"
-showLoadingBar "Loading" "dontClear"
-printf "\n%s\n" "$(cvUSStatus)" &&
-printf "\n%s\n" "$(cvUpdates | head -7)"
-printf "\nCurrent Directory: %s%s%s\n" "$(setTextColor 42)"  "$(pwd)" "$(setTextColor 0)"
 
-alias sdm="cd /home/sevidmusic/Music && pwd"
-alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "CoreSwitchableComponent" -e "Bazzer" -c "Foo"'
-alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh
-alias lsNewComponents='lsr Extensions/ | grep "[/]*[php]" | sed -E "s,component,,g; s,abstractions,abstractions/component,g; s,classes,classes/component,g; s,interfaces,interfaces/component,g; s,Extensions/Foo/Tests/Unit/interfaces/component/:,,g; s,//,/,g;" && printf "\n\n"'
-alias say="spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w && sleep 2"
+# Unsorted aliases

@@ -1,7 +1,13 @@
 #!/bin/bash
+
+say() {
+    sleep 1
+    printf "\nThe following is a demonstration of the various ways newComponent.sh can be used define new Components for the Darling Data Management System.\n\nVisit https://github.com/sevidmusic/DarlingCmsRedesign for more info on the development of the Darling Data Managemnt System (D.D.M.S.), which is currently being developed as the Darling Cms Experimental Re-Design.\n\n" | spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w
+    sleep 1
+}
+
 clear
-printf "\nThe following is a demonstration of the various ways newComponent.sh can be used define new Components for the Darling Data Management System.\n\nVisit https://github.com/sevidmusic/DarlingCmsRedesign for more info on the development of the Darling Data Managemnt System (D.D.M.S.), which is currently being developed as the Darling Cms Experimental Re-Design.\n\n"
-sleep 7
+say
 
 clear
 printf "\n\nOk, lets begin.\n\n"

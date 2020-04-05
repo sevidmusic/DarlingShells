@@ -74,7 +74,7 @@ alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/confi
 rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
 
 # w3m aliases
-alias dcms="w3m 192.168.33.10"
+alias dcms="w3m 192.168.33.10/index.php"
 
 # Vagrant Aliases
 alias vup="vagrant up"
@@ -227,3 +227,4 @@ alias sdm="cd /home/sevidmusic/Music && pwd"
 alias tns='/home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh -x "Extension" -t "CoreSwitchableComponent" -e "Bazzer" -c "Foo"'
 alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh
 alias lsNewComponents='lsr Extensions/ | grep "[/]*[php]" | sed -E "s,component,,g; s,abstractions,abstractions/component,g; s,classes,classes/component,g; s,interfaces,interfaces/component,g; s,Extensions/Foo/Tests/Unit/interfaces/component/:,,g; s,//,/,g;" && printf "\n\n"'
+alias say="spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w && sleep 2"

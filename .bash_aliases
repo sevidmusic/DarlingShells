@@ -3,9 +3,9 @@
 export PATH="${PATH}:${HOME}/.local/bin"
 
 ### Functions ###
-
+# @todo May be error, though this is working, currently referenceing $2, thinking it should be $1...test later
 setTextColor() {
-  printf "\e[%sm" "${1}"
+  printf "\e[%sm" "${2}"
 }
 
 writeWordSleep() {
@@ -114,6 +114,9 @@ curl wttr.in?format=2;
 
 # Run neofetch on login (fun)
 neofetch
+showLoadingBar "Loading"
+sleep 1
+clear
 
 # Always start with fresh history
 history -c
@@ -207,3 +210,5 @@ alias locateExactMatch="locate -r"
 alias locateExactMatchCount="locate -cr"
 
 # Unsorted aliases
+alias ddmsDemo="w3m 192.168.33.10/WorkingDemo.php"
+alias loopSl="while [[ true ]]; do clear && sl -al && clear && showLoadingBar 'The train has left the station' && sleep 7 && neofetch && showLoadingBar 'Loading current DDMS dev stats' && sleep 7 && clear && gst && sleep 7 && showLoadingBar 'Loading date' && sleep 5 && clear && date && showLoadingBar 'Loading pwd' && sleep 5 && pwd && sleep 3 && ls && sleep 3 && showLoadingBar && sleep 4 && clear && showLoadingBar 'The train should be arriving soon' && sleep 5 && clear; done"

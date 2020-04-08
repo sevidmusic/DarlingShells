@@ -1,95 +1,29 @@
 <?php
 
-namespace UnitTests\interfaces\component\TestTraits;
+namespace DS_TESTS_NAMESPACE_PREFIX\interfaces\component\DS_COMPONENT_SUBTYPE\TestTraits;
 
 use DarlingCms\classes\primary\Storable;
 use DarlingCms\classes\primary\Switchable;
-use DarlingCms\interfaces\component\Action;
-use DarlingCms\interfaces\component\Web\Routing\Request;
+use DS_CORE_NAMESPACE_PREFIX\interfaces\component\DS_COMPONENT_SUBTYPE\DS_COMPONENT_NAME;
 
-trait ActionTestTrait
+trait DS_COMPONENT_NAMETestTrait
 {
 
-    private $action;
-    private $currentRequest;
+    private $DS_COMPONENT_NAME;
 
-    public function testIsDoneReturnsTrueAfterCallToDo(): void
+    public function getDS_COMPONENT_NAME(): DS_COMPONENT_NAME
     {
-        $this->getAction()->do($this->getCurrentRequest());
-        $this->assertTrue($this->getAction()->isDone());
+        return $this->DS_COMPONENT_NAME;
     }
 
-    public function getAction(): Action
+    public function setDS_COMPONENT_NAME(DS_COMPONENT_NAME $DS_COMPONENT_NAME): void
     {
-        return $this->action;
+        $this->DS_COMPONENT_NAME = $DS_COMPONENT_NAME;
     }
 
-    public function setAction(Action $action): void
+    protected function setDS_COMPONENT_NAMEParentTestInstances(): void
     {
-        $this->action = $action;
-    }
-
-    private function getCurrentRequest(): Request
-    {
-        if (isset($this->currentRequest) === false) {
-            $currentRequest = new \DarlingCms\classes\component\Web\Routing\Request(
-                new Storable(
-                    "CurrentRequestForActionTests",
-                    'Location',
-                    'Container'
-                ),
-                new Switchable()
-            );
-            $this->currentRequest = $currentRequest;
-        }
-        return $this->currentRequest;
-    }
-
-    public function testWasUndoneReturnsTrueAfterCallToUndo(): void
-    {
-        $this->getAction()->do($this->getCurrentRequest());
-        $this->getAction()->undo();
-        $this->assertTrue($this->getAction()->wasUndone());
-    }
-
-    public function testDoReturnsTrue(): void
-    {
-        $this->assertTrue($this->getAction()->do($this->getCurrentRequest()));
-    }
-
-    public function testUndoReturnsTrue(): void
-    {
-        $this->getAction()->do($this->getCurrentRequest());
-        $this->assertTrue($this->getAction()->undo());
-    }
-
-    public function testCurrentRequestPropertyIsSetToCurrentRequestAfterCallToDo(): void
-    {
-        $this->getAction()->do($this->getCurrentRequest());
-        $this->assertEquals(
-            $this->getCurrentRequest(),
-            $this->getAction()->export()['currentRequest']
-        );
-
-    }
-
-    public function testUndoReturnsFalseIfCalledBeforeDo(): void
-    {
-        $this->assertFalse($this->getAction()->undo());
-    }
-
-    public function testCurrentRequestPropertyIsNotSetAfterCallToUndo(): void
-    {
-        $this->getAction()->do($this->getCurrentRequest());
-        $this->getAction()->undo();
-        $this->assertFalse(isset($this->getAction()->export()['currentRequest']));
-    }
-
-    // testCurrentRequestPropertyIsNotSetAfterCallToUndo()
-
-    protected function setActionParentTestInstances(): void
-    {
-        $this->setOutputComponent($this->getAction());
+        $this->setOutputComponent($this->getDS_COMPONENT_NAME());
         $this->setOutputComponentParentTestInstances();
     }
 

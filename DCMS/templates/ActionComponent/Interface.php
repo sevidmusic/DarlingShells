@@ -1,19 +1,12 @@
 <?php
 
-namespace DarlingCms\interfaces\component;
+namespace DS_CORE_NAMESPACE_PREFIX\interfaces\component\DS_COMPONENT_SUBTYPE;
 
 use DarlingCms\interfaces\component\Web\Routing\Request;
-use DarlingCms\interfaces\component\OutputComponent as CoreOutputComponent;
+use DarlingCms\interfaces\component\Action as CoreAction;
 
-interface Action extends CoreOutputComponent
+interface DS_COMPONENT_NAME extends CoreAction
 {
 
-    public function do(Request $currentRequest): bool;
-
-    public function isDone(): bool;
-
-    public function undo(): bool;
-
-    public function wasUndone();
-
 }
+

@@ -1,28 +1,28 @@
 <?php
 
-namespace UnitTests\classes\component;
+namespace DS_TESTS_NAMESPACE_PREFIX\classes\component\DS_COMPONENT_SUBTYPE;
 
 use DarlingCms\classes\primary\Storable;
 use DarlingCms\classes\primary\Switchable;
 use DarlingCms\classes\primary\Positionable;
-use DarlingCms\classes\component\Action;
-use UnitTests\abstractions\component\ActionTest as AbstractActionTest;
+use DS_CORE_NAMESPACE_PREFIX\classes\component\DS_COMPONENT_SUBTYPE\DS_COMPONENT_NAME;
+use DS_TESTS_NAMESPACE_PREFIX\abstractions\component\DS_COMPONENT_SUBTYPE\DS_COMPONENT_NAMETest as AbstractDS_COMPONENT_NAMETest;
 
-class ActionTest extends AbstractActionTest
+class DS_COMPONENT_NAMETest extends AbstractDS_COMPONENT_NAMETest
 {
     public function setUp(): void
     {
-        $this->setAction(
-            new Action(
+        $this->setDS_COMPONENT_NAME(
+            new DS_COMPONENT_NAME(
                 new Storable(
-                    'ActionName',
-                    'ActionLocation',
-                    'ActionContainer'
+                    'DS_COMPONENT_NAMEName',
+                    'DS_COMPONENT_NAMELocation',
+                    'DS_COMPONENT_NAMEContainer'
                 ),
                 new Switchable(),
                 new Positionable()
             )
         );
-        $this->setActionParentTestInstances();
+        $this->setDS_COMPONENT_NAMEParentTestInstances();
     }
 }

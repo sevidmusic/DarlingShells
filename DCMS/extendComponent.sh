@@ -111,7 +111,7 @@ showLoadingBar() {
     animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done
-  printf " %s" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
+  printf " %s\n" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
   setColor 0
   sleep 1
   if [[ $FORCE_MAKE -ne 1 ]] && [[ "${2}" != "dontClear" ]]; then
@@ -183,7 +183,7 @@ generatePHPCodeFromTemplate() {
     showLoadingBar "Preparing to write php files to appropriate directories"
   fi
   if [[ "${CURRENT_USER_INPUT}" == "make" ]] || [[ $FORCE_MAKE -eq 1 ]]; then
-    showLoadingBar "Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${DARKTEXTCOLOR}${_gpcft_filePath}${CLEARCOLOR} " "dontClear"
+    showLoadingBar "${CLEARCOLOR}${ATTENTIONEFFECT}${NOTIFYCOLOR}Writing file ${CLEARCOLOR}${HIGHLIGHTCOLOR2}${DARKTEXTCOLOR}${DARKTEXTCOLOR}${_gpcft_filePath}${CLEARCOLOR} " "dontClear"
     mkdir -p "${_gpcft_fileSubDirectoryPath}"
     printf "%s" "${_gpcft_phpCode}" >"${_gpcft_filePath}"
   fi
@@ -232,9 +232,13 @@ askUserForExtensionName() {
 [[ $FORCE_MAKE -ne 1 ]] && clear
 
 initVars
-while getopts "x:t:e:c:s:f" OPTION
+while getopts "hx:t:e:c:s:f" OPTION
 do
     case "${OPTION}" in
+        h)
+            printf "\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n%s\n\n" "${CLEARCOLOR}${NOTIFYCOLOR}extendComponent.sh can be used to generate the PHP files required to define a new compoonent for the DDMS that extends a component defined in Core, or in an Extension." "If you call this script without any flags you will be guided through the process of creating a new component from within a user interface." "You can also specify flags if you already know any of the values you wish to use. You can also specify a few flags, and then finish from within the user interface." "The following flags are available:" "    -x <arg> The -x flag determines whether the new component extends a Core component, or a component defined in an Extension." "    -t" "    -e"  "    -c" "    -s" "    -f"
+            exit
+            ;;
         x)
             EXTENDING="${OPTARG}"
             ;;

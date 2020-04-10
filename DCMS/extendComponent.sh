@@ -111,7 +111,7 @@ showLoadingBar() {
     animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done
-  echo "${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
+  echo "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
   setColor 0
   sleep 1
   if [[ $FORCE_MAKE -ne 1 ]] && [[ "${2}" != "dontClear" ]]; then
@@ -200,7 +200,9 @@ askUserForComponentSubtype() {
 }
 
 showWelcomeMessage() {
+    printf "%s" "${CLEARCOLOR}${NOTIFYCOLOR}"
     animatedPrint "Welcome to the Darling Shell" .05
+    printf "%s" "${CLEARCOLOR}"
     showLoadingBar "One moment plaes"
 }
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="${PATH}:${HOME}/.local/bin"
+export PATH="${PATH}:${HOME}/.local/bin:${HOME}/Code/DarlingShells"
 
 ### Functions ###
 # @todo May be error, though this is working, currently referenceing $2, thinking it should be $1...test later
@@ -79,31 +79,31 @@ export EDITOR="$VISUAL"
 # Rsync #
 
 # Backup color scheme created by pywal for phpstorm, this color scheme is generated whenever wal is run.
-rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
+#rsync -c ~/.PhpStorm2019.3/config/colors/material-pywal.icls /home/sevidmusic/Code/DarlingShells/material-pywal.icls
 
 # Backup .vimrc to DarlingShells on startup
-rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc
+#rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc
 
 # Backup .bash_aliases
-rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases
+#rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases
 
 # Backup i3 config
-rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
+#rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
 
 # Backup i3status config
-rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt
+#rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.txt
 
 # Backup i3status config
-rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf
+#rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf
 
 # Copy current newComponent.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/newComponent.sh
+#rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/newComponent.sh
 
 # Copy current newPrimary.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newPrimary.sh /home/sevidmusic/Code/DarlingCmsRedesign/newPrimary.sh
+#rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newPrimary.sh /home/sevidmusic/Code/DarlingCmsRedesign/newPrimary.sh
 
 # Copy current component code templates from DarlingShells to DarlingCmsRedesign to keep DarlingCms's versions up to date.
-rsync -cdr /home/sevidmusic/Code/DarlingShells/DCMS/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
+#rsync -cdr /home/sevidmusic/Code/DarlingShells/DCMS/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
 
 # Play fun animation
 sl -al
@@ -113,7 +113,7 @@ clear
 curl wttr.in?format=2;
 
 # Run neofetch on login (fun)
-neofetch
+#neofetch
 showLoadingBar "Loading"
 sleep 1
 clear
@@ -209,7 +209,36 @@ alias locateBlob="locate -0"
 alias locateExactMatch="locate -r"
 alias locateExactMatchCount="locate -cr"
 
+
+# VAGRANT SPECIFIC
+
+# Run entr to trigger phpunit whenever one of the core/*.php
+# or Tests/*.php files are modified
+#alias devStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml'"
+alias devStart="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml'"
+
+# Run entr to trigger git diff  whenever one of the core/*.php
+# or Tests/*.php files are modified
+#alias gitDiffStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
+alias gitDiffStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
+
+# Rund entr to trigger git status whenever one of the core/*.php
+# or Tests/*.php file are modified.
+alias gitStatStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
+
+# Always run fix apache script
+sudo ~/Code/DarlingShells/fixApachePermissonIssue.sh
+
+# Php Unit Stuff
+
+alias phpunit="/var/www/html/vendor/phpunit/phpunit/phpunit -c php.xml"
+alias phpunitV="/var/www/html/vendor/phpunit/phpunit/phpunit --verbose -c php.xml"
+alias phpunitD="/var/www/html/vendor/phpunit/phpunit/phpunit --verbose --debug -c php.xml"
+alias lotsOTests="for i in {0..100} ; do phpunit; done"
+
+
+
 # Unsorted aliases
 alias ddmsDemo="w3m 192.168.33.10/WorkingDemo.php"
-alias loopSl="while [[ true ]]; do showLoadingBar 'Starting up' && sl -al && clear && showLoadingBar 'The train has left the station. It shall return soon.' && sleep 5 && neofetch && showLoadingBar 'Loading current DDMS dev stats' && sleep 5 && gst && sleep 5 && showLoadingBar 'Loading DDMS diff' && sleep 5 && git diff && sleep 5 && showLoadingBar 'Loading DDMS diff --stat' && git diff --stat && sleep 5 && showLoadingBar 'One moment please' && sleep 5 && showLoadingBar 'Loading date' && sleep 5&& date && sleep 5 && showLoadingBar 'Loading calander' && sleep 5 && cal && sleep 5 && showLoadingBar 'Loading current directory info' && sleep 5 && pwd && sleep 5 && ls && sleep 5 && showLoadingBar && sleep 5 && showLoadingBar 'The train should be arriving soon' && sleep 5 && showLoadingBar 'Preparing for reload' && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear; done"
+alias loopSl="while [[ true ]]; do showLoadingBar 'Starting up' && sl -al && clear && showLoadingBar 'The train has left the station. It shall return soon.' && sleep 5 && showLoadingBar 'Loading current DDMS dev stats' && sleep 5 && gst && sleep 5 && showLoadingBar 'Loading DDMS diff' && sleep 5 && git diff && sleep 5 && showLoadingBar 'Loading DDMS diff --stat' && git diff --stat && sleep 5 && showLoadingBar 'One moment please' && sleep 5 && showLoadingBar 'Loading date' && sleep 5&& date && sleep 5 && showLoadingBar 'Loading calander' && sleep 5 && cal && sleep 5 && showLoadingBar 'Loading current directory info' && sleep 5 && pwd && sleep 5 && ls && sleep 5 && showLoadingBar && sleep 5 && showLoadingBar 'The train should be arriving soon' && sleep 5 && showLoadingBar 'Preparing for reload' && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear; done"
 alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The train should be arriving soon' && sleep 5 && sl -al && clear && showLoadingBar 'Preparing for reload' && sleep 5 && pwj && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear && sleep 180; done"

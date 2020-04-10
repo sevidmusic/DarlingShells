@@ -1,7 +1,7 @@
 #!/bin/bash
 
-STRING="Hello"
-for (( i=0; i< ${#STRING}; i++ )); do
-    printf "%s" "${i}"
-    sleep 1;
+text="Hello"
+for (( i=0; i< ${#text}; i++ )); do
+    echo ${text:$i:1}
+    sleep 1
 done

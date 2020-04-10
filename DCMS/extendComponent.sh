@@ -94,16 +94,6 @@ writeWordSleep() {
   sleep "${2}"
 }
 
-sleepWriteWord() {
-  sleep "${2}"
-  printf "%s" "${1}"
-}
-
-sleepWriteWordSleep() {
-  sleep "${2}"
-  printf "%s" "${1}"
-  sleep "${2}"
-}
 
 animatedPrint()
 {
@@ -119,12 +109,10 @@ animatedPrint()
 showLoadingBar() {
   local _slb_inc
   printf "\n"
-  # sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
   animatedPrint "${1}" .05
   setColor 43
   _slb_inc=0
   while [[ ${_slb_inc} -le 27 ]]; do
-    # sleepWriteWordSleep ":" .009
     animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done

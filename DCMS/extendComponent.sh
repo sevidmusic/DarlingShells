@@ -99,15 +99,6 @@ sleepWriteWord() {
   printf "%s" "${1}"
 }
 
-animatedPrint() {
-  local _text
-  text=$( echo "${1}" | sed -E "s/ /_/g;")
-  for (( i=0; i< ${#_text}; i++ )); do
-      printf "%s" ${_text:$i:1}
-      sleep $2
-  done
-}
-
 sleepWriteWordSleep() {
   sleep "${2}"
   printf "%s" "${1}"
@@ -117,7 +108,7 @@ sleepWriteWordSleep() {
 showLoadingBar() {
   local _slb_inc
   printf "\n"
-  animatedPrint "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
+  sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
   setColor 43
   _slb_inc=0
   while [[ ${_slb_inc} -le 27 ]]; do

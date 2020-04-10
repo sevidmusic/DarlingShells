@@ -107,18 +107,11 @@ showLoadingBar() {
   animatedPrint "${1}" .05
   setColor 43
   _slb_inc=0
-
   _slb_windowWidth=$(tput cols)
   _slb_numChars="${#1}"
   _slb_adjustedNumChars=$((_slb_windowWidth - _slb_numChars))
   _slb_loadingBarLimit=$((_slb_adjustedNumChars - 10))
-
-  printf "\n\nWW: %s\n\nNC: %s\n\nLBW: %s\n\nLIMIT: %s\n\n" "${_slb_windowWidth}" "${_slb_numChars}"  "${_slb_adjustedNumChars}" "${_slb_loadingBarLimit}"
-  exit
-
-
-
-  while [[ ${_slb_inc} -le 27 ]]; do
+  while [[ ${_slb_inc} -le "${_slb_loadingBarLimit}" ]]; do
     animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done

@@ -89,11 +89,6 @@ setColor() {
   printf "\e[%sm" "${1}"
 }
 
-writeWordSleep() {
-  printf "%s" "${1}"
-  sleep "${2}"
-}
-
 
 animatedPrint()
 {

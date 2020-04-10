@@ -23,8 +23,8 @@ trait DS_COMPONENT_NAMETestTrait
 
     protected function setDS_COMPONENT_NAMEParentTestInstances(): void
     {
-        $this->setOutputComponent($this->getDS_COMPONENT_NAME());
-        $this->setOutputComponentParentTestInstances();
+        $this->setAction($this->getDS_COMPONENT_NAME());
+        $this->setActionParentTestInstances();
     }
 
 }

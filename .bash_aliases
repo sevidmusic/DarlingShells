@@ -66,8 +66,8 @@ showLoadingBar() {
 # Initialize colors for use with printf and echo
 initColors
 
-# Move into ~/Codes/DarlingCmsRedesign directory
-cd ~/Code/DarlingCmsRedesign
+# Move into /var/www/html directory
+cd /var/www/html
 
 # Vi Mode (Allows vim commands to be used in bash)
 set -o vi
@@ -224,7 +224,7 @@ alias gitDiffStart="find /var/www/html/core /var/www/html/Extensions /var/www/ht
 
 # Rund entr to trigger git status whenever one of the core/*.php
 # or Tests/*.php file are modified.
-alias gitStatStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
+alias gitStatStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitStatus.sh'";
 
 # Always run fix apache script
 sudo ~/Code/DarlingShells/fixApachePermissonIssue.sh
@@ -242,3 +242,4 @@ alias lotsOTests="for i in {0..100} ; do phpunit; done"
 alias ddmsDemo="w3m 192.168.33.10/WorkingDemo.php"
 alias loopSl="while [[ true ]]; do showLoadingBar 'Starting up' && sl -al && clear && showLoadingBar 'The train has left the station. It shall return soon.' && sleep 5 && showLoadingBar 'Loading current DDMS dev stats' && sleep 5 && gst && sleep 5 && showLoadingBar 'Loading DDMS diff' && sleep 5 && git diff && sleep 5 && showLoadingBar 'Loading DDMS diff --stat' && git diff --stat && sleep 5 && showLoadingBar 'One moment please' && sleep 5 && showLoadingBar 'Loading date' && sleep 5&& date && sleep 5 && showLoadingBar 'Loading calander' && sleep 5 && cal && sleep 5 && showLoadingBar 'Loading current directory info' && sleep 5 && pwd && sleep 5 && ls && sleep 5 && showLoadingBar && sleep 5 && showLoadingBar 'The train should be arriving soon' && sleep 5 && showLoadingBar 'Preparing for reload' && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear; done"
 alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The train should be arriving soon' && sleep 5 && sl -al && clear && showLoadingBar 'Preparing for reload' && sleep 5 && pwj && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear && sleep 180; done"
+rsync -c ~/.bash_aliases ~/Code/DarlingShells/.bash_aliases

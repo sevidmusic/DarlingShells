@@ -216,67 +216,7 @@ askUserForComponentSubtype() {
 }
 
 showWelcomeMessage() {
-  printf "\n"
-  setColor 32
-  sleepWriteWordSleep "W" .03
-  setColor 34
-  sleepWriteWordSleep "e" .03
-  setColor 36
-  sleepWriteWordSleep "l" .03
-  setColor 32
-  sleepWriteWordSleep "c" .03
-  setColor 34
-  sleepWriteWordSleep "o" .03
-  setColor 36
-  sleepWriteWordSleep "m" .03
-  setColor 32
-  sleepWriteWordSleep "e" .03
-  setColor 34
-  sleepWriteWordSleep " " .03
-  setColor 36
-  sleepWriteWordSleep "t" .03
-  setColor 32
-  sleepWriteWordSleep "o" .03
-  setColor 34
-  sleepWriteWordSleep " " .03
-  setColor 36
-  sleepWriteWordSleep "t" .03
-  setColor 32
-  sleepWriteWordSleep "h" .03
-  setColor 34
-  sleepWriteWordSleep "e" .03
-  setColor 36
-  sleepWriteWordSleep " " .03
-  setColor 32
-  sleepWriteWordSleep "D" .03
-  setColor 34
-  sleepWriteWordSleep "a" .03
-  setColor 36
-  sleepWriteWordSleep "r" .03
-  setColor 32
-  sleepWriteWordSleep "l" .03
-  setColor 34
-  sleepWriteWordSleep "i" .03
-  setColor 36
-  sleepWriteWordSleep "n" .03
-  setColor 32
-  sleepWriteWordSleep "g" .03
-  setColor 34
-  sleepWriteWordSleep " " .03
-  setColor 36
-  sleepWriteWordSleep "S" .03
-  setColor 32
-  sleepWriteWordSleep "h" .03
-  setColor 34
-  sleepWriteWordSleep "e" .03
-  setColor 36
-  sleepWriteWordSleep "l" .03
-  setColor 32
-  sleepWriteWordSleep "l" .03
-  setColor 36
-  printf "\n"
-  printf "\n"
-  showLoadingBar "Loading new component module"
+    animatedPrint "Welcome to the Darling Shell" .05
 }
 
 askUserForTemplateDirectoryName() {

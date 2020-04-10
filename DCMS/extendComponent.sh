@@ -217,6 +217,7 @@ askUserForComponentSubtype() {
 
 showWelcomeMessage() {
     animatedPrint "Welcome to the Darling Shell" .05
+    showLoadingBar "One moment plaes"
 }
 
 askUserForTemplateDirectoryName() {

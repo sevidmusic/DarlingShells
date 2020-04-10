@@ -107,12 +107,11 @@ sleepWriteWordSleep() {
 
 animatedPrint()
 {
-  local _text, _speed
-  #_text="${1}"
-  _text=$( echo "${1}" | sed -E "s/ /_/g;")
+  local _charsToAnimate _speed
+  _charsToAnimate=$( echo "${1}" | sed -E "s/ /_/g;")
   _speed="${2}"
-  for (( i=0; i< ${#_text}; i++ )); do
-      printf "%s" ${_text:$i:1}
+  for (( i=0; i< ${#_charsToAnimate}; i++ )); do
+      printf "%s" ${_charsToAnimate:$i:1}
       sleep $_speed
   done
 }

@@ -124,7 +124,8 @@ showLoadingBar() {
   setColor 43
   _slb_inc=0
   while [[ ${_slb_inc} -le 27 ]]; do
-    sleepWriteWordSleep ":" .009
+    # sleepWriteWordSleep ":" .009
+    animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done
   echo "${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"

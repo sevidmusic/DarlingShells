@@ -2,6 +2,6 @@
 
 text="Hello"
 for (( i=0; i< ${#text}; i++ )); do
-    echo ${text:$i:1}
+    printf "%s" ${text:$i:1}
     sleep 1
 done

@@ -1,7 +1,7 @@
 #!/bin/bash
 
-### Functions ###
 
+### Functions ###
 
 setColor() {
   printf "\e[%sm" "${1}"

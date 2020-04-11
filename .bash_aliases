@@ -11,11 +11,15 @@ setColor() {
 
 animatedPrint()
 {
-  local _charsToAnimate _speed
+  local _charsToAnimate _speed _currentChar
+  # For some reason spacd get mangled using ${VAR:POS:LIMIT}. so replace spaces with _ here,
+  # then add spaces back when needed.
   _charsToAnimate=$( printf "%s" "${1}" | sed -E "s/ /_/g;")
   _speed="${2}"
   for (( i=0; i< ${#_charsToAnimate}; i++ )); do
-      printf "%s" ${_charsToAnimate:$i:1}
+      # Replace placeholder _ with space | i.e., fix spaces that were replaced
+      _currentChar=$(printf "%s" "${_charsToAnimate:$i:1}" | sed -E "s/_/ /g;")
+      printf "%s" "${_currentChar}"
       sleep $_speed
   done
 }
@@ -84,6 +88,9 @@ showLoadingBar() {
 #
 
 ### Do on login ###
+
+# Clear pywal cache
+wal -c
 
 # If not in a tmux session, use pywal to set color scheme to random wallpaper in ~/Wallpapers
 # (if were in tmux weve already loggend in so there is no need to run this)

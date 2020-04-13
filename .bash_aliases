@@ -39,23 +39,49 @@ initColors() {
 }
 
 
+#
+setColor() {
+  printf "\e[%sm" "${1}"
+}
+
+
+animatedPrint()
+{
+  local _charsToAnimate _speed
+  _charsToAnimate=$( printf "%s" "${1}" | sed -E "s/ /_/g;")
+  _speed="${2}"
+  for (( i=0; i< ${#_charsToAnimate}; i++ )); do
+      printf "%s" ${_charsToAnimate:$i:1}
+      sleep $_speed
+  done
+}
+
+
+
 showLoadingBar() {
-  local _slb_inc
+    local _slb_inc _slb_windowWidth _slb_numChars _slb_adjustedNumChars _slb_loadingBarLimit
   printf "\n"
-  sleepWriteWordSleep "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}${1}${CLEARCOLOR}" .3
-  setTextColor 43
+  animatedPrint "${1}" .05
+  setColor 43
   _slb_inc=0
-  while [[ ${_slb_inc} -le 27 ]]; do
-    sleepWriteWordSleep ":" .009
+  _slb_windowWidth=$(tput cols)
+  _slb_numChars="${#1}"
+  _slb_adjustedNumChars=$((_slb_windowWidth - _slb_numChars))
+  _slb_loadingBarLimit=$((_slb_adjustedNumChars - 10))
+  while [[ ${_slb_inc} -le "${_slb_loadingBarLimit}" ]]; do
+    animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done
-  echo "${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
-  setTextColor 0
+  printf " %s\n" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
+  setColor 0
   sleep 1
-  if [[ "${2}" != "dontClear" ]]; then
+  if [[ $FORCE_MAKE -ne 1 ]] && [[ "${2}" != "dontClear" ]]; then
     clear
   fi
 }
+
+
+#
 
 ### Do on login ###
 
@@ -218,6 +244,7 @@ alias locateExactMatchCount="locate -cr"
 #alias devStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml'"
 alias devStart="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml'"
 
+alias devStartActions="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Action  Tests\"'"
 # Run entr to trigger git diff  whenever one of the core/*.php
 # or Tests/*.php files are modified
 #alias gitDiffStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";

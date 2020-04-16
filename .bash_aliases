@@ -38,9 +38,12 @@ rsync -c /home/sevidmusic/.vimrc /home/sevidmusic/Code/DarlingShells/.vimrc
 # Backup .bash_aliases
 rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases
 
-# Backup .bash_functions to DarlingShells and DSH
+# Backup .bash_functions to DarlingShells
 rsync -c /home/sevidmusic/.bash_functions /home/sevidmusic/Code/DarlingShells/.bash_functions
-rsync -c /home/sevidmusic/.bash_functions /home/sevidmusic/Code/DSH/functions.sh
+
+# Backup DSH functions.sh and extendComponent.sh to DarlingCmsRedesign
+#rsync -c /home/sevidmusic/DSH/functions.sh /home/sevidmusic/Code/DarlingCmsRedesign/functions.sh
+#rsync -c /home/sevidmusic/DSH/extendComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/extendComponent.sh
 
 # Backup i3 config
 rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
@@ -65,7 +68,7 @@ sl -al
 clear
 
 # Show wheather
-curl wttr.in?format=2;
+#curl wttr.in?format=2;
 
 # Run neofetch on login (fun)
 neofetch

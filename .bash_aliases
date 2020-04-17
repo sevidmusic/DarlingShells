@@ -54,14 +54,8 @@ rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.
 # Backup i3status config
 rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf
 
-# Copy current newComponent.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/newComponent.sh
-
-# Copy current newPrimary.sh from DarlingShells to DarlingCmsRedesign to keep DarliingCms's version up to date.
-rsync -c /home/sevidmusic/Code/DarlingShells/DCMS/newPrimary.sh /home/sevidmusic/Code/DarlingCmsRedesign/newPrimary.sh
-
-# Copy current component code templates from DarlingShells to DarlingCmsRedesign to keep DarlingCms's versions up to date.
-rsync -cdr /home/sevidmusic/Code/DarlingShells/DCMS/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
+# Copy current component code templates from DSH to DarlingCmsRedesign to keep DarlingCms's versions up to date.
+rsync -cdr /home/sevidmusic/Code/DSH/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
 
 # Play fun animation
 sl -al

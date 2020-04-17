@@ -11,8 +11,8 @@ do
     showLoadingBar "Reloading Color Scheme"
     wal -q -i /home/sevidmusic/Wallpapers
     ~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config
-    notify-send "Reload complete"
-    showLoadingBar "Reload complete"
+    notify-send "Reload complete. Next reload in ${1} seconds"
+    showLoadingBar "Reload complete. Next reload in ${1} seconds"
     sleep $1
 done
 

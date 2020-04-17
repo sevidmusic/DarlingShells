@@ -1,8 +1,8 @@
 #!/bin/bash
 
 # Imports #
+source ~/.bash_functions
 source "./stringUtilities.sh"
-source "./outputFunctions.sh"
 
 #find . -print0 | xargs -0 cmd -option1 -option2 --
 while getopts "d:p:s:r:e:" opt; do
@@ -13,7 +13,7 @@ while getopts "d:p:s:r:e:" opt; do
   r) replace="$OPTARG" ;;
   e) fileExt="$OPTARG" ;;
   *)
-    prettyPrint "Error: Invalid flag $opt"
+    showLoadingBar "Error: Invalid flag $opt" "dontClear"
     exit 1
     ;;
   esac
@@ -25,14 +25,13 @@ search=${search:- }
 replace=${replace:- }
 fileExt=${fileExt:-txt}
 
-prettyPrint "The following is an overview of the changes that will be made:"
+showLoadingBar "The following is an overview of the changes that will be made:" "dontClear"
 find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
     printf "\n%s will be renamed to %s\n" "$original" "$modified"
 done
-prettyPrint
 
-prettyPrint "Do you wish to continue? (enter y to contine n to quit)"
+showLoadingBar "Do you wish to continue? (enter y to contine n to quit)" "dontClear"
 read -r confirm
 if [ "$confirm" != "y" ]; then
   exit 0
@@ -43,4 +42,4 @@ find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
     printf "\nRenaming %s to %s\n" "$original" "$modified"
     mv "$original" "$modified"
 done
-prettyPrint
+showLoadingBar "All Done" "dontClear"

@@ -1,8 +1,13 @@
 #!/bin/bash
 
+set -o posix
+clear
+
 # Imports #
 source ~/.bash_functions
 source "./stringUtilities.sh"
+
+setColor 42
 
 while getopts "d:p:s:r:e:h" opt; do
   case $opt in
@@ -30,10 +35,14 @@ animatedPrint "The following is an overview of the changes that will be made:" .
 
 numberOfChanges=0
 
+showLoadingBar "Scanning directory ${dirPath} and it's sub directories for pattern ${pattern}" "dontClear"
+animatedPrint "The following is an overview of the changes that will be made, these changes will not be made until you confirm" .03
+
 while IFS= read -r original; do
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
-    [[ $original == $modified ]] || printf "\n%s will be renamed to %s\n" "$original" "$modified"
+    [[ $original == $modified ]] || animatedPrint "${original} will be renamed to ${modified}" .03
     [[ $original == $modified ]] || ((numberOfChanges++))
+    printf "\n"
 done <<< "$(find "$dirPath" -type f -name "$pattern")"
 
 printf "\n\nNumber of files that will be changed: %s\n\n"  "${numberOfChanges}"
@@ -49,7 +58,9 @@ fi
 find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
     printf "\nRenaming %s to %s\n" "$original" "$modified"
-    mv "$original" "$modified"
+    [[ $modified == $original ]] || mv "$original" "$modified"
 done
 
 animatedPrint "All Done" .03
+
+setColor 0

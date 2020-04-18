@@ -4,7 +4,6 @@
 source ~/.bash_functions
 source "./stringUtilities.sh"
 
-#find . -print0 | xargs -0 cmd -option1 -option2 --
 while getopts "d:p:s:r:e:h" opt; do
   case $opt in
   d) dirPath="$OPTARG" ;;
@@ -12,13 +11,14 @@ while getopts "d:p:s:r:e:h" opt; do
   s) search="$OPTARG" ;;
   r) replace="$OPTARG" ;;
   e) fileExt="$OPTARG" ;;
-  h) printf "\n\nThis utility searches a directory for files whose names match a pattern, and performs a search and replace on each matching file's filename.\n\nFlags:\n\n-d <arg> Directory to search in.\n\n-p <arg> Pattern to match files against\n\n-s <arg> Search pattern, i.e., what is to be replaced.\n\n-r <arg> Replace pattern, i.e., what will replace search pattern.\n\n-e <arg> File extension, this limits search to files with specified extension.\n\n" && exit ;;
+  h) animatedPrint  "This utility searches a directory for files whose names match a pattern, and performs a search and replace on each matching file's filename." .03 && printf "\n\n" && animatedPrint "Flags:" .03 && printf "\n\n" && animatedPrint "-d <arg> Directory to search in." .03 && printf "\n\n" && animatedPrint "-p <arg> Pattern to match files against" .03 && printf "\n\n" && animatedPrint "-s <arg> Search pattern, i.e., what is to be replaced." .03 && printf "\n\n" && animatedPrint "-r <arg> Replace pattern, i.e., what will replace search pattern." .03 && printf "\n\n" && animatedPrint "-e <arg> File extension, this limits search to files with specified extension." .03 && exit ;;
   *)
-    showLoadingBar "Error: Invalid flag $opt" "dontClear"
+    animatedPrint "Error: Invalid flag $opt" .03
     exit 1
     ;;
   esac
 done
+
 # Defaults #
 dirPath=${dirPath:-.}
 pattern=${pattern:-*}
@@ -26,22 +26,20 @@ search=${search:- }
 replace=${replace:- }
 fileExt=${fileExt:-txt}
 
-showLoadingBar "The following is an overview of the changes that will be made:" "dontClear"
+animatedPrint "The following is an overview of the changes that will be made:" .03
+
 find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
+    [[ $original != $modified ]] && matchesFound="matchesFound"
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
     [[ $original == $modified ]] || printf "\n%s will be renamed to %s\n" "$original" "$modified"
-
-    [[ $original != $modified ]] && matchesFound="matchesFound"
-
 done
 
-[[ "${matchesFound}" != "matchesFound" ]] && printf "\n\n%s\n\n" "No matches found. Nothing to do." && exit 0
+echo "${matchesFound}"
 
+animatedPrint "Do you wish to continue? (enter y to contine n to quit)" .03
 
-
-
-showLoadingBar "Do you wish to continue? (enter y to contine n to quit)" "dontClear"
 read -r confirm
+
 if [ "$confirm" != "y" ]; then
   exit 0
 fi
@@ -51,4 +49,5 @@ find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
     printf "\nRenaming %s to %s\n" "$original" "$modified"
     mv "$original" "$modified"
 done
-showLoadingBar "All Done" "dontClear"
+
+animatedPrint "All Done" .03

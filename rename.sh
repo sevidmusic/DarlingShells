@@ -5,13 +5,14 @@ source ~/.bash_functions
 source "./stringUtilities.sh"
 
 #find . -print0 | xargs -0 cmd -option1 -option2 --
-while getopts "d:p:s:r:e:" opt; do
+while getopts "d:p:s:r:e:h" opt; do
   case $opt in
   d) dirPath="$OPTARG" ;;
   p) pattern="$OPTARG" ;;
   s) search="$OPTARG" ;;
   r) replace="$OPTARG" ;;
   e) fileExt="$OPTARG" ;;
+  h) printf "\n\nThis utility searches a directory for files whose names match a pattern, and performs a search and replace on each matching file's filename.\n\nFlags:\n\n-d <arg> Directory to search in.\n\n-p <arg> Pattern to match files against\n\n-s <arg> Search pattern, i.e., what is to be replaced.\n\n-r <arg> Replace pattern, i.e., what will replace search pattern.\n\n-e <arg> File extension, this limits search to files with specified extension.\n\n" && exit ;;
   *)
     showLoadingBar "Error: Invalid flag $opt" "dontClear"
     exit 1

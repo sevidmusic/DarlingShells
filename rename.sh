@@ -29,8 +29,16 @@ fileExt=${fileExt:-txt}
 showLoadingBar "The following is an overview of the changes that will be made:" "dontClear"
 find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
-    printf "\n%s will be renamed to %s\n" "$original" "$modified"
+    [[ $original == $modified ]] || printf "\n%s will be renamed to %s\n" "$original" "$modified"
+
+    [[ $original != $modified ]] && matchesFound="matchesFound"
+
 done
+
+[[ "${matchesFound}" != "matchesFound" ]] && printf "\n\n%s\n\n" "No matches found. Nothing to do." && exit 0
+
+
+
 
 showLoadingBar "Do you wish to continue? (enter y to contine n to quit)" "dontClear"
 read -r confirm

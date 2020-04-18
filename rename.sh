@@ -28,13 +28,15 @@ fileExt=${fileExt:-txt}
 
 animatedPrint "The following is an overview of the changes that will be made:" .03
 
-find "$dirPath" -type f -name "$pattern" | while IFS= read -r original; do
-    [[ $original != $modified ]] && matchesFound="matchesFound"
+numberOfChanges=0
+
+while IFS= read -r original; do
     modified="$(searchReplaceLastMatchOnly "$original" "$search" "$replace")"
     [[ $original == $modified ]] || printf "\n%s will be renamed to %s\n" "$original" "$modified"
-done
+    [[ $original == $modified ]] || ((numberOfChanges++))
+done <<< "$(find "$dirPath" -type f -name "$pattern")"
 
-echo "${matchesFound}"
+printf "\n\nNumber of files that will be changed: %s\n\n"  "${numberOfChanges}"
 
 animatedPrint "Do you wish to continue? (enter y to contine n to quit)" .03
 

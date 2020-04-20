@@ -8,12 +8,11 @@ source ~/.bash_aliases || printf "Error: .bash_aliases file not found"
 
 while :
 do
-    notify-send "Reloading Color Scheme"
     showLoadingBar "Reloading Color Scheme"
     wal -q -i /home/sevidmusic/Wallpapers
     ~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config
-    notify-send "Reload complete. Next reload in ${1} seconds"
     showLoadingBar "Reload complete. Next reload in ${1} seconds"
+    neofetch
     sleep $1
 done
 

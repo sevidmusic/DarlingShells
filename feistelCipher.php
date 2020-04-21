@@ -79,15 +79,22 @@ function printByteCharValues(array $byteArray)
     }
 }
 
+function prepareForDecryption(array $encrypted): array
+{
+    $preparedData = [];
+    $preparedData['left'] = $encrypted['right'];
+    $preparedData['right'] = $encrypted['left'];
+    return $preparedData;
+}
+
 $plainText = file_get_contents(__DIR__ . '/plainText.txt');
 $byteArray = convertToByteArray($plainText);
 
 $encrypted = performFeistelRound($byteArray);
-printByteCharValues($encrypted['left']);
-//$decrypted = performFeistelRound($encrypted);
-//printResults($decrypted);
 
-
+$dbyteArray = prepareForDecryption($encrypted);
+$decrypted = performFeistelRound($dbyteArray);
+printByteCharValues($decrypted['left']);
 
 
 

@@ -53,11 +53,13 @@ function performFeistelRound(array $byteArray): array
                 ),
                 'XOR Result' => sprintf($byteFormat, $xor) . ' | Char: ' . chr($xor)
             ];
-            devOutput($devOutput);
+            //devOutput($devOutput);
             $encryptedRightBytes[$index] = $xor;
     }
-    $byteArray['right'] = $encryptedRightBytes;
-    return $byteArray;
+    $newByteArray = [];
+    $newByteArray['left'] = $encryptedRightBytes;
+    $newByteArray['right'] = $byteArray['left'];
+    return $newByteArray;
 }
 
 function devOutput(array $devArray) {
@@ -69,19 +71,23 @@ function devOutput(array $devArray) {
         printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, strval($devValue), $resetColor, PHP_EOL . PHP_EOL);
     }
 }
-
-$plainText = file_get_contents(__DIR__ . '/plainTextSmall.txt');
-$byteArray = convertToByteArray($plainText);
-
-$results = performFeistelRound($byteArray);
-$results = performFeistelRound($results);
-foreach($results as $r)
+function printByteCharValues(array $byteArray)
 {
-    foreach($r as $b)
+    foreach($byteArray as $byte)
     {
-        printf('%s', chr($b));
+        printf('%s', chr($byte));
     }
 }
+
+$plainText = file_get_contents(__DIR__ . '/plainText.txt');
+$byteArray = convertToByteArray($plainText);
+
+$encrypted = performFeistelRound($byteArray);
+printByteCharValues($encrypted['left']);
+//$decrypted = performFeistelRound($encrypted);
+//printResults($decrypted);
+
+
 
 
 

@@ -13,7 +13,7 @@ do
     wal -q -i /home/sevidmusic/Wallpapers
     ~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config
     neofetch --off --disable cpu gpu memory icons theme shell resolution packages wm de term uptime kernel
-    showLoadingBar "Reload complete. Next reload in ${1} seconds"
+    showLoadingBar "Reload complete. Next reload will begin shortly."
     sleep $1
 done
 

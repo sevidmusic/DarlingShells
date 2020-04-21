@@ -71,12 +71,15 @@ function devOutput(array $devArray) {
         printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, strval($devValue), $resetColor, PHP_EOL . PHP_EOL);
     }
 }
-function printByteCharValues(array $byteArray)
+
+function writeByteCharValues(array $byteArray, string $file = 'file.txt')
 {
+    $output = '';
     foreach($byteArray as $byte)
     {
-        printf('%s', chr($byte));
+        $output .= sprintf('%s', chr($byte));
     }
+    file_put_contents(__DIR__ . '/' . $file, $output, FILE_APPEND | LOCK_EX);
 }
 
 function prepareForDecryption(array $encrypted): array
@@ -91,10 +94,12 @@ $plainText = file_get_contents(__DIR__ . '/plainText.txt');
 $byteArray = convertToByteArray($plainText);
 
 $encrypted = performFeistelRound($byteArray);
+writeByteCharValues($encrypted['right'], 'encryptedBytes.txt');
+writeByteCharValues($encrypted['left'], 'encryptedBytes.txt');
 
 $dbyteArray = prepareForDecryption($encrypted);
 $decrypted = performFeistelRound($dbyteArray);
-printByteCharValues($decrypted['left']);
-
+writeByteCharValues($decrypted['right'], 'decryptedBytes.txt');
+writeByteCharValues($decrypted['left'], 'decryptedBytes.txt');
 
 

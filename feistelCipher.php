@@ -4,7 +4,6 @@
 foreach($byteArray as $lrBytes) {
     $xor = $lrBytes['right'] ^ $lrBytes['left'][$index];
     $limitString = sprintf('(%1$2d = %1$04b)', $xor);
-    printf($keyFormat, '    ');
     printf($byteFormat,$xor, getSpaceing($limitString), $lrBytes['right'], '^', $lrBytes['left'][$index]);
 }
 */
@@ -34,26 +33,26 @@ function convertToByteArray(string $plainText): array
 
 $plainText = file_get_contents(__DIR__ . '/plainText.txt');
 $byteArray = convertToByteArray($plainText);
-$limitString = '(EBYTE - BITS)';
-$keyFormat = '(EBYTE = BITS)%s=    (RIGHTBYTE = BITS)    ^    (LEFTBYTE = BITS)' . PHP_EOL;
-$byteFormat = '(%1$2d = %1$04b)%2$s=    (%3$2d = %3$04b)    %4$s    (%5$2d = %5$04b)' . PHP_EOL . PHP_EOL;
+$byteFormat = 'Byte: %1$2d | Bits:  %1$04b';
 $difference = (count($byteArray['left']) - count($byteArray['right']));
 $randChar = $difference ^ $difference;
 
 foreach($byteArray['left'] as $index => $leftByte)
 {
+        $xor =  (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] ^ $leftByte : $randChar ^ $leftByte);
         $devOutput = [
             'leftByte' => $leftByte,
             'leftChar' => chr($leftByte),
             'rightByte' => (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] : $randChar),
             'rightChar' => (isset($byteArray['right'][$index]) === true ? chr($byteArray['right'][$index]) : chr($randChar)),
+            'XOR Result' => sprintf($byteFormat, $xor) . ' | Char: ' . chr($xor)
         ];
         foreach($devOutput as $devKey => $devValue)
         {
             $color1 = sprintf("\e[%sm \e[%sm ", "34", "45");
             $color2 = sprintf("\e[%sm", "35");
             $resetColor = sprintf("\e[%sm", "0");
-            printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, $devValue, $resetColor, PHP_EOL);
+            printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, $devValue, $resetColor, PHP_EOL . PHP_EOL);
         }
 }
 

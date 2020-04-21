@@ -31,28 +31,57 @@ function convertToByteArray(string $plainText): array
     return $lrBytes;
 }
 
-$plainText = file_get_contents(__DIR__ . '/plainText.txt');
-$byteArray = convertToByteArray($plainText);
-$byteFormat = 'Byte: %1$2d | Bits:  %1$04b';
-$difference = (count($byteArray['left']) - count($byteArray['right']));
-$randChar = $difference ^ $difference;
-
-foreach($byteArray['left'] as $index => $leftByte)
+function performFeistelRound(array $byteArray): array
 {
-        $xor =  (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] ^ $leftByte : $randChar ^ $leftByte);
-        $devOutput = [
-            'leftByte' => $leftByte,
-            'leftChar' => chr($leftByte),
-            'rightByte' => (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] : $randChar),
-            'rightChar' => (isset($byteArray['right'][$index]) === true ? chr($byteArray['right'][$index]) : chr($randChar)),
-            'XOR Result' => sprintf($byteFormat, $xor) . ' | Char: ' . chr($xor)
-        ];
-        foreach($devOutput as $devKey => $devValue)
-        {
-            $color1 = sprintf("\e[%sm \e[%sm ", "34", "45");
-            $color2 = sprintf("\e[%sm", "35");
-            $resetColor = sprintf("\e[%sm", "0");
-            printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, $devValue, $resetColor, PHP_EOL . PHP_EOL);
-        }
+    $encryptedRightBytes = array();
+    if(is_array($byteArray['left']) === false || is_array($byteArray['right']) === false)
+    {
+        return $byteArray;
+    }
+    $difference = (count($byteArray['left']) - count($byteArray['right']));
+    $randChar = $difference ^ $difference;
+    $byteFormat = 'Byte: %1$2d | Bits:  %1$04b';
+    foreach($byteArray['left'] as $index => $leftByte)
+    {
+            $xor =  (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] ^ $leftByte : $randChar ^ $leftByte);
+            $devOutput = [
+                'leftData' => 'Char: "' . chr($leftByte) .  '" | ' . sprintf($byteFormat, $leftByte),
+                'rightData' => 'Char "' . (isset($byteArray['right'][$index]) === true ? chr($byteArray['right'][$index]) : chr($randChar)) . '" | ' . (
+                    isset($byteArray['right'][$index]) === true
+                        ? sprintf($byteFormat, $byteArray['right'][$index])
+                        : sprintf($byteFormat, $randChar)
+                ),
+                'XOR Result' => sprintf($byteFormat, $xor) . ' | Char: ' . chr($xor)
+            ];
+            devOutput($devOutput);
+            $encryptedRightBytes[$index] = $xor;
+    }
+    $byteArray['right'] = $encryptedRightBytes;
+    return $byteArray;
 }
+
+function devOutput(array $devArray) {
+    foreach($devArray as $devKey => $devValue)
+    {
+        $color1 = sprintf("\e[%sm \e[%sm ", "30", "45");
+        $color2 = sprintf("\e[%sm", "35");
+        $resetColor = sprintf("\e[%sm", "0");
+        printf('%s%s%s%s%s : %s%s%s%s', PHP_EOL, $resetColor, $color1, $devKey, $resetColor, $color2, strval($devValue), $resetColor, PHP_EOL . PHP_EOL);
+    }
+}
+
+$plainText = file_get_contents(__DIR__ . '/plainTextSmall.txt');
+$byteArray = convertToByteArray($plainText);
+
+$results = performFeistelRound($byteArray);
+$results = performFeistelRound($results);
+foreach($results as $r)
+{
+    foreach($r as $b)
+    {
+        printf('%s', chr($b));
+    }
+}
+
+
 

@@ -14,7 +14,7 @@ wal -c
 
 # If not in a tmux session, use pywal to set color scheme to random wallpaper in ~/Wallpapers
 # (if were in tmux weve already loggend in so there is no need to run this)
-[[ -z "${TMUX}" ]] && wal -q -i /home/sevidmusic/Wallpapers
+[[ -z "${TMUX}" ]] && wal -q -i /home/sevidmusic/Wallpapers --vte
 
 # Initialize colors for use with printf and echo
 initColors
@@ -45,8 +45,8 @@ rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bas
 rsync -c /home/sevidmusic/.bash_functions /home/sevidmusic/Code/DarlingShells/.bash_functions
 
 # Backup DSH functions.sh and extendComponent.sh to DarlingCmsRedesign
-#rsync -c /home/sevidmusic/DSH/functions.sh /home/sevidmusic/Code/DarlingCmsRedesign/functions.sh
-#rsync -c /home/sevidmusic/DSH/extendComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/extendComponent.sh
+rsync -c /home/sevidmusic/Code/DSH/functions.sh /home/sevidmusic/Code/DarlingCmsRedesign/functions.sh
+rsync -c /home/sevidmusic/Code/DSH/extendComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/extendComponent.sh
 
 # Backup i3 config
 rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
@@ -115,7 +115,7 @@ alias vsh="vagrant ssh"
 # Git aliases
 alias gst="git status"
 alias gpo="git push -u origin"
-alias gpa="git push -u origin Extensions WorkingDemo abstractions classes dsh interfaces master unitTests"
+alias gpa="git push -u origin master unitTests"
 alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"

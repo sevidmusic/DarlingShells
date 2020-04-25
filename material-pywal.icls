@@ -22,12 +22,12 @@
     <option name="ADDED_LINES_COLOR" value="c3e88d" />
     <option name="BORDER_LINES_COLOR" value="" />
     <option name="CARET_COLOR" value="ffcc00" />
-    <option name="CARET_ROW_COLOR" value="050814" />
-    <option name="CONSOLE_BACKGROUND_KEY" value="050814" />
+    <option name="CARET_ROW_COLOR" value="010C12" />
+    <option name="CONSOLE_BACKGROUND_KEY" value="010C12" />
     <option name="DELETED_LINES_COLOR" value="f77669" />
     <option name="DIFF_SEPARATORS_BACKGROUND" value="1c1c1c" />
     <option name="DIFF_SEPARATORS_TOP_BORDER" value="171717" />
-    <option name="DOCUMENTATION_COLOR" value="050814" />
+    <option name="DOCUMENTATION_COLOR" value="010C12" />
     <option name="FILESTATUS_ADDED" value="80cbc4" />
     <option name="FILESTATUS_COPIED" value="659d9a" />
     <option name="FILESTATUS_DELETED" value="f77669" />
@@ -46,16 +46,16 @@
     <option name="FILESTATUS_SWITCHED" value="8978f" />
     <option name="FILESTATUS_UNKNOWN" value="f77669" />
     <option name="FILESTATUS_modifiedOutside" value="80cbc4" />
-    <option name="GUTTER_BACKGROUND" value="050814" />
-    <option name="INDENT_GUIDE" value="4F075F" />
-    <option name="INFORMATION_HINT" value="050814" />
-    <option name="LINE_NUMBERS_COLOR" value="4F075F" />
-    <option name="METHOD_SEPARATORS_COLOR" value="4F075F" />
+    <option name="GUTTER_BACKGROUND" value="010C12" />
+    <option name="INDENT_GUIDE" value="093369" />
+    <option name="INFORMATION_HINT" value="010C12" />
+    <option name="LINE_NUMBERS_COLOR" value="093369" />
+    <option name="METHOD_SEPARATORS_COLOR" value="093369" />
     <option name="MODIFIED_LINES_COLOR" value="ffcb6e" />
     <option name="MT_SUPPRESSED" value="616161" />
     <option name="NOTIFICATION_BACKGROUND" value="3d1a11" />
     <option name="NOT_CHANGED" value="616161" />
-    <option name="QUESTION_HINT" value="050814" />
+    <option name="QUESTION_HINT" value="010C12" />
     <option name="RIGHT_MARGIN_COLOR" value="303030" />
     <option name="SELECTED_INDENT_GUIDE" value="676767" />
     <option name="SELECTED_TEARLINE_COLOR" value="616161" />
@@ -173,13 +173,13 @@
     <option name="BREADCRUMBS_CURRENT">
       <value>
         <option name="FOREGROUND" value="ffffff" />
-        <option name="BACKGROUND" value="4F075F" />
+        <option name="BACKGROUND" value="093369" />
       </value>
     </option>
     <option name="BREADCRUMBS_DEFAULT">
       <value>
         <option name="FOREGROUND" value="616161" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="BACKGROUND" value="010C12" />
       </value>
     </option>
     <option name="BREADCRUMBS_HOVERED">
@@ -191,7 +191,7 @@
     <option name="BREADCRUMBS_INACTIVE">
       <value>
         <option name="FOREGROUND" value="616161" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="BACKGROUND" value="010C12" />
       </value>
     </option>
     <option name="BREAKPOINT_ATTRIBUTES">
@@ -311,7 +311,7 @@
     </option>
     <option name="COFFEESCRIPT.GLOBAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="COFFEESCRIPT.HEREDOC_CONTENT">
@@ -356,7 +356,7 @@
     </option>
     <option name="COFFEESCRIPT.LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="COFFEESCRIPT.NUMBER">
@@ -464,7 +464,7 @@
     </option>
     <option name="CONSOLE_NORMAL_OUTPUT">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="CONSOLE_OUTPUT">
@@ -477,7 +477,7 @@
     </option>
     <option name="CONSOLE_SYSTEM_OUTPUT">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="CONSOLE_USER_INPUT">
@@ -540,7 +540,7 @@
     </option>
     <option name="CSS.PSEUDO">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="CSS.TAG_NAME">
@@ -668,7 +668,7 @@
     </option>
     <option name="DEFAULT_IDENTIFIER">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="DEFAULT_INSTANCE_FIELD">
@@ -706,7 +706,7 @@
     </option>
     <option name="DEFAULT_LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="DEFAULT_METADATA">
@@ -779,7 +779,7 @@
     </option>
     <option name="DEPRECATED_ATTRIBUTES">
       <value>
-        <option name="EFFECT_COLOR" value="ac7ac5" />
+        <option name="EFFECT_COLOR" value="77a5e4" />
         <option name="EFFECT_TYPE" value="3" />
       </value>
     </option>
@@ -895,7 +895,7 @@
     </option>
     <option name="GO_BUILTIN_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_COLON">
@@ -932,7 +932,7 @@
     </option>
     <option name="GO_IDENTIFIER">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_KEYWORD">
@@ -943,7 +943,7 @@
     </option>
     <option name="GO_LABEL">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_LINE_COMMENT">
@@ -964,7 +964,7 @@
     </option>
     <option name="GO_LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_METHOD_RECEIVER">
@@ -984,7 +984,7 @@
     </option>
     <option name="GO_PACKAGE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_PACKAGE_EXPORTED_CONSTANT">
@@ -1004,7 +1004,7 @@
     </option>
     <option name="GO_PACKAGE_EXPORTED_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_PACKAGE_LOCAL_CONSTANT">
@@ -1024,7 +1024,7 @@
     </option>
     <option name="GO_PACKAGE_LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_PARENTHESES">
@@ -1034,7 +1034,7 @@
     </option>
     <option name="GO_SCOPE_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="GO_SEMICOLON">
@@ -1247,7 +1247,7 @@
     </option>
     <option name="Implicit conversion">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Instance field">
@@ -1267,7 +1267,7 @@
     </option>
     <option name="Interpolated String Injection">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Invalid string escape">
@@ -1375,7 +1375,7 @@
     </option>
     <option name="Label">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Line comment">
@@ -1968,12 +1968,12 @@
     </option>
     <option name="PHP_HEREDOC_ID">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="PHP_IDENTIFIER">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="PHP_INSTANCE_FIELD">
@@ -2060,7 +2060,7 @@
     </option>
     <option name="PHP_VAR">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="PHP_VAR_VAR">
@@ -2268,7 +2268,7 @@
     </option>
     <option name="QL_ID_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="QL_KEYWORD">
@@ -2444,7 +2444,7 @@
     </option>
     <option name="RUBY_GVAR">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="RUBY_HASH_ASSOC">
@@ -2454,19 +2454,19 @@
     </option>
     <option name="RUBY_HEREDOC_CONTENT">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="FOREGROUND" value="77a5e4" />
+        <option name="BACKGROUND" value="010C12" />
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
     <option name="RUBY_HEREDOC_ID">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="RUBY_IDENTIFIER">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="RUBY_INTERPOLATED_STRING">
@@ -2498,7 +2498,7 @@
     </option>
     <option name="RUBY_LOCAL_VAR_ID">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="RUBY_METHOD_NAME">
@@ -2649,7 +2649,7 @@
     </option>
     <option name="ReSharper.MUTABLE_LOCAL_VARIABLE_IDENTIFIER">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="ReSharper.STATIC_CLASS_IDENTIFIER">
@@ -2769,7 +2769,7 @@
     </option>
     <option name="Scala For statement value">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Scala Invalid escape in string">
@@ -2792,7 +2792,7 @@
     </option>
     <option name="Scala Local lazy val/var">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Scala Local method call">
@@ -2802,12 +2802,12 @@
     </option>
     <option name="Scala Local value">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Scala Local variable">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Scala Method declaration">
@@ -2817,7 +2817,7 @@
     </option>
     <option name="Scala Mutable Collection">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
         <option name="EFFECT_COLOR" value="c792ea" />
         <option name="EFFECT_TYPE" value="5" />
       </value>
@@ -2850,7 +2850,7 @@
     </option>
     <option name="Scala Pattern value">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="Scala Predefined types">
@@ -2925,8 +2925,8 @@
     </option>
     <option name="Scala XML tag data">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="FOREGROUND" value="77a5e4" />
+        <option name="BACKGROUND" value="010C12" />
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
@@ -3010,8 +3010,8 @@
     </option>
     <option name="TEXT">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="FOREGROUND" value="77a5e4" />
+        <option name="BACKGROUND" value="010C12" />
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
@@ -3056,7 +3056,7 @@
     </option>
     <option name="Unresolved reference access">
       <value>
-        <option name="FOREGROUND" value="ac7ac5" />
+        <option name="FOREGROUND" value="77a5e4" />
       </value>
     </option>
     <option name="VELOCITY_KEYWORD">
@@ -3124,7 +3124,7 @@
     <option name="XML_TAG_DATA">
       <value>
         <option name="FOREGROUND" value="c3cee3" />
-        <option name="BACKGROUND" value="050814" />
+        <option name="BACKGROUND" value="010C12" />
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>

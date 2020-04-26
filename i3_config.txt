@@ -33,13 +33,13 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec rofi -show run
 
 # Start i3-dmenu-desktop which only displays applications
-bindsym $mod+Shift+d exec rofi -show drun
+bindsym $mod+Shift+d exec rofi -show drun -show-icons
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # move focused window
 bindsym $mod+Shift+h move left
@@ -48,7 +48,7 @@ bindsym $mod+Shift+k move up
 bindsym $mod+Shift+l move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+semicolon split h
 
 # split in vertical orientation
 bindsym $mod+v split v

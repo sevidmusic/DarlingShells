@@ -128,7 +128,7 @@ bindsym $mod+Shift+x exec compton -b
 bindsym $mod+Shift+p exec phpstorm
 
 # Assign random wallpaper and restart compton and i3
-bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers; exec compton -b; restart
+bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers --vte; exec compton -b; restart
 
 # Assign favorite wallpaper 1 and restart compton and i3
 #bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/Dorian_Roady1.jpg; exec compton -b; restart

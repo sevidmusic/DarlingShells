@@ -172,3 +172,5 @@ alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The trai
 alias vi="vim -R"
 alias summarizeDevTemplate="grep -E 'HERE|tes[t]|[0-9][.]' /home/sevidmusic/Code/DarlingCmsRedesign/devInfo/core/intefaces/component/Registry/Storage/StoredComponentRegistry/DevelopmentTemplate.txt | sed -e 's/tes[t]/\ntest/g;'"
 alias lookUpWord="/home/sevidmusic/Code/DarlingShells/lookUpWord.sh"
+alias cs="/home/sevidmusic/Code/DarlingShells/linuxCheatSheat.sh"
+alias danceParrotDance="curl -s parrot.live"

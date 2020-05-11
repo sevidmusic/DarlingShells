@@ -192,7 +192,7 @@ alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"
 alias gmr="git merge"
-alias gdf="git diff"
+alias gdf="git diff --color"
 
 # ctags aliases
 # (ctags is needed for vim autocompletion, though not necessarily related to vim)
@@ -247,6 +247,7 @@ alias devStartActions="find /var/www/html/core /var/www/html/Tests /var/www/html
 alias devStartSCReg="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | StoredComponentRegistry Tests\"'"
 #alias devStartWD="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | WorkingDemo Tests\"'"
 alias devStartStandardUI="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | StandardUI Tests\"'"
+alias devStartResponse="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Response Tests\"'"
 
 # Run entr to trigger git diff  whenever one of the core/*.php
 # or Tests/*.php files are modified

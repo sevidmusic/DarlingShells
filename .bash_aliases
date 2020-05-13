@@ -248,11 +248,14 @@ alias devStartSCReg="find /var/www/html/core /var/www/html/Tests /var/www/html/E
 #alias devStartWD="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | WorkingDemo Tests\"'"
 alias devStartStandardUI="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | StandardUI Tests\"'"
 alias devStartResponse="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Response Tests\"'"
+alias devStartApp="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | App Tests\"'"
 
 # Run entr to trigger git diff  whenever one of the core/*.php
 # or Tests/*.php files are modified
 #alias gitDiffStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
 alias gitDiffStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
+# run entr to re-install Apps and curl dcms.dev to get html preview
+alias dcmsHtmlPreview="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
 
 # Rund entr to trigger git status whenever one of the core/*.php
 # or Tests/*.php file are modified.
@@ -274,3 +277,4 @@ alias lotsOTests="for i in {0..100} ; do phpunit; done"
 alias ddmsDemo="w3m 192.168.33.10/WorkingDemo.php"
 alias loopSl="while [[ true ]]; do showLoadingBar 'Starting up' && sl -al && clear && showLoadingBar 'The train has left the station. It shall return soon.' && sleep 5 && showLoadingBar 'Loading current DDMS dev stats' && sleep 5 && gst && sleep 5 && showLoadingBar 'Loading DDMS diff --stat' && git diff --stat && sleep 5 && showLoadingBar 'One moment please' && sleep 5 && showLoadingBar 'Loading date' && sleep 5&& date && sleep 5 && showLoadingBar 'Loading calander' && sleep 5 && cal && sleep 5 && showLoadingBar 'Loading current directory info' && sleep 5 && pwd && sleep 5 && ls && sleep 5 && showLoadingBar && sleep 5 && showLoadingBar 'The train should be arriving soon' && sleep 5 && showLoadingBar 'Preparing for reload' && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear; done"
 alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The train should be arriving soon' && sleep 5 && sl -al && clear && showLoadingBar 'Preparing for reload' && sleep 5 && pwj && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear && sleep 180; done"
+alias dcmsInstallDevApps="rbash && cd ./Apps/WorkingDemo && php ./Components.php && sleep 2 && cd ../dcmsDev && php ./Components.php && sleep 2 && rbash"

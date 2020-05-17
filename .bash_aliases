@@ -255,7 +255,7 @@ alias devStartApp="find /var/www/html/core /var/www/html/Tests /var/www/html/Ext
 #alias gitDiffStart="find /var/www/html/core /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
 alias gitDiffStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/gitDiff.sh'";
 # run entr to re-install Apps and curl dcms.dev to get html preview
-alias dcmsHtmlPreview="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
+alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
 
 # Rund entr to trigger git status whenever one of the core/*.php
 # or Tests/*.php file are modified.

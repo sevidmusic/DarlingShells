@@ -28,12 +28,6 @@ Plug 'shawncplus/phpcomplete.vim'
 " Nerd tree file navigator
 Plug 'scrooloose/nerdtree'
 
-" Syntax highlighting for NERDTree
-Plug 'tiagofumo/vim-nerdtree-syntax-highlight'
-
-" Needed for nerdtree-syntax-highliting to work
-Plug 'ryanoasis/vim-devicons'
-
 " Smooth scroll
 Plug 'terryma/vim-smooth-scroll'
 

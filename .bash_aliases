@@ -14,7 +14,9 @@ wal -c
 
 # If not in a tmux session, use pywal to set color scheme to random wallpaper in ~/Wallpapers
 # (if were in tmux weve already loggend in so there is no need to run this)
-[[ -z "${TMUX}" ]] && wal -q -i /home/sevidmusic/Wallpapers --vte
+# NOTE: This line is not needed right now, I3 is configured to start loopPywal.sh which basically does this on a loop
+# Keep line below for reference:
+# [[ -z "${TMUX}" ]] && wal -q -i /home/sevidmusic/Wallpapers --vte
 
 # Initialize colors for use with printf and echo
 initColors
@@ -67,11 +69,9 @@ clear
 # Show wheather
 #curl wttr.in?format=2;
 
-# Run neofetch on login (fun)
+# Run neofetch and show loading bar on login (fun)
 neofetch
 showLoadingBar "Loading"
-sleep 1
-clear
 
 # Always start with fresh history
 history -c
@@ -156,13 +156,6 @@ alias say="spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w && sle
 
 # Take a screenshot, date it, and save to ~/Screenshots
 alias scs="/home/sevidmusic/Code/DarlingShells/manualScreenshot.sh"
-
-# locate aliases
-alias locate="locate -e"
-alias locateCount="locate -c"
-alias locateBlob="locate -0"
-alias locateExactMatch="locate -r"
-alias locateExactMatchCount="locate -cr"
 
 # Unsorted aliases
 alias minuteTicker='for i in {1..60}; do clear && printf "\n|-------------|\n\e[35m|----- %s -----|\n|-------------|\n" "${i}" && sleep 1; done'

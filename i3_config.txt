@@ -164,4 +164,9 @@ bar {
     }
 }
 
+# On startup | Once
+exec --no-startup-id i3-msg 'workspace 2; exec /usr/bin/gnome-terminal' &
+exec --no-startup-id i3-msg 'workspace 1; exec /usr/bin/gnome-terminal' &
+exec --no-startup-id /home/sevidmusic/Code/DarlingShells/loopPywal.sh 60 &
+exec --no-startup-id /usr/bin/compton # &
 

@@ -9,11 +9,11 @@ source ~/.bash_aliases || printf "Error: .bash_aliases file not found"
 
 while :
 do
-    showLoadingBar "Reloading Color Scheme"
+#    showLoadingBar "Reloading Color Scheme"
     wal -q -i /home/sevidmusic/Wallpapers --vte
     ~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config
-    neofetch --off --disable cpu gpu memory icons theme shell resolution packages wm de term uptime kernel
-    showLoadingBar "Reload complete. Next reload will begin shortly."
+#    neofetch --off --disable cpu gpu memory icons theme shell resolution packages wm de term uptime kernel
+#    showLoadingBar "Reload complete. Next reload will begin shortly."
     sleep $1
 done
 

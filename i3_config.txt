@@ -20,12 +20,6 @@ bindsym $mod+Return exec i3-sensible-terminal
 # Start terminal in floating window
 bindsym $mod+Shift+Return exec --no-startup-id i3-sensible-terminal -T "darlingTerm"
 
-# Hint:
-# To determine window class and instance use command : xprop | grep WM_CLASS
-# The instance will be the first string after the =, the class will be the second string
-# outputs something like: WM_CLASS(STRING) = "INSTANCE", "CLASS"
-for_window [instance="gnome-terminal-server" title="darlingTerm"] floating enable
-
 # Kill focused window
 bindsym $mod+Shift+q kill
 
@@ -122,25 +116,17 @@ bindsym $mod+Shift+y exec /usr/bin/kazam
 bindsym $mod+Shift+z exec killall compton
 
 # Start/Restart compton
-bindsym $mod+Shift+x exec compton -b
+bindsym $mod+Shift+x exec compton
 
 # Start PhpStorm
 bindsym $mod+Shift+p exec phpstorm
 
 # Assign random wallpaper and restart compton and i3
-bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers --vte; exec compton -b; restart
-
-# Assign favorite wallpaper 1 and restart compton and i3
-#bindsym $mod+Shift+b exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/Dorian_Roady1.jpg; exec compton -b; restart
-# Assign favorite wallpaper 2 and restart compton and i3
-#bindsym $mod+Shift+n exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi7.jpg; exec compton -b; restart
-# Assign favorite wallpaper 3 and restart compton and i3
-#bindsym $mod+Shift+m exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers/SciFi1.jpg; exec compton -b; restart
+bindsym $mod+Shift+w exec /home/sevidmusic/.local/bin/wal -i /home/sevidmusic/Wallpapers --vte; exec compton; restart
 
 # Take a screenshot via imagemagick's import command
 bindsym $mod+p exec /home/sevidmusic/Code/DarlingShells/screenshot.sh
 
-bindsym $mod+Shift+t exec /home/sevidmusic/Code/DarlingShells/weather.sh
 # Start i3bar
 bar {
     status_command i3status

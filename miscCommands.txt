@@ -1,0 +1,2 @@
+phpunitV | grep -E 'AppComponentsFactory' | sed -e 's/UnitTests\\classes\\component\\Factory\\App\\//g;s/UnitTests\\abstractions\\component\\Factory\\App\\//g;s/started//g;s/ended//g;s/.*::Test//g;s/^.*[:]Test//g;' | awk '!seen[$0]++'"
+

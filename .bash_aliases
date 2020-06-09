@@ -250,6 +250,7 @@ alias devStartStandardUI="find /var/www/html/core /var/www/html/Tests /var/www/h
 alias devStartResponse="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Response Tests\"'"
 alias devStartGlobalResponse="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Global Response Tests\"'"
 alias devStartApp="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | App Tests\"'"
+alias devFactory="find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite \"Darling Cms Redesign | Factory Tests\"'"
 
 # Run entr to trigger git diff  whenever one of the core/*.php
 # or Tests/*.php files are modified
@@ -281,3 +282,7 @@ alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The trai
 alias dcmsInstallDevApps="rbash && cd ./Apps/WorkingDemo && php ./Components.php && sleep 2 && cd ../dcmsDev && php ./Components.php && sleep 2 && rbash"
 alias phpunitDResponse="phpunit --verbose --debug -c php.xml --testsuite 'Darling Cms Redesign | Response Tests'"
 alias phpunitDGlobalResponse="phpunit --verbose --debug -c php.xml --testsuite 'Darling Cms Redesign | Global Response Tests'"
+alias phpunitV="phpunitD | grep -En '^[A-Z]|::|^Test|started|interfaces|classes|abstractions'"
+#alias phpunitVACF="phpunitV | grep -E 'AppComponentsFactory' | sed -e 's/UnitTests\\classes\\component\\Factory\\App\\//g;s/UnitTests\\abstractions\\component\\Factory\\App\\//g;s/started//g;s/ended//g;s/.*::Test//g;s/^.*[:]Test//g;' | awk '!seen[$0]++'"
+alias dcmsReInstallBBPC="cd /var/www/html && rm -r ./.dcmsJsonData && cd /var/www/html/Apps/blackballotpowercontest/ && php ./Components.php && cd /var/www/html"
+alias dcmsReinstalDcmsDevApp="sudo rm -r /var/www/html/.dcmsJsonData/ && cd /var/www/html/Apps/dcmsDev/ && php ./Components.php && cd /var/www/html && sleep 1 && clear && w3m -dump dcms.dev"

@@ -20,13 +20,9 @@ initColors
 cd /var/www/html
 
 # Rsync #
-
-# Backup .vimrc to DarlingShells on startup
 rsync -c /home/vagrant/.vimrc /home/vagrant/Code/DarlingShells/.vimrc
-
-# Backup .bash_aliases
-#rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bash_aliases
 rsync -c ~/.bash_aliases ~/Code/DarlingShells/.bash_aliases
+rsync -c ~/reloadApps.sh ~/Code/DarlingShells/reloadApps.sh
 
 # Play fun animation
 sl -al

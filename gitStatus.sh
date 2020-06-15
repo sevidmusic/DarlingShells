@@ -14,5 +14,5 @@ CLEAR_COLOR=$(setColor 0)
 [[ -z "${GIT_DIFF}" ]] && printf "%s%s%s" "${CHANGE_COLOR}" "No changes..."  "${CLEAR_COLOR}"
 [[ -n "${GIT_DIFF}" ]] && printf "%s%s%s" "${CHANGE_COLOR}" "${GIT_DIFF}"  "${CLEAR_COLOR}"
 
-sleep 5
+sleep 60
 clear

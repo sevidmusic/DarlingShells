@@ -22,7 +22,14 @@ cd /var/www/html
 # Rsync #
 rsync -c /home/vagrant/.vimrc /home/vagrant/Code/DarlingShells/.vimrc
 rsync -c ~/.bash_aliases ~/Code/DarlingShells/.bash_aliases
+rsync -c ~/.bash_profile ~/Code/DarlingShells/.bash_profile
+rsync -c ~/.bashrc ~/Code/DarlingShells/.bashrc
+rsync -c ~/gitDiff.sh ~/Code/DarlingShells/gitDiff.sh
+rsync -c ~/gitStatus.sh ~/Code/DarlingShells/gitStatus.sh
 rsync -c ~/reloadApps.sh ~/Code/DarlingShells/reloadApps.sh
+rsync -c ~/runPhpUnitContestTests.sh ~/Code/DarlingShells/runPhpUnitContestTests.sh
+rsync -c ~/runPhpUnit.sh ~/Code/DarlingShells/runPhpUnit.sh
+
 
 # Play fun animation
 sl -al
@@ -76,8 +83,9 @@ alias editVimrc="vim ~/.vimrc"
 alias rbash="source ~/.bash_aliases"
 
 # Use entr to trigger scripts in various contexts
-alias dshRunAllTests="showLoadingBar 'Tests will start in a moment' && sleep 1 && find /var/www/html/core /var/www/html/Tests /var/www/html/Extensions /var/www/html/Apps /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/usr/bin/sleep 3 && /usr/bin/sl && clear && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml'"
 alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
+alias devStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runPhpUnit.sh'";
+alias devContestStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runPhpUnitContestTests.sh'";
 
 # Always run fix apache script
 sudo ~/Code/DarlingShells/fixApachePermissonIssue.sh

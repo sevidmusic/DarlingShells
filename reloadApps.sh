@@ -1,7 +1,7 @@
 #!/bin/bash
 set -o posix
 
-cd /var/www/html && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml
+cd /var/www/html # && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml
 
 clear
 

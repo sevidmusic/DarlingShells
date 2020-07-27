@@ -1,12 +1,5 @@
 <?php
 
-/*
-foreach($byteArray as $lrBytes) {
-    $xor = $lrBytes['right'] ^ $lrBytes['left'][$index];
-    $limitString = sprintf('(%1$2d = %1$04b)', $xor);
-    printf($byteFormat,$xor, getSpaceing($limitString), $lrBytes['right'], '^', $lrBytes['left'][$index]);
-}
-*/
 function getSpaceing(string $string): string
 {
     $spaces = '';
@@ -43,6 +36,14 @@ function performFeistelRound(array $byteArray): array
     $byteFormat = 'Byte: %1$2d | Bits:  %1$04b';
     foreach($byteArray['left'] as $index => $leftByte)
     {
+	    var_dump(
+		    [
+			    $index,
+			    (count($byteArray['right']) - 1),
+			    $difference,
+			    $index < (count($byteArray['right']) - 1)
+		    ]
+	    );
             $xor =  (isset($byteArray['right'][$index]) === true ? $byteArray['right'][$index] ^ $leftByte : $randChar ^ $leftByte);
             $devOutput = [
                 'leftData' => 'Char: "' . chr($leftByte) .  '" | ' . sprintf($byteFormat, $leftByte),
@@ -90,13 +91,17 @@ function prepareForDecryption(array $encrypted): array
     return $preparedData;
 }
 
+function encrypt(array $byteArray): array
+{
+    $encrypted = performFeistelRound($byteArray);
+    writeByteCharValues($encrypted['right'], 'encryptedBytes.txt');
+    writeByteCharValues($encrypted['left'], 'encryptedBytes.txt');
+    return $encrypted;
+}
+
 $plainText = file_get_contents(__DIR__ . '/plainText.txt');
 $byteArray = convertToByteArray($plainText);
-
-$encrypted = performFeistelRound($byteArray);
-writeByteCharValues($encrypted['right'], 'encryptedBytes.txt');
-writeByteCharValues($encrypted['left'], 'encryptedBytes.txt');
-
+$encrypted = encrypt($byteArray);
 $dbyteArray = prepareForDecryption($encrypted);
 $decrypted = performFeistelRound($dbyteArray);
 writeByteCharValues($decrypted['right'], 'decryptedBytes.txt');

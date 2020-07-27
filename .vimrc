@@ -28,6 +28,9 @@ Plug 'shawncplus/phpcomplete.vim'
 " Nerd tree file navigator
 Plug 'scrooloose/nerdtree'
 
+" Vim-bujo Todo List
+"Plug 'vuciv/vim-bujo'
+
 " Smooth scroll
 Plug 'terryma/vim-smooth-scroll'
 

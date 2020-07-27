@@ -29,6 +29,7 @@ rsync -c ~/gitStatus.sh ~/Code/DarlingShells/gitStatus.sh
 rsync -c ~/reloadApps.sh ~/Code/DarlingShells/reloadApps.sh
 rsync -c ~/runPhpUnitContestTests.sh ~/Code/DarlingShells/runPhpUnitContestTests.sh
 rsync -c ~/runPhpUnit.sh ~/Code/DarlingShells/runPhpUnit.sh
+rsync -c ~/runFactoryTests.sh ~/Code/DarlingShells/runFactoryTests.sh
 
 
 # Play fun animation
@@ -85,7 +86,7 @@ alias rbash="source ~/.bash_aliases"
 # Use entr to trigger scripts in various contexts
 alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
 alias devStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runPhpUnit.sh'";
-alias devContestStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runPhpUnitContestTests.sh'";
+alias runFactoryTests="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runFactoryTests.sh'";
 
 # Always run fix apache script
 sudo ~/Code/DarlingShells/fixApachePermissonIssue.sh
@@ -103,3 +104,5 @@ alias dcmsReinstalDcmsDevApp="sudo rm -r /var/www/html/.dcmsJsonData/ && cd /var
 
 # Unsorted aliases
 
+alias tnsCode="tmux new -s Code"
+alias nprHeadlines="w3m -dump https://text.npr.org/ | grep '•'"

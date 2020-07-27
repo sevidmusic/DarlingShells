@@ -24,6 +24,4 @@ showLoadingBar "Removing .dcmsJsonData"
 
 /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite "Darling Cms Redesign | Contest Extension Tests"
 
-sleep 15
 
-clear

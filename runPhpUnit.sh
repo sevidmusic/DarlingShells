@@ -16,8 +16,12 @@ showLoadingBar "One more moment, waiting in case other test suites are running..
 
 sleep 2
 
-cd /var/www/html  && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --verbose --debug | grep -En '^[A-Z]|::|^Test|started|interfaces|classes|abstractions' --color
+# Run PhpUnit normally
+cd /var/www/html && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml
 
-sleep 15
+# Run PhpUnit with verbose output
+#cd /var/www/html && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --verbose --debug | grep -En '^[A-Z]|::|^Test|started|interfaces|classes|abstractions' --color
 
-clear
+#sleep 15
+
+#clear

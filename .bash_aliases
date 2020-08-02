@@ -22,8 +22,8 @@ wal -c
 initColors
 
 showLoadingBar 'Starting Up'
-# Move into ~/Codes/DarlingCmsRedesign directory
-cd ~/Code/DarlingCmsRedesign
+# Move into ~/Codes/DarlingDataManagementSystem directory
+cd ~/Code/DarlingDataManagementSystem
 
 # Vi Mode (Allows vim commands to be used in bash)
 set -o vi
@@ -46,9 +46,13 @@ rsync -c /home/sevidmusic/.bash_aliases /home/sevidmusic/Code/DarlingShells/.bas
 # Backup .bash_functions to DarlingShells
 rsync -c /home/sevidmusic/.bash_functions /home/sevidmusic/Code/DarlingShells/.bash_functions
 
-# Backup DSH functions.sh and extendComponent.sh to DarlingCmsRedesign
-rsync -c /home/sevidmusic/Code/DSH/functions.sh /home/sevidmusic/Code/DarlingCmsRedesign/functions.sh
-rsync -c /home/sevidmusic/Code/DSH/extendComponent.sh /home/sevidmusic/Code/DarlingCmsRedesign/extendComponent.sh
+# Backup DSH functions.sh and extendComponent.sh to DarlingDataManagementSystem
+#rsync -c /home/sevidmusic/Code/DSH/functions.sh /home/sevidmusic/Code/DarlingDataManagementSystem/functions.sh
+#rsync -c /home/sevidmusic/Code/DSH/extendComponent.sh /home/sevidmusic/Code/DarlingDataManagementSystem/extendComponent.sh
+
+# Backup DSH functions.sh and extendComponent.sh from DarlingDataManagementSystem
+rsync -c /home/sevidmusic/Code/DarlingDataManagementSystem/functions.sh /home/sevidmusic/Code/DSH/functions.sh
+rsync -c /home/sevidmusic/Code/DarlingDataManagementSystem/extendComponent.sh /home/sevidmusic/Code/DSH/extendComponent.sh
 
 # Backup i3 config
 rsync -c /home/sevidmusic/.config/i3/config /home/sevidmusic/Code/DarlingShells/i3_config.txt
@@ -59,8 +63,11 @@ rsync -c /etc/i3status.conf /home/sevidmusic/Code/DarlingShells/i3status_config.
 # Backup i3status config
 rsync -c /home/sevidmusic/.config/compton.conf /home/sevidmusic/Code/DarlingShells/compton.conf
 
-# Copy current component code templates from DSH to DarlingCmsRedesign to keep DarlingCms's versions up to date.
-rsync -cdr /home/sevidmusic/Code/DSH/templates/ /home/sevidmusic/Code/DarlingCmsRedesign/templates
+# Copy current component code templates from DSH to DarlingDataManagementSystem to keep DarlingCms's versions up to date.
+#rsync -cdr /home/sevidmusic/Code/DSH/templates/ /home/sevidmusic/Code/DarlingDataManagementSystem/templates
+
+# Copy current component code templates from DarlingDataManagementSystem to DSH
+rsync -cdr /home/sevidmusic/Code/DarlingDataManagementSystem/templates /home/sevidmusic/Code/DSH/templates/
 
 # Play fun animation
 sl -al
@@ -104,7 +111,7 @@ alias dnc=~/Code/DarlingShells/DCMS/demoNewComponent.sh
 
 # Quick cd aliases
 alias dshells="cd ~/Code/DarlingShells && pwd"
-alias dcmsDev="cd ~/Code/DarlingCmsRedesign && pwd"
+alias dcmsDev="cd ~/Code/DarlingDataManagementSystem && pwd"
 alias sdm="cd /home/sevidmusic/Music && pwd"
 
 # Vagrant aliases
@@ -157,23 +164,18 @@ alias say="spd-say -e -t 'female3' -m 'none' -i '-42' -p '17' -r '-27' -w && sle
 # Take a screenshot, date it, and save to ~/Screenshots
 alias scs="/home/sevidmusic/Code/DarlingShells/manualScreenshot.sh"
 
+# Unused for now
+#alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The train should be arriving soon' && sleep 5 && sl -al && clear && showLoadingBar 'Preparing for reload' && sleep 5 && pwj && sleep 5 && showLoadingBar 'The train is arriving. Starting counter.' && clear && minuteTicker && showLoadingBar 'Restarting in a moment' && sleep 5; done"
+
 # Unsorted aliases
 alias minuteTicker='for i in {1..60}; do clear && printf "\n|-------------|\n\e[35m|----- %s -----|\n|-------------|\n" "${i}" && sleep 1; done'
-alias ddmsDemo="w3m 192.168.33.10/WorkingDemo.php"
-alias loopSl="while [[ true ]]; do showLoadingBar 'Starting up' && sl -al && clear && showLoadingBar 'The train has left the station. It shall return soon.' && sleep 5 && neofetch && showLoadingBar 'Loading current DDMS dev stats' && sleep 5 && gst && sleep 5 && showLoadingBar 'One moment please' && sleep 5 && showLoadingBar 'Loading date' && sleep 5&& date && sleep 5 && showLoadingBar 'Loading calander' && sleep 5 && cal && sleep 5 && showLoadingBar 'Loading current directory info' && sleep 5 && pwd && sleep 5 && ls && sleep 5 && showLoadingBar && sleep 5 && showLoadingBar 'The train should be arriving soon' && sleep 5 && showLoadingBar 'Preparing for reload' && sleep 5 && showLoadingBar 'The train is arriving. Restarting' && clear; done"
-alias loopPwj="while [[ true ]]; do clear && sleep 3 && showLoadingBar 'The train should be arriving soon' && sleep 5 && sl -al && clear && showLoadingBar 'Preparing for reload' && sleep 5 && pwj && sleep 5 && showLoadingBar 'The train is arriving. Starting counter.' && clear && minuteTicker && showLoadingBar 'Restarting in a moment' && sleep 5; done"
 alias vi="vim -R"
-alias summarizeDevTemplate="grep -E 'HERE|tes[t]|[0-9][.]' /home/sevidmusic/Code/DarlingCmsRedesign/devInfo/core/intefaces/component/Web/App/DevelopmentTemplate.txt | sed -e 's/tes[t]/\ntest/g;'"
 alias lookUpWord="/home/sevidmusic/Code/DarlingShells/lookUpWord.sh"
-alias cs="/home/sevidmusic/Code/DarlingShells/linuxCheatSheat.sh"
+alias linuxCheatSheet="/home/sevidmusic/Code/DarlingShells/linuxCheatSheat.sh"
 alias danceParrotDance="curl -s parrot.live"
-alias dcmsCurlIP="curl 192.168.33.10"
-alias dcmsCurlDcmsDev="curl dcms.dev"
-alias dcmsTestHosts="printf '\n' && dcmsCurlIP && printf '\n\n**************************************************\n\n' && dcmsCurlDcmsDev && printf '\n'"
 alias playChess="telnet freechess.org"
 alias i3ShowKeys="cat ~/.config/i3/config | grep -E '[mod]\+'"
 alias tnsSys="tmux new -s System"
 alias tnsDev="tmux new -s Dev"
 alias w3mh="w3m http://w3m.sourceforge.net/MANUAL"
-alias dcmsDevPrev="w3m -dump dcms.dev"
 alias lock="gnome-screensaver-command -l"

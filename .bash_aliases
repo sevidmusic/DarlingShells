@@ -67,6 +67,9 @@ alias gcm="git commit -am"
 alias gbr="git branch"
 alias gco="git checkout"
 alias gdf="git diff --color"
+alias gitCommitAndUpdateFromUnitTests="showLoadingBar 'Running tests' && phpunit && reloadApps.sh && showLoadingBar 'Preparinig to commit changes from unitTests and update other repos' && gbr && sleep 1 && showLoadingBar 'Loading diff for review' && git diff unitTests --color && showLoadingBar 'Committing changes' && git add . && git commit -a && showLoadingBar 'Pushing changes to origin/unitTests' && gpo && showLoadingBar 'Running tests before updating other repos' && phpunit && reloadApps.sh && showLoadingBar 'Updating other repos' && showLoadingBar 'Checking out master' && git checkout master && showLoadingBar 'Pulling from origin/unitTests' && git pull origin unitTests && showLoadingBar 'Pushing changes to master' && gpo && showLoadingBar 'Checking out Apps' && git checkout Apps && showLoadingBar 'Pulling from origin/master' && git pull origin master && showLoadingBar 'Pushing to origin/Apps' && gpo && showLoadingBar 'Checking out bbp' && git checkout blackballotpowercontest && showLoadingBar 'Pulling from origin/master' && git pull origin master && showLoadingBar 'Pushing to origin/blackballotpowercontest' && gpo && showLoadingBar 'All repos are up to date, switching back to unitTests' && git checkout unitTests && showLoadingBar 'Checking diff' && git diff origin/unitTests && git diff origin/master && git diff origin/Apps && git diff origin/blackballotpowercontest && gst && git log -1"
+alias gitUpdateFromUnitTests="showLoadingBar 'Running tests' && phpunit && reloadApps.sh && showLoadingBar 'Running tests before updating other repos' && phpunit && reloadApps.sh && showLoadingBar 'Updating other repos' && showLoadingBar 'Checking out master' && git checkout master && showLoadingBar 'Pulling from origin/unitTests' && git pull origin unitTests && showLoadingBar 'Pushing changes to master' && gpo && showLoadingBar 'Checking out Apps' && git checkout Apps && showLoadingBar 'Pulling from origin/master' && git pull origin master && showLoadingBar 'Pushing to origin/Apps' && gpo && showLoadingBar 'Checking out bbp' && git checkout blackballotpowercontest && showLoadingBar 'Pulling from origin/master' && git pull origin master && showLoadingBar 'Pushing to origin/blackballotpowercontest' && gpo && showLoadingBar 'All repos are up to date, switching back to unitTests' && git checkout unitTests && showLoadingBar 'Checking diff' && git diff origin/unitTests && git diff origin/master && git diff origin/Apps && git diff origin/blackballotpowercontest && gst && git log -1"
+
 
 # ctags aliases
 # (ctags is needed for vim autocompletion, though not necessarily related to vim)
@@ -84,9 +87,9 @@ alias editVimrc="vim ~/.vimrc"
 alias rbash="source ~/.bash_aliases"
 
 # Use entr to trigger scripts in various contexts
-alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/reloadApps.sh'";
-alias devStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runPhpUnit.sh'";
-alias runFactoryTests="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.*' | entr -s '/home/vagrant/runFactoryTests.sh'";
+alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/reloadApps.sh'";
+alias devStartCore="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/runPhpUnit.sh \"Core\"'";
+alias devStartExt="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/runPhpUnit.sh \"Extensions\"'";
 
 # Always run fix apache script
 sudo ~/Code/DarlingShells/fixApachePermissonIssue.sh
@@ -105,4 +108,6 @@ alias dcmsReinstalDcmsDevApp="sudo rm -r /var/www/html/.dcmsJsonData/ && cd /var
 # Unsorted aliases
 
 alias tnsCode="tmux new -s Code"
-alias nprHeadlines="w3m -dump https://text.npr.org/ | grep '•'"
+alias nprHeadlines="w3m -dump https://text.npr.org | grep -m 5 '•'"
+alias cnnHeadlines="w3m -dump https://lite.cnn.com/en | grep -m 5 '•'"
+alias hackerNews="w3m -dump https://news.ycombinator.com | grep -m 10 -E '[0-9]'"

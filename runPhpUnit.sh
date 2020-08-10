@@ -11,5 +11,5 @@ source /home/vagrant/Code/DarlingShells/.bash_functions
 # Run PhpUnit normally
 cd /var/www/html
 
-[[ -z $1 ]] && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml || /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite $1
+[[ -z $1 ]] && /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --order-by=random --testdox-html ./testdox.php || /var/www/html/vendor/phpunit/phpunit/phpunit -c /var/www/html/php.xml --testsuite $1 --order-by=random --testdox-html ./testdox.php
 

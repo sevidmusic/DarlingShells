@@ -88,6 +88,7 @@ alias rbash="source ~/.bash_aliases"
 
 # Use entr to trigger scripts in various contexts
 alias devAppStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/reloadApps.sh'";
+alias devStart="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/runPhpUnit.sh'";
 alias devStartCore="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/runPhpUnit.sh \"Core\"'";
 alias devStartExt="find /var/www/html/core /var/www/html/Extensions /var/www/html/Apps /var/www/html/Tests /var/www/html/index.php /var/www/html/php.xml -name '*.php' | entr -s '/home/vagrant/runPhpUnit.sh \"Extensions\"'";
 

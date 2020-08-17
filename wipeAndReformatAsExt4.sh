@@ -42,7 +42,7 @@ animatedPrint()
 
 showLoadingBar() {
   local _slb_inc _slb_windowWidth _slb_numChars _slb_adjustedNumChars _slb_loadingBarLimit
-  insertLines
+  printf "\n"
   animatedPrint "${1}" .05
   setColor 43
   _slb_inc=0
@@ -54,8 +54,12 @@ showLoadingBar() {
     animatedPrint ":" .009
     _slb_inc=$((_slb_inc + 1))
   done
-  [[ "${2}" != "dontClear" ]] && clear | printf " %s\n" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}" && sleep 1
+  printf " %s\n" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
   setColor 0
+  sleep 1
+  if [[ "${2}" != "dontClear" ]]; then
+    clear
+  fi
 }
 
 notifyUser() {
@@ -106,36 +110,57 @@ while getopts "hsd:" OPTION; do
   case "${OPTION}" in
   h)
       insertLines
-      animatedPrint "This script will wipe and reformat the specified drive as Ext4 with one partition."
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}This script will wipe and reformat the specified drive as Ext4 with one partition.${CLEARCOLOR}"
       insertLines
-      animatedPrint "The following flags are available:"
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}The following flags are available:${CLEARCOLOR}"
       insertLines
       animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-h Show Help Message${CLEARCOLOR}"
       insertLines
-      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-s Show available devices via lsblk${CLEARCOLOR}"
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-s Show available drives/devices via lsblk${CLEARCOLOR}"
       insertLines
-    exit
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-d <arg> Name of the drive/device to wipe and reformat as Ext4${CLEARCOLOR}"
+      insertLines
+   exit
     ;;
   s)
-      animatedPrint "The following devices are available:"
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}The following devices are available:${CLEARCOLOR}"
       insertLines
       lsblk
       insertLines
     exit
     ;;
   d)
+      [[ -z "$(lsblk | grep "${OPTARG}")" ]] && insertLines && animatedPrint "${CLEARCOLOR}${ATTENTIONEFFECT}${WARNINGCOLOR}WARNING: ${CLEARCOLOR}${WARNINGCOLOR}The specified drive/device, ${CLEARCOLOR}${NOTIFYCOLOR}${OPTARG}${CLEARCOLOR}${WARNINGCOLOR}, is not available." && insertLines && animatedPrint "${CLEARCOLOR}${WARNINGCOLOR}The following drives/devices are available${CLEARCOLOR}" && insertLines && lsblk && insertLines && animatedPrint "${CLEARCOLOR}${WARNINGCOLOR}Please make sure the drive/device is available and try again.${CLEARCOLOR}" && insertLines && exit
       insertLines
       animatedPrint "${CLEARCOLOR}${ATTENTIONEFFECT}${WARNINGCOLOR}WARNING${CLEARCOLOR}"
       insertLines
-      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}You are about to erase and reformat the drive named ${CLEARCOLOR}${WARNINGCOLOR}${OPTARG}${CLEARCOLOR}${NOTIFYCOLOR}"
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}You are about to erase and reformat the drive named ${CLEARCOLOR}${WARNINGCOLOR}${OPTARG}${CLEARCOLOR}"
+      insertLines
+      lsblk | grep "${OPTARG}"
       insertLines
       promptUser "Enter Y to continue, any other key to quit."
       if [[ "${CURRENT_USER_INPUT}" == "Y" ]] || [[ $FORCE_MAKE -eq 1 ]]; then
-          showLoadingBar
+          insertLines
+          showLoadingBar "Preparing to wipe drive ${OPTARG}"
+          sudo dd if="/dev/zero" of="/dev/${OPTARG}" bs="4096" status="progress" && insertLines && animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}Drive wiped successfully{CLEARCOLOR}"
+          showLoadingBar "Preparing to format drive ${OPTARG} as Ext4 with one partition"
+          showLoadingBar "Creating GPT partition table"
+          sudo parted "/dev/${OPTARG}" --script -- mklabel gpt && insertLines && animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}GPT Partition Table created successfully${CLEARCOLOR}"
+          showLoadingBar "Creating Ext4 partition using all available space"
+          sudo parted "/dev/${OPTARG}" --script -- mkpart primary ext4 0% 100% && insertLines && animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}Ext4 Partition created successfully, used all available space${CLEARCOLOR}"
+          showLoadingBar "Formatting partition as Ext4"
+          sudo mkfs.ext4 -F "/dev/${OPTARG}1" && insertLines && animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}Partition foramtted as Ext4 successfully${CLEARCOLOR}"
+          animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}Results:${CLEARCOLOR}"
+          sudo parted "/dev/${OPTARG}" --script print
+          insertLines
+          lsblk | grep "${OPTARG}"
+          insertLines
+          animatedPrint "Finished"
+          insertLines
       fi
       ;;
   *)
-    printf "\nInvalid flag or invalid use of flag: %s\n\nFor help, use -h\n\n" "${OPTION}"
+    printf "\nInvalid flag or invalid use of flag: %s\n\nFor help, use -h\n\n" "${OPTARG}"
     exit
     ;;
   esac

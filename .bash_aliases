@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="${PATH}:${HOME}/.local/bin:${HOME}/Code/DarlingDataManagementSystem/vendor/phpunit/phpunit"
+export PATH="${PATH}:${HOME}/.local/bin"
 
 source ~/.bash_functions
 
@@ -99,7 +99,7 @@ alias showDrives="lsblk"
 # System update aliases
 alias sysUpdate="sudo timeshift --create --comments 'Pre sysUpdate' && sudo apt update && sudo apt upgrade && sudo snap refresh"
 alias sysUpdateNoBu="sudo apt update && sudo apt upgrade && sudo snap refresh"
-
+alias timeshiftBU="sudo timeshift --create --comments 'Manual Update'"
 # pywal aliases
 ## Regenerate pywal color scheme for PhpStorm and place it in PhpStorm config dir, then call rbash whih will backup new scheme
 alias pwj="~/gitClones/intellijPywal/intellijPywalGen.sh ~/.PhpStorm2019.3/config && rbash"

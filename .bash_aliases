@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export PATH="${PATH}:${HOME}/.local/bin"
+export PATH="${PATH}:${HOME}/.local/bin:${HOME}/Code/DarlingDataManagementSystem/vendor/phpunit/phpunit"
 
 source ~/.bash_functions
 

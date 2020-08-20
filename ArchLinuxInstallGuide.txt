@@ -1,9 +1,3 @@
-#!/bin/bash
-
-set -o posix
-
-[[ -f "./functions.sh" ]] || printf "\n\nError: functions.sh could not be found\n\n" && exit 1
-
 # Step 1: Download and verify iso | best to use the magnet torrent provided by arch
 #         @ https://www.archlinux.org/download/, though this requires a torrent application
 #         like qtorrent, it's the most straight forward download, also its kind to leave
@@ -17,13 +11,16 @@ set -o posix
 # magnet:?xt=urn:btih:49da7ae0de8874462471d0f5419b850e599b05ef&dn=archlinux-2020.08.01-x86_64.iso
 #
 # To verify run the following command:
-# (make sure to cd to dir where ".iso" and sig are located, ".sig" can be obtained from Arch downloads page mentioned above)
+#
 # gpg --keyserver-options auto-key-retrieve --verify archlinux-version-x86_64.iso.sig
+#
+# Make sure to cd to directory where .iso and .sig files are located, .sig can be
+# obtained https:archlinux.org/Downloads
 #
 # Note: If the gpg command above does not work you may need to obtain the appropriate public key, a google search of the error
 #       message output by gpg should bring up reddit/stackoverflow/arch wiki posts with appropriate solutions.
 # This stack overflow post may also be helpful: https://unix.stackexchange.com/questions/594222/verify-archlinux-signature
-
+#
 # Step 2: Use dd to erase and foramt a usb drive as ext4, then use the following command to put the iso file on the usb stick
 # (!MAKE SURE TO cd INTO DIRECTORY WHERE ISO FILE IS BEFORE RUNNING THIS COMMAND)
 # sudo dd if=NAMEOF_ISO of=/dev/NAMEOF_DEVICE status="progress"
@@ -45,8 +42,6 @@ set -o posix
 # timedatectl set-ntp true
 
 # Step 8: Set up file system. This step is very important, consult Arch Wiki and google during this step to make sure you do it right.
-# Preference: btrfs
-# Plan B: Ext4
 
 
 

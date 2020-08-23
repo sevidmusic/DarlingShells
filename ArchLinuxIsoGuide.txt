@@ -26,22 +26,3 @@
 # sudo dd if=NAMEOF_ISO of=/dev/NAMEOF_DEVICE status="progress"
 #
 # Note: Use lsblk to get a list of available devices.
-
-# Step 3: With USB plugged in, restart computer (if not already set to boot from usb press F12, or appropriate key to get into Boot Menu)
-
-# Step 4: (optional) Set keyboard layout (Arch is setup for US by default)
-
-# Step 5: Verify the boot mode by running
-# ls /sys/firmware/efi/efivars
-
-# Step 6: Confirm internet connection (Always use Ethernet when installing Arch, even if wifi is available,
-#         it is more reliable and does not require any set up other than plugging in the cable)
-# Just use: ping archlinux.org
-
-# Step 7: Update system clock with following command:
-# timedatectl set-ntp true
-
-# Step 8: Set up file system. This step is very important, consult Arch Wiki and google during this step to make sure you do it right.
-
-
-

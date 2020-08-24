@@ -96,10 +96,123 @@ set -o posix
 #       when you start the Virtual Machine.
 # Note: If running in Virtual Box make sure to perform steps specific to Virtual
 #       Box prior to starting the Virtual Machine
+# IMPORTANT NOTE: All changes made while logged into arch iso, i.e. pre installation,
+#                 WILL NOT persist to actual installation, i.e., if you install vim
+#                 before running "arch-chroot /mnt" vim will not exist on the actual
+#                 installation.
 ######################################################################################
-
-
-
-
-
-
+# Step 1: Boot from USB
+# If installing on hardware, restart computer with USB plugged in, and press
+# appropriate F# key to enter BIOS, F12 is often the correct key, but it varies
+# from computer to computer.
+#
+# Step 2: Confirm internet access by pinging a known webstie:
+#         ping http://archlinux.org
+# Output will loog similar to following if successful:
+#        PING archlinux.org (138.201.81.199) 56(84) bytes of data.
+#        64 bytes from apollo.archlinux.org (138.201.81.199): icmp_seq=1 ttl=55 time=94.5 ms
+#        --- archlinux.org ping statistics ---
+#        1 packets transmitted, 1 received, 0% packet loss, time 0ms
+#        rtt min/avg/max/mdev = 94.566/94.566/94.566/0.000 ms
+#
+# Step 3 (optional): Setup SSH
+#        SSH is really nice when installing in Vitrual Box as the host machine's
+#        terminal can be used instead of the ugly UI provided by Virtual Box.
+#        3a. Install open ssh:
+#            pacman -Syy openssh
+#        3b. Start ssh server:
+#            systemctl start sshd
+#        3c. Set root password (for arch iso, not actual installation):
+#            passwd
+#            Note: "passwd" when run as root will allow you to set a new root
+#                  password via a simple propmt. This is the password you will
+#                  use to login as root via ssh.
+#        3d. Open a terminal on HOST MACHINE, and run following command:
+#            ssh USERNAME@IP_ADDRESS
+#            Note: replace USERNAME with user's name, and IP_ADDRESS obtained
+#                  by running the command "ip a" from Arch's command propmt.
+#            Note: If installing on hardware, probably best not to use ssh,
+#                  there is really no need for it.
+#            Note: If installing in Virtaul Box it is very nice not to use VB's GUI,
+#                  however, there are a few caveats:
+#                  1. Make sure Networking has been set up for Virtual Machine
+#                     using port 3022 as HOST PORT and port 22 as GUEST PORT.
+#                  2. On some distros, i noticed this on Linux Mint, I found I
+#                     needed to re-generate the ssh keys each time I tried to
+#                     log in. This can be done with the following command,
+#                     replacing appropriate parts with correct values for your
+#                     setup:
+#                     ssh-keygen -f "/home/YOUR_USER_NAME/.ssh/known_hosts\ -R "[127.0.0.1]:3022"
+#                     NOTE: ip for Virtual Box will usually be 127.0.0.1 on port
+#                           3022, unless you manully set it to something else
+#                           when setting up port forwarding for the Virtual
+#                           Machine.
+#                           If Installing on hardware, ip can be obtained by
+#                           running the "ip a" command from the Arch Installation
+#                           iso's command propmt.
+#
+# Step 4 (optional): Set keyboard layout (Arch is set up for US keyboard by default)
+#         4a. View list of available keyboard layouts with:
+#             ls /usr/share/kbd/keymaps/**/*.map.gz
+#         4b. To change/set keyboard layout, use "loadkeys" command as follows,
+#             replacing LAYOUT with layout file name, minus path and extension:
+#             For example, to set to German (example from Arch wiki):
+#             loadkeys de-latin1
+#
+# Step 5: Verify boot mode, i.e. EFI boot or Legacy boot:
+#         NOTE: This step will help you determine how the partitions should be
+#               setup as it is diffent depending for EFI boot and Legacy boot.
+#         5a. ls /sys/firmware/efi/efivars
+#         NOTE: If command shows directory without error, then the system is
+#         booted in UEFI mode, and the partions will need to be setup for EFI
+#         Otherwise the system us booting in Legacy BIOS or CSM, and you will
+#         have 2 partitions, one for swap, and one for the rest of the system.
+# Step 6: Connect to internet
+#         NOTE: If ping was successful earlier than you have internet.
+#         NOTE: It is best to use Ethernet for installation.
+#         NOTE: Wifi can be set up after install is done if it is needed via
+#               steps or Arch wiki @:
+#               https://wiki.archlinux.org/index.php/Installation_guide#Connect_to_the_internet
+#         NOTE: If you need Wifi during installation follow steps at:
+#               https://wiki.archlinux.org/index.php/Installation_guide#Connect_to_the_internet
+#         NOTE: The installation image has systemd-networkd.service,
+#               systemd-resolved.service and iwd.service enabled by default.
+#               That will not be the case for the installed system.
+#               In general the configuration of the system run from the iso will
+#               not persist to the installed system.
+# Step 7: Update the system clock:
+#         7a. Run the following command:
+#             timedatectl set-ntp true
+#         7b. Verify with:
+#             timedatectl status
+#
+# Step 8: Partion the disks:
+# -------- Legacy BIOS / CSM --------
+#      8a. Identify correct disk using lsblk:
+#          lsblk
+#      IMPORTANT: Get name of disk right, if you dont you WILL DESTROY DATA on
+#                 the mistakenly targeted disk.
+#      8b. Partion the appropriate disk via "cfdisk" by running the following
+#          command (replace TARGET_DISK_NAME with actual disk name, e.g.,
+#          "/dev/sda" or "/dev/sdb", et cetera:
+#          cfdisk /dev/TARGET_DISK_NAME
+#      8.c "cfdisk" will propmt for label type, choose DOS for legacy boot, GPT
+#          is for UEFI.
+#      8d. Create first partion, "root", this partition should be allotted MOST
+#          of the available space, the rest will be used for the "SWAP" partition.o
+#          NOTE: Select the "NEW" tab in the "cfdisk" UI , "cfdisk" will prompt
+#                 for size of partion in Gigabytes, syntax: nG, i.e. 15G
+#          NOTE: After entering size, "cfdisk" will prompt for partion type,
+#                choose "primary".
+#      8e. Make partition you just created "bootable" by selecting the partion
+#          and selecting the "bootable" tab, if successful the "cfdisk" GUI
+#          will show a "*" by the partion under the "Boot" column.
+#      8f. Perform steps 8b to 8d for SWAP partion, DO NOT MAKE IT BOOTABLE!!!
+#      8g. Change SWAP partion TYPE to "Linux SWAP/ Solaris"
+#      8h. If everything looks good, select the "Write" tab to save changes to
+#          the disk.
+#      8i. Format the newly created partions:
+#
+#
+#
+#

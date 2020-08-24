@@ -194,25 +194,35 @@ set -o posix
 #                 the mistakenly targeted disk.
 #      8b. Partion the appropriate disk via "cfdisk" by running the following
 #          command (replace TARGET_DISK_NAME with actual disk name, e.g.,
-#          "/dev/sda" or "/dev/sdb", et cetera:
-#          cfdisk /dev/TARGET_DISK_NAME
-#      8.c "cfdisk" will propmt for label type, choose DOS for legacy boot, GPT
-#          is for UEFI.
-#      8d. Create first partion, "root", this partition should be allotted MOST
-#          of the available space, the rest will be used for the "SWAP" partition.o
-#          NOTE: Select the "NEW" tab in the "cfdisk" UI , "cfdisk" will prompt
-#                 for size of partion in Gigabytes, syntax: nG, i.e. 15G
-#          NOTE: After entering size, "cfdisk" will prompt for partion type,
-#                choose "primary".
-#      8e. Make partition you just created "bootable" by selecting the partion
-#          and selecting the "bootable" tab, if successful the "cfdisk" GUI
-#          will show a "*" by the partion under the "Boot" column.
-#      8f. Perform steps 8b to 8d for SWAP partion, DO NOT MAKE IT BOOTABLE!!!
-#      8g. Change SWAP partion TYPE to "Linux SWAP/ Solaris"
-#      8h. If everything looks good, select the "Write" tab to save changes to
-#          the disk.
-#      8i. Format the newly created partions:
-#
-#
-#
-#
+#          "/dev/sda" or "/dev/sdb", et ceterai):
+#              cfdisk /dev/TARGET_DISK_NAME
+#          CFDISK STEPS:
+#          1. Upon running cfdisk /dev/TARGET_DISK_NAME, cfdisk will start with
+#             a prompt asking which "Label Type" should be used, for Legacy Boot
+#             choose "dos".
+#             (Hint: "gpt" is used for UEFI Boot)
+#          2. After selecting "Label Type" a GUI is presented, use the "New" menu
+#             option to create the  Root partition. This partition should be
+#             alloted all available space except for the space you want to allot
+#             the SWAP partition. So if you have a 100GB SSD, and you want a 8GB
+#             SWAP than the Root partition should be allotted 92GB.
+#          3. After specifying space for partition, you will be presented with
+#             two options, select "primary", the Root partion MUST be a primary
+#             partition.
+#          4. After selecting "primary" the main GUI will be shown, make sure
+#             to make the newly created partion "bootable" by selecting it and
+#             selecting the "Bootable" menu option, if sucessful, an "*" will
+#             be shown next to the partition in the "Boot" column.
+#          5. Repeat steps 2 through 4 for the SWAP partion, alloting the SWAP
+#             partition the remaing space on the drive.
+#          6. For the SWAP, you will need to change it's type by selecting the
+#             "Type" menu option, and choosing "82 Linux swap / Solaris" from
+#             the list of options.
+# After completing the above steps, you should have 2 partitions on the disk,
+# a Root partition that takes up the majority of the space, and a SWAP partition
+# that uses what remains,
+#          9. Write the changes by selecting the "Write" option from the menu,
+#             and typing "yes" when prompted.
+# Hint: Use lsblk agter completing the steps above to make sure everything
+#       looks good.
+

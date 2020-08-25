@@ -244,7 +244,21 @@ set -o posix
 #             /dev/sda2 (swap)
 #        So, to format the root partion you would run:
 #         mkfs.ext4 /dev/sda1
-#        Tto format the SWAP partion you would run:
-#         mkfs.ext4 /dev/sda2
-# Note; You MUST complete step 9 for both root and swap partion for Lecacy BIOS.
-
+# NOTE: You do not need to perform step 9 for the SWAP partition, just the Root.
+#
+# Step 10: Make SWAP
+#      10a. Run the following command:
+#           mkswap /TARGET_DISK_NAME/PARTION_NAME
+#      i.e., If the root partition is /dev/sda1
+#           mkswap /dev/sda1
+# Step 11: Turn SWAP on.
+#      11a. Run the following command:
+#           swapon /TARGET_DISK_NAME/PARTION_NAME
+#      i.e., If the root partition is /dev/sda1
+#           swapon /dev/sda1
+# Step 12: Mount the file system(s):
+#      12a. Run the following command:
+#           mount /TARGET_DISK_NAME/PARTION_NAME /mnt
+#      i.e., If the root partition is /dev/sda1
+#           mount /dev/sda1 /mnt
+# Note: You do not need to mount the SWAP

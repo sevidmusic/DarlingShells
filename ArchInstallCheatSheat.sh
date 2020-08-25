@@ -4,6 +4,7 @@ set -o posix
 
 ######################################################################################
 ######################################################################################
+#
 # I created this script as a guide to installing Arch.
 #
 # Mostly of this script is comprised of doc comments with details about
@@ -13,11 +14,13 @@ set -o posix
 # you through and perform the neccesary operations required to install Arch.
 #
 # This guide asssumes a USB is ready with a verified Arch Linux iso on it.
+#
 ######################################################################################
 ######################################################################################
 # Virtual Box Specific Steps
 ######################################################################################
 ######################################################################################
+#
 # 1. Create a ,vmdk file for the USB, this file is used
 #    by Virtual Box to access the USB, basically allows
 #    Virtual Box to mimic reading from an externally
@@ -28,7 +31,7 @@ set -o posix
 #    1a. Determine name of device with lsblk (GET THIS RIGHT)
 #    1b. Run command:
 #        sudo vboxmanage internalcommands createrawvmdk -filename  ~/NAME_OF_VMDK_FOR_DEVICE.vmdk -rawdisk /dev/DEVICE_NAME
-#        (Note: On some distros vboxmanage is VBoxManage)
+#        (NOTE: On some distros vboxmanage is VBoxManage)
 #        If successful, you will see the following message:
 #        RAW host disk access VMDK file /home/YOUR_USER_NAME/NAME_OF_VMDK_FOR_DEVICE.vmdk created successfully
 #     1c. Run command:
@@ -71,36 +74,35 @@ set -o posix
 #             - Click Create
 #    2e. Plug in USB (if not alreday plugged in) and start up the new Virtual
 #        Machine.
-######################################################################################
-#    1. If you plan to use ssh, you need to setup port forwarding, do this before
-#       starting the machine.
-#            1a. In "Settings" for Virtual Machine go to "Network" tab
-#            1b. Open the "Advanced" drop down
-#            1c. Click the "Port Forwarding" button
-#            1d. In the pop up window, click the "+" icon to add a new rule
-#            1e. Leave everything blank except for following:
+#
+#    3. If you plan to use ssh, you need to setup port forwarding, do this before
+#       starting the machine. (optional)
+#            3a. In "Settings" for Virtual Machine go to "Network" tab
+#            3b. Open the "Advanced" drop down
+#            3c. Click the "Port Forwarding" button
+#            3d. In the pop up window, click the "+" icon to add a new rule
+#            3e. Leave everything blank except for following:
 #                 - Host Port: 3022
 #                 - Guest Port: 22
-######################################################################################
-######################################################################################
-######################################################################################
-######################################################################################
-
+#
 ######################################################################################
 ########################## Arch Installation Steps ###################################
 ######################################################################################
-# Note: You will need to make sure to access bios and boot from the USB, press
+#
+# NOTE: You will need to make sure to access bios and boot from the USB, press
 #       F12, or whatever is appropriate for your motherboard, to access bios on
 #       startup.
-# Note: If running in Virtual Box, the Arch iso will automatically boot into Arch
+# NOTE: If running in Virtual Box, the Arch iso will automatically boot into Arch
 #       when you start the Virtual Machine.
-# Note: If running in Virtual Box make sure to perform steps specific to Virtual
+# NOTE: If running in Virtual Box make sure to perform steps specific to Virtual
 #       Box prior to starting the Virtual Machine
 # IMPORTANT NOTE: All changes made while logged into arch iso, i.e. pre installation,
 #                 WILL NOT persist to actual installation, i.e., if you install vim
 #                 before running "arch-chroot /mnt" vim will not exist on the actual
 #                 installation.
+#
 ######################################################################################
+#
 # Step 1: Boot from USB
 # If installing on hardware, restart computer with USB plugged in, and press
 # appropriate F# key to enter BIOS, F12 is often the correct key, but it varies
@@ -124,16 +126,16 @@ set -o posix
 #            systemctl start sshd
 #        3c. Set root password (for arch iso, not actual installation):
 #            passwd
-#            Note: "passwd" when run as root will allow you to set a new root
+#            NOTE: "passwd" when run as root will allow you to set a new root
 #                  password via a simple propmt. This is the password you will
 #                  use to login as root via ssh.
 #        3d. Open a terminal on HOST MACHINE, and run following command:
 #            ssh USERNAME@IP_ADDRESS
-#            Note: replace USERNAME with user's name, and IP_ADDRESS obtained
+#            NOTE: replace USERNAME with user's name, and IP_ADDRESS obtained
 #                  by running the command "ip a" from Arch's command propmt.
-#            Note: If installing on hardware, probably best not to use ssh,
+#            NOTE: If installing on hardware, probably best not to use ssh,
 #                  there is really no need for it.
-#            Note: If installing in Virtaul Box it is very nice not to use VB's GUI,
+#            NOTE: If installing in Virtaul Box it is very nice not to use VB's GUI,
 #                  however, there are a few caveats:
 #                  1. Make sure Networking has been set up for Virtual Machine
 #                     using port 3022 as HOST PORT and port 22 as GUEST PORT.
@@ -220,15 +222,20 @@ set -o posix
 #          6. For the SWAP, you will need to change it's type by selecting the
 #             "Type" menu option, and choosing "82 Linux swap / Solaris" from
 #             the list of options.
+#
 # After completing the above steps, you should have 2 partitions on the disk,
 # a Root partition that takes up the majority of the space, and a SWAP partition
 # that uses what remains, (Hint: If UEFI you will have a 3rd efi_system_partition)
+#
 #          9. Write the changes by selecting the "Write" option from the menu,
 #             and typing "yes" when prompted.
+
 # Hint: Use "lsblk" command after completing the steps above to make sure
 #       everything looks good.
-#
+# NOTE: You can also, optionally, create a partition for Home.
+
 # -------- UEFI --------
+
 # Hint: Steps for UEFI are same as for Legacy, with the additional step of
 #       crating a efi_system partion.
 #
@@ -245,20 +252,111 @@ set -o posix
 #        So, to format the root partion you would run:
 #         mkfs.ext4 /dev/sda1
 # NOTE: You do not need to perform step 9 for the SWAP partition, just the Root.
+# NOTE: If you created a partition for /home, you need to create a file system
+#       for it as well.
 #
 # Step 10: Make SWAP
 #      10a. Run the following command:
 #           mkswap /TARGET_DISK_NAME/PARTION_NAME
 #      i.e., If the root partition is /dev/sda1
 #           mkswap /dev/sda1
+
 # Step 11: Turn SWAP on.
 #      11a. Run the following command:
 #           swapon /TARGET_DISK_NAME/PARTION_NAME
 #      i.e., If the root partition is /dev/sda1
 #           swapon /dev/sda1
+#
 # Step 12: Mount the file system(s):
 #      12a. Run the following command:
 #           mount /TARGET_DISK_NAME/PARTION_NAME /mnt
 #      i.e., If the root partition is /dev/sda1
 #           mount /dev/sda1 /mnt
-# Note: You do not need to mount the SWAP
+# NOTE: You do not need to mount the SWAP
+# NOTE: If you created a partition for /home, you need to mount it AFTER
+#       step 13.
+# Step 13: Setup /homei and /etc directories on MOUNTED root file system
+#      13a. Run the following command:
+#           mkdir /mnt/home /mnt/etc
+#      13b. "IF" you created a Home partition, you will need to mount it to
+#           the newly created /mnt/home directory as follows:
+#               mount /TARGET_DISK_NAME/PARTION_NAME /mnt/home
+#           i.e., if Home partion is /dev/sda2
+#               mount /dev/sda2 /mnt/home
+#
+# NOTE: The Arch wiki states the next step is to run pacstrap and perform
+#       installation, however, some tuturial videos state that you run
+#       fstab to generate the fstab file. The video tutorials propbably
+#       recomend this so you can fix any errors that occur before installing,
+#       it's up to you whether you want to install the generate fstab, or
+#       generate fstab and then install, though, a chance to catch errors
+#       should not be missed, so this guide assumes genfstab then pacstrap.
+#
+#  Step 14: Generate fstab file, do this before pacstrap so you can catch errors.
+#       14a. Run the following command:
+#            genfstab -U -p /mnt >> /mnt/etc/fstab
+#       14b. Use cat to verify contests of generated fstab file:
+#            cat /mnt/etc/fstab
+#
+# Step 15: Run pacstrap to perform installation:
+# NOTE: You can optionally specify addtional packages you wish to install now,
+#
+#            For example, to install just essentials (minimum required):
+#            pacstrap -i /mnt base linux linux-firmware
+#            NOTE: You only need  to install essentials, you can install more
+#                  once you chroot  into the new installation after running
+#                  pacstrap.
+#
+#            To install with both lts and current kernals:
+#            pacstrap -i /mnt base linux linux-firmware linux-headers linux-lts linux-lts-headers
+#            NOTE: Installing both lts and current kernals is good practice, if anything goes
+#                  wrong with one the other may be able to be used to regain access to the
+#                  system so you can address any issues that are causing problems
+#
+#            To install with vim and tmux:
+#            pacstrap -i /mnt base linux ... vim tmux
+#
+# NOTE: The -i flag tells pacman to display more information about packages.
+# IMPORTANT: After a lot of research, it seems it is good practice to always
+#            include the "lts" packages, so a best practice minimum pacstrap
+#            would be:
+#            pacstrap -i base linux linux-firmware linux-headers linux-lts linux-lts-headers
+# My preference, "best practice" minimu pacstrap, then install other packages once
+# logged into the new installtion, i.e., after chrooting into it.
+#
+# Step 16: chroot into new installtion.
+#      16a. Run the following command:
+#           arch-chroot /mnt
+#      You are now logged into your new Arch installation as root : )
+#
+# Step 17: Set local timezone.
+#      17a. Run command:
+#           ln -sf /usr/share/zoneinfo/YOUR_REGION/YOUR_CITY /etc/localtime
+#      17b. Then generate /etc/adjtime by running command:
+#           hwclock --systohc
+#
+#
+# Step 18: Localization (For non-US localizations, you will need to adjust accordingly):
+#      18a. Edit file /etc/locale.gen, uncomment or add the following:
+#           en_US.UTF-8
+#           UTF-8
+#      18b. Create locale.conf at /etc/locale.conf and add the following:
+#           LANG=en_US.UTF-8
+#
+# Step 19: Network configuration
+#      19a. Create the hostname file at /etc/hostname and add following line
+#           replacing HOSTNAME with your desired host name, i.e. name of computer
+#      19b. Create/edit hosts file to reflect hostname configuration:
+#           vim /etc/hosts should look as follows:
+#
+#           127.0.0.1  localhost
+#           ::1        localhost
+#           127.0.0.1  HOSTNAME.localdomain HOSTNAME
+#
+#           For example, if the HOSTNAME you specified in /etc/hostname is "foo",
+#           then /etc/hosts should look like:
+#
+#           127.0.0.1  localhost
+#           ::1        localhost
+#           127.0.0.1  foo.localdomain foo
+

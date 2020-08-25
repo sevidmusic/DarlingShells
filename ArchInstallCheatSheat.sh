@@ -338,8 +338,7 @@ set -o posix
 #
 # Step 18: Localization (For non-US localizations, you will need to adjust accordingly):
 #      18a. Edit file /etc/locale.gen, uncomment or add the following:
-#           en_US.UTF-8
-#           UTF-8
+#           en_US.UTF-8 UTF-8
 #      18b. Create locale.conf at /etc/locale.conf and add the following:
 #           LANG=en_US.UTF-8
 #
@@ -359,4 +358,23 @@ set -o posix
 #           127.0.0.1  localhost
 #           ::1        localhost
 #           127.0.0.1  foo.localdomain foo
+#
+# Step 20: Create init ram file system (Arch says optional, no harm to make sure all us ok)
+#      20a. mkinitcpio -P
+#
+# Step 21: Set root password
+#      21a. Run passwd, and eneter desired password in both propmpts
+#
+# Step 22: Install a bootloader, probaly best to use GRUB, is stable and supports
+#          most file systems.
+#
+# NOTE: Once bootloader is installed, you can logout, poweroff the machine,
+#       UNPLUG THE USB, and reboot the computer. Then  you can then log in
+#       as root, and perform any additional installation steps such as
+#       setting up a user account, getting more packages, etc.
+# NOTE: If you have an AMD or INTEL processor, you may want one of the following:
+#       intel-ucode : Package for binaries needed by Intel processors
+#       amd-ucode   : Package for binaries needed by AMD Processors
+#
+# Step 23:
 

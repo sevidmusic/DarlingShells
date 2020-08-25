@@ -194,11 +194,11 @@ set -o posix
 #                 the mistakenly targeted disk.
 #      8b. Partion the appropriate disk via "cfdisk" by running the following
 #          command (replace TARGET_DISK_NAME with actual disk name, e.g.,
-#          "/dev/sda" or "/dev/sdb", et ceterai):
+#          "/dev/sda" or "/dev/sdb", et cetera):
 #              cfdisk /dev/TARGET_DISK_NAME
 #          CFDISK STEPS:
 #          1. Upon running cfdisk /dev/TARGET_DISK_NAME, cfdisk will start with
-#             a prompt asking which "Label Type" should be used, for Legacy Boot
+#             a prompt asking which "Label Type" should be used. For Legacy Boot
 #             choose "dos".
 #             (Hint: "gpt" is used for UEFI Boot)
 #          2. After selecting "Label Type" a GUI is presented, use the "New" menu
@@ -208,21 +208,43 @@ set -o posix
 #             SWAP than the Root partition should be allotted 92GB.
 #          3. After specifying space for partition, you will be presented with
 #             two options, select "primary", the Root partion MUST be a primary
-#             partition.
-#          4. After selecting "primary" the main GUI will be shown, make sure
-#             to make the newly created partion "bootable" by selecting it and
+#             partition. (Hint: SWAP will also be a "primary" partition)
+#          4. After selecting "primary" the main GUI will be shown, you MUST
+#             make the newly created partion "bootable" by selecting it and
 #             selecting the "Bootable" menu option, if sucessful, an "*" will
 #             be shown next to the partition in the "Boot" column.
 #          5. Repeat steps 2 through 4 for the SWAP partion, alloting the SWAP
 #             partition the remaing space on the drive.
+#             Hint: For UEFI you would also create a "efi system partition"
+#                    alotted at least 512 MB
 #          6. For the SWAP, you will need to change it's type by selecting the
 #             "Type" menu option, and choosing "82 Linux swap / Solaris" from
 #             the list of options.
 # After completing the above steps, you should have 2 partitions on the disk,
 # a Root partition that takes up the majority of the space, and a SWAP partition
-# that uses what remains,
+# that uses what remains, (Hint: If UEFI you will have a 3rd efi_system_partition)
 #          9. Write the changes by selecting the "Write" option from the menu,
 #             and typing "yes" when prompted.
-# Hint: Use lsblk agter completing the steps above to make sure everything
-#       looks good.
+# Hint: Use "lsblk" command after completing the steps above to make sure
+#       everything looks good.
+#
+# -------- UEFI --------
+# Hint: Steps for UEFI are same as for Legacy, with the additional step of
+#       crating a efi_system partion.
+#
+# Step 9: Create the File System
+# Hint: ext4 is the most striaght forward to use, it is very stable, and has
+#       stood the test of time.
+#     9a. To create ext4 file system, use the following command, replacing
+#         TARGET_DISK_NAME/PARTION_NAME with actual disk name and partion
+#         name, respectivly:
+#         mkfs.ext4 /TARGET_DISK_NAME/PARTION_NAME
+#         For example, you may have disk /dev/sda with 2 partions:
+#             /dev/sda1 (root)
+#             /dev/sda2 (swap)
+#        So, to format the root partion you would run:
+#         mkfs.ext4 /dev/sda1
+#        Tto format the SWAP partion you would run:
+#         mkfs.ext4 /dev/sda2
+# Note; You MUST complete step 9 for both root and swap partion for Lecacy BIOS.
 

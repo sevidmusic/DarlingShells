@@ -182,6 +182,7 @@ set -o posix
 #               That will not be the case for the installed system.
 #               In general the configuration of the system run from the iso will
 #               not persist to the installed system.
+#
 # Step 7: Update the system clock:
 #         7a. Run the following command:
 #             timedatectl set-ntp true
@@ -211,24 +212,29 @@ set -o posix
 #          3. After specifying space for partition, you will be presented with
 #             two options, select "primary", the Root partion MUST be a primary
 #             partition. (Hint: SWAP will also be a "primary" partition)
-#          4. After selecting "primary" the main GUI will be shown, you MUST
-#             make the newly created partion "bootable" by selecting it and
-#             selecting the "Bootable" menu option, if sucessful, an "*" will
-#             be shown next to the partition in the "Boot" column.
-#          5. Repeat steps 2 through 4 for the SWAP partion, alloting the SWAP
+#          4. After selecting "primary" the main GUI will be shown. The root
+#             partition MUST be "bootable". Do this by selecting the root
+#             partition and then selecting the "Bootable" menu option, if
+#             sucessful, an "*" will be shown next to the partition in the
+#             "Boot" column.
+#          5. Write the changes by selecting the "Write" option from the menu,
+#             and typing "yes" when prompted.
+#          6. Repeat steps 2 through 5 for the SWAP partion, alloting the SWAP
 #             partition the remaing space on the drive.
 #             Hint: For UEFI you would also create a "efi system partition"
 #                    alotted at least 512 MB
-#          6. For the SWAP, you will need to change it's type by selecting the
+#          7. For the SWAP, you will need to change it's type by selecting the
 #             "Type" menu option, and choosing "82 Linux swap / Solaris" from
 #             the list of options.
+#          8. If both partitions look okay, choose "quit" from the menu options
+#             to exit.
+#             NOTE: As long as you performed step 5 for each partition your
+#                   changes should persist.
 #
 # After completing the above steps, you should have 2 partitions on the disk,
 # a Root partition that takes up the majority of the space, and a SWAP partition
 # that uses what remains, (Hint: If UEFI you will have a 3rd efi_system_partition)
 #
-#          9. Write the changes by selecting the "Write" option from the menu,
-#             and typing "yes" when prompted.
 
 # Hint: Use "lsblk" command after completing the steps above to make sure
 #       everything looks good.
@@ -294,10 +300,23 @@ set -o posix
 #       should not be missed, so this guide assumes genfstab then pacstrap.
 #
 #  Step 14: Generate fstab file, do this before pacstrap so you can catch errors.
+#       NOTE: You may have to create /mnt/etc prior to running gengstab
 #       14a. Run the following command:
 #            genfstab -U -p /mnt >> /mnt/etc/fstab
 #       14b. Use cat to verify contests of generated fstab file:
 #            cat /mnt/etc/fstab
+#
+# Step 15: Select mirrors. You can do this manually by editing
+#          /etc/pacman.d/mirrorlist
+#          Hint: You can use a package like "reflector" to
+#                automate this.
+#                1. Install reflector:
+#                   pacman -S reflector
+#                2. Run the following to update mirrors with reflector:
+#                   reflector -c UnitedStates -a 6 --sort rate --save /etc/pacman.d/mirrorlist
+#                3. Update the pacman database
+#                   pacman -Syy
+#
 #################################################################
 ###################### ACTUAL INSTALLATION ######################
 #################################################################
@@ -346,9 +365,23 @@ set -o posix
 # NOTE: If you have an AMD or INTEL processor, you may need one of the following:
 #       intel-ucode : Package for binaries needed by Intel processors
 #       amd-ucode   : Package for binaries needed by AMD Processors
+#       mesa: An open-source implementation of the OpenGL specification
 # NOTE: You may also want to install the base-devel package which includes a number
 #       of utilities useful for development and debugging. This is optional.
-#
+# NOTE: You may also wish to install the following packages.
+#       - dialog provides support for terminal dialog boxes
+#       - mtools provides a collection of utilities related to accessubg MS-DOS disks
+#       - dosfstools more utilities for MS-DOS disks
+#       - reflector Tool that aides in keeping mirrors up to date
+#       -- Virtual Box specific --
+#       - virtualbox-guest-utils
+#       - xf86-video-vmware
+#       --  If you NVIDIA graphics --
+#       - (linux kernal) nvidia nvidia-utils
+#       - (linux lts kernal) nvidia-lts nvidia-utils
+#       NOTE: If you installed both kernals get all 3:
+#       - nvidia nvidia-utils nvidia-lts
+
 # Step 16: chroot into new installtion.
 #      16a. Run the following command:
 #           arch-chroot /mnt
@@ -437,5 +470,61 @@ set -o posix
 #       setting up a user account, getting more packages, etc.
 #
 # Step 23: Create main user account and setup privileges, groups, etc:
-#
+#      NOTE: sudo is not installed by default, get it with:
+#          pacman -S sudo
+#      23a. Add user:
+#         useradd -m -g users -G wheel USERNAME
+#      NOTE: The "-G wheel" option  adds the new user to the wheel group so
+#            usermod is not required later, a nice shortcut.
+#           --- TO ADD A USER TO NEW GROUPS ---
+#           1. Add user to the appropriate groups:
+#               usermod -aG GROUPNAME1,GROUPNAME2,GROUPNAME3,...
+#           2. Verify success by running:
+#              groups USERNAME
+#              The groups listed should match groups added via usermod
 
+#      23b. Set new user password
+#         passwd USERNAME
+#      23c. Add user to sudoers
+#           3. Edit sudoers file with (requires vim to be installed):
+#              visudo
+#              ---- Once In Vim ----
+#              3a. search for:
+#                  "Uncomment to allow for members of group wheel to execute any command"
+#              3b. Uncomment the line matching "%wheel ALL=(ALL) ALL"
+#                  ...
+#                  # Uncomment to allow for members of group wheel to execute any command
+#                  %wheel ALL=(ALL) ALL
+#                  ...
+#              3c. Save file and quit.
+#                  :wq
+#
+#      24: Prepare to poweroff and reboot. MAKE SURE TO REMOVE USB BEFORE REBOOT
+#      NOTE: You may want to install the following packages before rebooting.
+#            These packages are optional but useful.
+#            - CPU Mirocode:
+#                  Intel: pacman -S intel-ucode
+#                  AMD: pacman -S amd-ucode
+#            - System Management:
+#                mesa: The mesa package provides common binaries for AMD and INTEL
+#                      graphics cards
+#                nvidia-utils (linux): Common binaries for NVIDIA graphics cards
+#                nvidia-lts (linux-lts): Common binaries for NVIDIA graphics cards
+#                virtualbox-guest-utils xf86-video-vmware: Only need if running
+#                                                          in Virtual Box.
+#
+# Step 24: Logout of installation
+#      exit
+#
+# Step 25: Once logged out, you be back in iso. From here, shutdown computer:
+#          poweroff
+#
+# Step 26: Reboot the machine. AGAIN! REMOVE USB,
+#          NOTE: If running in virtual box you will need to remove the Virtual
+#                Drive that represents the USB before starting the Virtual
+#                Machine up again. You can do this as follows:
+#                1. Oepn the "Settings" for the relevant machine.
+#                2. Go to the "Storage" tab.
+#                3. Remove the SATA controller of IDE controller that represents
+#                   the USB. this will reference a .vmdk file
+#

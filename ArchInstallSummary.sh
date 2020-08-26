@@ -19,7 +19,7 @@ lsblk
 mkfs.ext4 /dev/PARTION_NAME
 # Enable SWAP
 mkswap /dev/PARTION_NAME
-swap on /dev/PARTION_NAME
+swapon /dev/PARTION_NAME
 # Mount the file system (Root partition, and if created, Home partition)
 mount /dev/PARTION_NAME /mnt
 # Generate fstab file
@@ -51,8 +51,10 @@ pacman -Syy
 #       NOTE: If you installed both kernals get all 3:
 #       - nvidia nvidia-utils nvidia-lts
 pacstrap -i /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware # if VB include: # virtualbox-guest-utils xf86-video-vmware
+########################## POST INSTALLATION ##########################
 # Chroot into new installation: If this works, so far so good : )
 arch-chroot /mnt
+######### YOU ARE NOW LOGGED INTO YOUR NEW ARCH INSTALLATION ##########
 # Determine loacl time zone name | Example: timedatectl list-timezones | grep "New_York"
 timedatectl list-timezones | grep "NAME_OF_CLOSEST_CITY"
 # Set local time
@@ -69,13 +71,17 @@ hwclock --systohc
 locale-gen
 # Create /etc/locale.conf and add the following line:
 LANG=en_US.UTF-8
-##############################HEREHERHERHERHEHRERHERE
+################ NETWORK SETUP ##################
+# Installl networkmanager
+pacman -S networkmanager
 # Create /etc/hostname and add the following line:
 HOSTNAME
 # Create /etc/hosts and add the following lines:
            127.0.0.1  localhost
            ::1        localhost
            127.0.0.1  HOSTNAME.localdomain HOSTNAME
+# enable network manager so it is running on reboot
+systemctl enable NetworkManager.service
 # IF you did not insall kernals with pacstrap you will need to run
 mkinitcpio -P
 # Update root password

@@ -51,5 +51,23 @@ pacman -Syy
 #       NOTE: If you installed both kernals get all 3:
 #       - nvidia nvidia-utils nvidia-lts
 pacstrap -i /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware # if VB include: # virtualbox-guest-utils xf86-video-vmware
-
+# Chroot into new installation: If this works, so far so good : )
+arch-chroot /mnt
+# Determine loacl time zone name | Example: timedatectl list-timezones | grep "New_York"
+timedatectl list-timezones | grep "NAME_OF_CLOSEST_CITY"
+# Set local time
+ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+# Sync hardware clock
+hwclock --systohc
+# Edit file /etc/locale.gen and uncomment the following line:
+# en_US.UTF-8 UTF-8
+# Example:
+# 1. vim /etc/locale.gen
+# 2. search for "# en_US.UTF-8"
+# 3. Un-comment line
+# Update locales with:
+locale-gen
+# Create /etc/locale.conf and add the following line:
+LANG=en_US.UTF-8
+#
 

@@ -393,6 +393,8 @@ set -o posix
 # Step 17: Set local timezone.
 #      NOTE: To get a  list of available timezones run:
 #            timedatectl list-timezones | grep "NAME_OF_CLOSEST_CITY"
+#      For example:
+#            timedatectl list-timezones | grep "New_York"
 #      Result will be similar to:
 #            America/New_York
 #      17a. Run command:

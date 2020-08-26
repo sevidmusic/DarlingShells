@@ -275,7 +275,8 @@ set -o posix
 # NOTE: You do not need to mount the SWAP
 # NOTE: If you created a partition for /home, you need to mount it AFTER
 #       step 13.
-# Step 13: Setup /homei and /etc directories on MOUNTED root file system
+#
+# Step 13: Setup /home and /etc directories on MOUNTED root file system
 #      13a. Run the following command:
 #           mkdir /mnt/home /mnt/etc
 #      13b. "IF" you created a Home partition, you will need to mount it to
@@ -297,32 +298,56 @@ set -o posix
 #            genfstab -U -p /mnt >> /mnt/etc/fstab
 #       14b. Use cat to verify contests of generated fstab file:
 #            cat /mnt/etc/fstab
+#################################################################
+###################### ACTUAL INSTALLATION ######################
+#################################################################
 #
 # Step 15: Run pacstrap to perform installation:
 # NOTE: You can optionally specify addtional packages you wish to install now,
 #
 #            For example, to install just essentials (minimum required):
-#            pacstrap -i /mnt base linux linux-firmware
+#            pacstrap -i /mnt base
 #            NOTE: You only need  to install essentials, you can install more
 #                  once you chroot  into the new installation after running
 #                  pacstrap.
 #
-#            To install with both lts and current kernals:
+#            To install essentials and  both lts and current kernals:
 #            pacstrap -i /mnt base linux linux-firmware linux-headers linux-lts linux-lts-headers
 #            NOTE: Installing both lts and current kernals is good practice, if anything goes
 #                  wrong with one the other may be able to be used to regain access to the
 #                  system so you can address any issues that are causing problems
 #
 #            To install with vim and tmux:
-#            pacstrap -i /mnt base linux ... vim tmux
+#            pacstrap -i /mnt base vim tmux
 #
 # NOTE: The -i flag tells pacman to display more information about packages.
 # IMPORTANT: After a lot of research, it seems it is good practice to always
-#            include the "lts" packages, so a best practice minimum pacstrap
-#            would be:
-#            pacstrap -i base linux linux-firmware linux-headers linux-lts linux-lts-headers
-# My preference, "best practice" minimu pacstrap, then install other packages once
-# logged into the new installtion, i.e., after chrooting into it.
+#            include the "lts" packages
+# IMPORTANT: "Best practice" is to run minimum pacstrap, then install other
+#            packages once logged into the new installtion.
+#            i.e. Actual install steps including pacstrap:
+#            1. Minimum pacsrtap, run:
+#               pacstrap -i /mnt base
+#            2. Login to installation, run:
+#               arch-chroot /mnt
+#            3. Install kernal, firmware, and headers, Run:
+#               pacman -S base linux linux-firmware linux-headers linux-lts linux-lts-headers
+# NOTE: The only advantage to installing the kernal packages with pacstrap is
+#       you wont need to manually run mkinitcpio as pacstrap will do this for
+#       any kernal packages it installs.
+#       If you choose to install kernals with pacstrap steps will be:
+#            1. Minimum pacsrtap, run:
+#               pacstrap -i base linux linux-firmware linux-headers linux-lts linux-lts-headers
+#            2. Login to installation, run:
+#               arch-chroot /mnt
+#            3. Install desired packages and proceed with post installation steps:
+#               pacman -S vim tmux ...
+
+# NOTE: If you have an AMD or INTEL processor, you may need one of the following:
+#       intel-ucode : Package for binaries needed by Intel processors
+#       amd-ucode   : Package for binaries needed by AMD Processors
+# NOTE: You may also want to install the base-devel package which includes a number
+#       of utilities useful for development and debugging. This is optional.
 #
 # Step 16: chroot into new installtion.
 #      16a. Run the following command:
@@ -330,17 +355,31 @@ set -o posix
 #      You are now logged into your new Arch installation as root : )
 #
 # Step 17: Set local timezone.
+#      NOTE: To get a  list of available timezones run:
+#            timedatectl list-timezones | grep "NAME_OF_CLOSEST_CITY"
+#      Result will be similar to:
+#            America/New_York
 #      17a. Run command:
 #           ln -sf /usr/share/zoneinfo/YOUR_REGION/YOUR_CITY /etc/localtime
+#      Example:
+#           ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
 #      17b. Then generate /etc/adjtime by running command:
 #           hwclock --systohc
-#
 #
 # Step 18: Localization (For non-US localizations, you will need to adjust accordingly):
 #      18a. Edit file /etc/locale.gen, uncomment or add the following:
 #           en_US.UTF-8 UTF-8
-#      18b. Create locale.conf at /etc/locale.conf and add the following:
+#      18b. Generate locals by running the following command:
+#           locale-gen
+#      18c. Create/edit locale.conf at /etc/locale.conf and add the following:
 #           LANG=en_US.UTF-8
+# NOTE: If you changed the default keyboard layout, you will need to add the
+#       appropriate locale for your keyboard layout to /etc/locale.conf. If
+#       you did not change the keyboard layout you dont need add anything else.
+#       By default Arch is configured for US, so if your in the US you dont need
+#       to do anything in regards to the keyboard layout.
+#       For exampe, you would add a line similar to:
+#       KEYMAP=APPROPRIATE_KEY_MAP
 #
 # Step 19: Network configuration
 #      19a. Create the hostname file at /etc/hostname and add following line
@@ -359,22 +398,44 @@ set -o posix
 #           ::1        localhost
 #           127.0.0.1  foo.localdomain foo
 #
-# Step 20: Create init ram file system (Arch says optional, no harm to make sure all us ok)
-#      20a. mkinitcpio -P
+# Step 20: Run mkinitcpio for any kernals you installed:
+# Hint: If you installed Kernal packages with pacstrap then you dont need to perform step 20.
+#      20a. mkinitcpio -p KERNAL # or run # mkinitcpio -P (to apply to all at once)
+#           If you installed more than one, e.g., current and lts, you
+#           need to do this for all of them:
+#           Example for LTS and Current:
+#           1. mkinitcpio -p linux
+#           2. mkinitcpio -p linux-lts
+# Hint: You can also just run mkinitcpio -P to apply to all installed kernals
+# Hint: @see https://wiki.archlinux.org/index.php/Mkinitcpio for a good guide
 #
 # Step 21: Set root password
 #      21a. Run passwd, and eneter desired password in both propmpts
 #
-# Step 22: Install a bootloader, probaly best to use GRUB, is stable and supports
-#          most file systems.
 #
+# Step 22: Make sure dhcp is set to start on boot with;
+#          systemctl enable dhcpcd
+# Hint: You can check if dhcp is running with:
+#           dhcping
+#
+# Step 23: Install a bootloader, probaly best to use GRUB, is stable and supports
+#          most file systems.
+#      GRUB INSTALL FOR LEGACY BIOS STEPS:
+#      1. pacman -S grub
+#      2. grub-install /dev/TARGET_DISK_NAME
+#         e.g.:
+#             grub-install /dev/sda
+#      NOTE: You MUST identify the whole disk, NOT a partition
+#          WRONG: grub-install /dev/sda1
+#      3, Create grub configuration:
+#         grub-mkconfig -o /boot/grub/grub.cfg
+#      Hint: For a guide on installing grup for UEFI @see:
+#            https://www.youtube.com/watch?v=a00wbjy2vns&list=PLMlf7rmy7J0cKPR3utSAaXa7WeNKi5E1F&index=8&t=1443s
 # NOTE: Once bootloader is installed, you can logout, poweroff the machine,
 #       UNPLUG THE USB, and reboot the computer. Then  you can then log in
 #       as root, and perform any additional installation steps such as
 #       setting up a user account, getting more packages, etc.
-# NOTE: If you have an AMD or INTEL processor, you may want one of the following:
-#       intel-ucode : Package for binaries needed by Intel processors
-#       amd-ucode   : Package for binaries needed by AMD Processors
 #
-# Step 23:
+# Step 23: Create main user account and setup privileges, groups, etc:
+#
 

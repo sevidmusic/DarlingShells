@@ -381,7 +381,10 @@ set -o posix
 #       - (linux lts kernal) nvidia-lts nvidia-utils
 #       NOTE: If you installed both kernals get all 3:
 #       - nvidia nvidia-utils nvidia-lts
-
+##########################################################################
+################## POOST INSTALLATION ####################################
+##########################################################################
+#
 # Step 16: chroot into new installtion.
 #      16a. Run the following command:
 #           arch-chroot /mnt

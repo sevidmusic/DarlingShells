@@ -80,6 +80,8 @@ HOSTNAME
            127.0.0.1  localhost
            ::1        localhost
            127.0.0.1  HOSTNAME.localdomain HOSTNAME
+# cat /etc/hostname and /etc/hosts to make sure everything looks good:
+cat /etc/hostname /etc/hosts
 # enable network manager so it is running on reboot
 systemctl enable NetworkManager.service
 # IF you did not insall kernals with pacstrap you will need to run

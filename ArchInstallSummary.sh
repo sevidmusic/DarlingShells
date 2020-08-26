@@ -69,5 +69,33 @@ hwclock --systohc
 locale-gen
 # Create /etc/locale.conf and add the following line:
 LANG=en_US.UTF-8
-#
+##############################HEREHERHERHERHEHRERHERE
+# Create /etc/hostname and add the following line:
+HOSTNAME
+# Create /etc/hosts and add the following lines:
+           127.0.0.1  localhost
+           ::1        localhost
+           127.0.0.1  HOSTNAME.localdomain HOSTNAME
+# IF you did not insall kernals with pacstrap you will need to run
+mkinitcpio -P
+# Update root password
+passwd
+# Install grub
+pacman -S grub
+grub-install /dev/TARGET_DISK_NAME
+grub-mkconfig -o /boot/grub/grub.cfg
+# Add user
+useradd -m -g users -G wheel USERNAME
+# Set users password
+passwd USERNAME
+# Give wheel group sudo privileges
+visudo
+# visudo expects vim to be installed, and will open the "sudoers" file
+# in this file uncomment the following line:
+%wheel ALL=(ALL) ALL
+# Exit out of installation
+exit
+# Poweroff computer
+poweroff
+# REMEMBER TO REMOVE USB BEFORE REBOOTING
 

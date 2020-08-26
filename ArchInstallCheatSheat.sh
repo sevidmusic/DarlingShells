@@ -422,6 +422,7 @@ set -o posix
 # Step 19: Network configuration
 #      19a. Create the hostname file at /etc/hostname and add following line
 #           replacing HOSTNAME with your desired host name, i.e. name of computer
+#           HOSTNAME
 #      19b. Create/edit hosts file to reflect hostname configuration:
 #           vim /etc/hosts should look as follows:
 #
@@ -449,12 +450,6 @@ set -o posix
 #
 # Step 21: Set root password
 #      21a. Run passwd, and eneter desired password in both propmpts
-#
-#
-# Step 22: Make sure dhcp is set to start on boot with;
-#          systemctl enable dhcpcd
-# Hint: You can check if dhcp is running with:
-#           dhcping
 #
 # Step 23: Install a bootloader, probaly best to use GRUB, is stable and supports
 #          most file systems.
@@ -495,7 +490,7 @@ set -o posix
 #              visudo
 #              ---- Once In Vim ----
 #              3a. search for:
-#                  "Uncomment to allow for members of group wheel to execute any command"
+#                  "Uncomment to allow members of group wheel to execute any command"
 #              3b. Uncomment the line matching "%wheel ALL=(ALL) ALL"
 #                  ...
 #                  # Uncomment to allow for members of group wheel to execute any command

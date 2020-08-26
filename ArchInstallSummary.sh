@@ -84,14 +84,18 @@ HOSTNAME
 cat /etc/hostname /etc/hosts
 # enable network manager so it is running on reboot
 systemctl enable NetworkManager.service
+####################### Intrafms ####################################
 # IF you did not insall kernals with pacstrap you will need to run
 mkinitcpio -P
+############## ROOT USER SETUP ###############
 # Update root password
 passwd
+############### BOOTLOADER ##############
 # Install grub
 pacman -S grub
 grub-install /dev/TARGET_DISK_NAME
 grub-mkconfig -o /boot/grub/grub.cfg
+############ USER SETUP ################
 # Add user
 useradd -m -g users -G wheel USERNAME
 # Set users password

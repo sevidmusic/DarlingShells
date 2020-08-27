@@ -7,7 +7,7 @@ source ~/.bash_functions
 ### Do on login ###
 
 # set neofetch alias here b/c it is used on login
-alias neofetch="neofetch --off --disable cpu gpu memory icons theme shell resolution packages wm de term kernel"
+#alias neofetch="neofetch --off --disable cpu gpu memory icons theme shell resolution packages wm de term kernel"
 
 # Clear pywal cache
 wal -c

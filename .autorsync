@@ -1,0 +1,4 @@
+printf "\n\nBacking up .autorsync\n\n"
+rsync -c ~/.autorsync ~/Code/DarlingShells/.autorsync
+printf "\n\nBacking up .vimrc\n\n"
+rsync -c ~/.vimrc ~/Code/DarlingShells/.vimrc

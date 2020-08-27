@@ -70,6 +70,21 @@ showLoadingBar() {
   fi
 }
 
+performPreInsallation()
+{
+    showLoadingBar "Preparing fo pre-insallation steps"
+}
+
+performInstallation()
+{
+    showLoadingBar "Installing Arch"
+}
+
+performPostInstallation()
+{
+    showLoadingBar "Preparing to for post-insallation steps"
+}
+
 initColors
 initMessages
 
@@ -89,3 +104,7 @@ while getopts "h" OPTION; do
     ;;
   esac
 done
+
+performPreInsallation
+performInstallation
+performPostInstallation

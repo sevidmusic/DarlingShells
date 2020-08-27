@@ -1,5 +1,7 @@
 #!/bin/bash
 
+################################ PRE INSTALLATION #########################
+
 set -o posix
 
 installOpenSSH()

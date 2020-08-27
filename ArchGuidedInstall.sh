@@ -14,12 +14,7 @@ initMessages() {
 \___/ \_,_//_/ \_,_/ \__/ \_,_/ /_/ |_|/_/   \__//_//_/ /___//_//_//___/\__/ \_,_//_//_/ \_,_/ \__//_/ \___//_//_/
 
 '
-    HELPMSG='
- I developed this script as a guide for myself. It walks me through the process of installing Arch linux
- with the configuration and packages I am partial to. Feel free to use it or modify it, just be aware
- that I wrote this for myself, so if you use it you may wish to modify it to suit your needs, or to
- accomodate changes to the Arch installation process in the event that I stop maintaing this script.'
-
+    HELPMSG='I developed this script as a guide for myself. It walks me through the process of installing Arch linux with the configuration and packages I am partial to. Feel free to use it or modify it. If you do use it you may want to modify it to suit your needs, or to accomodate changes to the Arch installation process in the event that I stop maintaing this script. -Sevi D'
 }
 
 initColors() {
@@ -45,7 +40,7 @@ animatedPrint()
   _charCount=0
   for (( i=0; i< ${#_charsToAnimate}; i++ )); do
       ((_charCount++))
-      [[ $_charCount == 80 ]] && _charCount=0 && printf "\n%s\n" $_charCount
+      [[ $_charCount == 80 ]] && _charCount=0 && printf "\n\n "
       # Replace placeholder _ with space | i.e., fix spaces that were replaced
       _currentChar=$(printf "%s" "${_charsToAnimate:$i:1}" | sed -E "s/_/ /g;")
       printf "%s" "${_currentChar}"
@@ -78,11 +73,14 @@ showLoadingBar() {
 initColors
 initMessages
 
+showLoadingBar "Loading ArchGuidedInstall"
+
 while getopts "h" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
-      animatedPrint "${HELPMSG}"
+      animatedPrint "${HELPMSG}" 0.042
+      printf "\n\n"
     exit
     ;;
   *)

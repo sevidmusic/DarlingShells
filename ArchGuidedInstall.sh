@@ -75,14 +75,13 @@ installOpenSSH()
 {
     showLoadingBar "Setting up ${SSH}" "dontClear"
     # Determine if ssh exists on Arch iso
-    if [[ "$(which ssh)" == "/usr/bin/ssh" ]]; then
-        animatedPrint "SSH: ${SSH}"
-        sleep 3
-        # If not get it
-        #    pacman -S openssh
-        # Start ssh
-        #    systemctl start sshd
-    fi
+    [[ "$(which ssh)" == "/usr/bin/ssh" ]] && animatedPrint "SSH is already installed: $(which ssh)" && exit
+    animatedPrint "SSH: ${SSH}"
+    sleep 3
+    # If not get it
+    #    pacman -S openssh
+    # Start ssh
+    #    systemctl start sshd
     clear
 }
 

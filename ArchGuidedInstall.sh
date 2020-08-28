@@ -88,6 +88,7 @@ installOpenSSH()
 }
 
 performPreInsallation() {
+    printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
     [[ -n "${SSH}" ]] && installOpenSSH
 }
@@ -120,7 +121,7 @@ while getopts ":hs" OPTION; do
     ;;
   esac
 done
-
+clear
 performPreInsallation
 performInstallation
 performPostInstallation

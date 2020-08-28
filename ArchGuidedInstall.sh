@@ -71,8 +71,20 @@ showLoadingBar() {
   [[ "${2}" != "dontClear" ]] && clear
 }
 
+installOpenSSH()
+{
+    # Determine if ssh exists on Arch iso
+    which ssh
+    # If not get it
+#    pacman -S openssh
+    # Start ssh
+#    systemctl start sshd
+}
+
 performPreInsallation() {
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
+    [[ -n "${SSH}" ]] && installOpenSSH
+    exit
 }
 
 performInstallation() {
@@ -87,13 +99,16 @@ initColors
 initMessages
 # For a great article on getopts, and other approaches to handling bash arguments:
 # @see https://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":h" OPTION; do
+while getopts ":hs" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
       animatedPrint "${HELPMSG}" 0.042
       printf "\n\n"
     exit 1
+    ;;
+  s)
+      SSH='openssh'
     ;;
   \?)
      animatedPrint "Invalid argument: -${OPTARG}" && exit 1

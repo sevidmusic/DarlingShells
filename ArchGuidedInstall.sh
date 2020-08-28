@@ -15,6 +15,9 @@ initMessages() {
 
 '
     HELPMSG='I developed this script as a guide for myself. It walks me through the process of installing Arch linux with the configuration and packages I am partial to. Feel free to use it or modify it. If you do use it you may want to modify it to suit your needs, or to accomodate changes to the Arch installation process in the event that I stop maintaing this script. -Sevi D'
+    LB_PRE_INSTALL_MSG='Preparing fo pre-insallation steps'
+    LB_INSTALL_MSG='Installing Arch'
+    LB_POST_INSTALL_MSG='Preparing for post-insallation steps'
 }
 
 initColors() {
@@ -59,36 +62,29 @@ showLoadingBar() {
   _slb_adjustedNumChars=$((_slb_windowWidth - _slb_numChars))
   _slb_loadingBarLimit=$((_slb_adjustedNumChars - 10))
   while [[ ${_slb_inc} -le "${_slb_loadingBarLimit}" ]]; do
-    animatedPrint ":" .009
+    animatedPrint ":" .007
     _slb_inc=$((_slb_inc + 1))
   done
   printf " %s\n" "${CLEARCOLOR}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEARCOLOR}"
   setColor 0
   sleep 1
-  if [[ $FORCE_MAKE -ne 1 ]] && [[ "${2}" != "dontClear" ]]; then
-    clear
-  fi
+  [[ "${2}" != "dontClear" ]] && clear
 }
 
-performPreInsallation()
-{
-    showLoadingBar "Preparing fo pre-insallation steps"
+performPreInsallation() {
+    showLoadingBar "${LB_PRE_INSTALL_MSG}"
 }
 
-performInstallation()
-{
-    showLoadingBar "Installing Arch"
+performInstallation() {
+    showLoadingBar "${LB_INSTALL_MSG}" "dontClear"
 }
 
-performPostInstallation()
-{
-    showLoadingBar "Preparing to for post-insallation steps"
+performPostInstallation() {
+    showLoadingBar "${LB_POST_INSTALL_MSG}"
 }
 
 initColors
 initMessages
-
-showLoadingBar "Loading ArchGuidedInstall"
 
 while getopts "h" OPTION; do
   case "${OPTION}" in

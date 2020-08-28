@@ -16,4 +16,7 @@ rsync -c ~/.bashrc ~/Code/DarlingShells/.bashrc
 printf "\n\nBacking up .tmux.conf\n\n"
 rsync -c ~/.tmux.conf ~/Code/DarlingShells/.tmux.conf
 
+printf "\n\nBacking up .htoprc\n\n"
+rsync -c ~/.htoprc ~/Code/DarlingShells/.htoprc
+
 

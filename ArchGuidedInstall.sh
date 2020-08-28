@@ -73,10 +73,10 @@ showLoadingBar() {
 
 installOpenSSH()
 {
-    showLoadingBar "Setting up ${SSH}" "dontClear"
+    showLoadingBar "Setting up ${SSH}"
     printf "\n\n"
     # Determine if ssh exists on Arch iso
-    [[ "$(which ssh)" == "/usr/bin/ssh" ]] && animatedPrint "SSH is already installed: $(which ssh)" && printf "\n\n" && clear && return
+    [[ "$(which ssh)" == "/usr/bin/ssh" ]] && animatedPrint "SSH is already installed: $(which ssh)" && printf "\n\n" && sleep 3 && clear && return
     animatedPrint "SSH: ${SSH}"
     sleep 3
     printf "\n\n"

@@ -84,7 +84,6 @@ installOpenSSH()
 performPreInsallation() {
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
     [[ -n "${SSH}" ]] && installOpenSSH
-    exit
 }
 
 performInstallation() {

@@ -85,18 +85,18 @@ performPostInstallation() {
 
 initColors
 initMessages
-
-while getopts "h" OPTION; do
+# For a great article on getopts, and other approaches to handling bash arguments:
+# @see https://wiki.bash-hackers.org/howto/getopts_tutorial
+while getopts ":h" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
       animatedPrint "${HELPMSG}" 0.042
       printf "\n\n"
-    exit
+    exit 1
     ;;
-  *)
-    printf "\n\n%sInvalid flag %s!\n\nUse -h flag for help\n\n%s -h\n\n%s\n\n" "${CLEARCOLOR}${NOTIFYCOLOR}" "${*}" "${0}"  "${CLEARCOLOR}"
-    exit
+  \?)
+     animatedPrint "Invalid argument: -${OPTARG}" && exit 1
     ;;
   esac
 done
@@ -104,3 +104,6 @@ done
 performPreInsallation
 performInstallation
 performPostInstallation
+
+
+

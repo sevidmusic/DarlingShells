@@ -6,6 +6,19 @@ setColor() {
   printf "\e[%sm" "${1}"
 }
 
+initColors() {
+  WARNINGCOLOR=$(setColor 35)
+  CLEARCOLOR=$(setColor 0)
+  NOTIFYCOLOR=$(setColor 33)
+  DSHCOLOR=$(setColor 41)
+  USRPRMPTCOLOR=$(setColor 41)
+  HIGHLIGHTCOLOR=$(setColor 41)
+  HIGHLIGHTCOLOR2=$(setColor 45)
+  ATTENTIONEFFECT=$(setColor 5)
+  ATTENTIONEFFECTCOLOR=$(setColor 36)
+  DARKTEXTCOLOR=$(setColor 30)
+}
+
 initMessages() {
     BANNER='
  _____       _     __         __  ___              __     ____           __         __ __       __   _
@@ -18,19 +31,6 @@ initMessages() {
     LB_PRE_INSTALL_MSG='Preparing fo pre-insallation steps'
     LB_INSTALL_MSG='Installing Arch'
     LB_POST_INSTALL_MSG='Preparing for post-insallation steps'
-}
-
-initColors() {
-  WARNINGCOLOR=$(setColor 35)
-  CLEARCOLOR=$(setColor 0)
-  NOTIFYCOLOR=$(setColor 33)
-  DSHCOLOR=$(setColor 41)
-  USRPRMPTCOLOR=$(setColor 41)
-  HIGHLIGHTCOLOR=$(setColor 41)
-  HIGHLIGHTCOLOR2=$(setColor 45)
-  ATTENTIONEFFECT=$(setColor 5)
-  ATTENTIONEFFECTCOLOR=$(setColor 36)
-  DARKTEXTCOLOR=$(setColor 30)
 }
 
 animatedPrint()

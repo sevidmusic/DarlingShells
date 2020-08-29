@@ -123,6 +123,7 @@ while getopts ":hs" OPTION; do
 done
 clear
 performPreInsallation
+# NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
 performInstallation
 performPostInstallation
 

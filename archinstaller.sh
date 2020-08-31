@@ -21,10 +21,11 @@ initColors() {
 
 initMessages() {
     BANNER='
- _____       _     __         __  ___              __     ____           __         __ __       __   _
- / ___/__ __ (_)___/ /___  ___/ / / _ |  ____ ____ / /    /  _/___   ___ / /_ ___ _ / // /___ _ / /_ (_)___   ___
-/ (_ // // // // _  // -_)/ _  / / __ | / __// __// _ \  _/ / / _ \ (_-</ __// _ `// // // _ `// __// // _ \ / _ \
-\___/ \_,_//_/ \_,_/ \__/ \_,_/ /_/ |_|/_/   \__//_//_/ /___//_//_//___/\__/ \_,_//_//_/ \_,_/ \__//_/ \___//_//_/
+
+ _                          ___                   
+| \ _.._|o._  _   /\ .__|_   | ._  __|_ _.|| _ ._ 
+|_/(_|| ||| |(_| /--\|(_| | _|_| |_> |_(_|||(/_|  
+              _|                                  
 
 '
     HELPMSG='I developed this script as a guide for myself. It walks me through the process of installing Arch linux with the configuration and packages I am partial to. Feel free to use it or modify it. If you do use it you may want to modify it to suit your needs, or to accomodate changes to the Arch installation process in the event that I stop maintaing this script. -Sevi D'
@@ -73,7 +74,7 @@ showLoadingBar() {
 
 installOpenSSH()
 {    
-    showLoadingBar "Preparing to install / update ${SSH}"
+    pacman -S which --noconfirm && showLoadingBar "Preparing to install / update ${SSH}"
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
 	printf "\n\n"
         animatedPrint "${SSH} is already installed and running: $(which ssh)"
@@ -128,6 +129,4 @@ performPreInsallation
 # NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
 #performInstallation
 #performPostInstallation
-
-
 

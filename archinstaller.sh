@@ -74,12 +74,14 @@ showLoadingBar() {
 
 installOpenSSH()
 {    
-    pacman -S which --noconfirm && showLoadingBar "Preparing to install / update ${SSH}"
+    showLoadingBar "Preparing to install / update ${SSH}"
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
 	printf "\n\n"
-        animatedPrint "${SSH} is already installed and running: $(which ssh)"
+        animatedPrint "${SSH} is already installed and running:"
 	printf "\n\n"
-        animatedPrint "$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
+        animatedPrint "Location: $(which ssh)"
+	printf "\n\n"
+        animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
 	printf "\n\n"
 	return
     fi
@@ -93,6 +95,8 @@ installOpenSSH()
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
+    showLoadingBar "Installing \"which\" so program locations can be determined" 
+    pacman -S which --noconfirm  
     [[ -n "${SSH}" ]] && installOpenSSH
 }
 

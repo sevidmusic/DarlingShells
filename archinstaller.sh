@@ -22,10 +22,10 @@ initColors() {
 initMessages() {
     BANNER='
 
- _                          ___                   
-| \ _.._|o._  _   /\ .__|_   | ._  __|_ _.|| _ ._ 
-|_/(_|| ||| |(_| /--\|(_| | _|_| |_> |_(_|||(/_|  
-              _|                                  
+ _                          ___
+| \ _.._|o._  _   /\ .__|_   | ._  __|_ _.|| _ ._
+|_/(_|| ||| |(_| /--\|(_| | _|_| |_> |_(_|||(/_|
+              _|
 
 '
     HELPMSG='I developed this script as a guide for myself. It walks me through the process of installing Arch linux with the configuration and packages I am partial to. Feel free to use it or modify it. If you do use it you may want to modify it to suit your needs, or to accomodate changes to the Arch installation process in the event that I stop maintaing this script. -Sevi D'
@@ -72,24 +72,20 @@ showLoadingBar() {
   [[ "${2}" != "dontClear" ]] && clear
 }
 
-installOpenSSH()
-{    
-    showLoadingBar "Preparing to install / update ${SSH}"
+startSSH()
+{
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
-	printf "\n\n"
-        animatedPrint "${SSH} is already installed and running:"
-	printf "\n\n"
-        animatedPrint "Location: $(which ssh)"
-	printf "\n\n"
-        animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
-	printf "\n\n"
-	return
+    	printf "\n\n"
+            animatedPrint "${SSH} is already running:"
+    	printf "\n\n"
+            animatedPrint "Location: $(which ssh)"
+    	printf "\n\n"
+            animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
+    	printf "\n\n"
+    	return
     fi
-    showLoadingBar "Installation of ${SSH} will begin in a moment"
-    pacman -S openssh --noconfirm
-    clear
-    showLoadingBar "Starting sshd"
-    systemctl start sshd
+    showLoadingBar "Attempting to start sshd"
+    systemctl start sshd || animatedPrint "Failed to start sshd. You may need to install/configure ${SSH}"
     sleep 2
     clear
 }
@@ -97,9 +93,9 @@ installOpenSSH()
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    showLoadingBar "Installing \"which\" so program locations can be determined" 
-    pacman -S which --noconfirm  
-    [[ -n "${SSH}" ]] && installOpenSSH
+    showLoadingBar "Installing \"which\" so program locations can be determined"
+    pacman -S which --noconfirm
+    [[ -n "${SSH}" ]] && startSSH
 }
 
 performInstallation() {

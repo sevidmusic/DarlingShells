@@ -72,6 +72,13 @@ showLoadingBar() {
   [[ "${2}" != "dontClear" ]] && clear
 }
 
+setRootPassword()
+{
+    animatedPrint "Please set the root password:"
+    printf "\n\n"
+    passwd
+}
+
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
@@ -90,11 +97,17 @@ startSSH()
     clear
 }
 
+installPKGSForInstaller()
+{
+    showLoadingBar "Installing \"which\" so program locations can be determined"
+    pacman -S which --noconfirm
+}
+
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    showLoadingBar "Installing \"which\" so program locations can be determined"
-    pacman -S which --noconfirm
+    installPKGSForInstaller
+    setRootPassword
     [[ -n "${SSH}" ]] && startSSH
 }
 

@@ -20,6 +20,7 @@ initColors() {
 }
 
 initMessages() {
+    SCRIPTNAME=`basename "$(realpath $0)"`
     BANNER='
 
  _                          ___
@@ -28,16 +29,16 @@ initMessages() {
               _|
 
 '
-    HELPMSG='I developed this script as a guide for myself. It walks me through the process of installing Arch linux with the configuration and packages I am partial to. Feel free to use it or modify it. If you do use it you may want to modify it to suit your needs, or to accomodate changes to the Arch installation process in the event that I stop maintaing this script. -Sevi D'
-    LB_PRE_INSTALL_MSG='Preparing fo pre-insallation steps'
-    LB_INSTALL_MSG='Installing Arch'
-    LB_POST_INSTALL_MSG='Preparing for post-insallation steps'
+    HELPMSG="I developed ${SCRIPTNAME} as a guide for myself. It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem. Pasing the -p flag with a filename like: ${SCRIPTNAME} -p /path/to/file; will tell the installer to include the packages in the specified file in the final insallation. Feel free to modify the script to suit your needs. -Sevi D"
+    LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
+    LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
+    LB_POST_INSTALL_MSG='Post-installation will being in a moment'
 }
 
 animatedPrint()
 {
   local _charsToAnimate _speed _currentChar _charCount
-  # For some reason spacd get mangled using ${VAR:POS:LIMIT}. so replace spaces with _ here,
+  # For some reason spaces get mangled using ${VAR:POS:LIMIT}. so replace spaces with _ here,
   # then add spaces back when needed.
   _charsToAnimate=$( printf "%s" "${1}" | sed -E "s/ /_/g;")
   _speed="${2:-0.05}"
@@ -74,9 +75,16 @@ showLoadingBar() {
 
 setRootPassword()
 {
+    printf "\n\n"
     animatedPrint "Please set the root password:"
     printf "\n\n"
     passwd
+    printf "\n\n"
+    animatedPrint "The password you just set will NOT persist to the actual installation."
+    printf "\n\n"
+    animatedPrint "If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh."
+    sleep 2
+    clear
 }
 
 startSSH()
@@ -92,15 +100,26 @@ startSSH()
     	return
     fi
     showLoadingBar "Attempting to start sshd"
-    systemctl start sshd || animatedPrint "Failed to start sshd. You may need to install/configure ${SSH}"
-    sleep 2
-    clear
+    systemctl start sshd || printf "\n\n" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
+    printf "\n\n"
+    animatedPrint "ssh is now running, you should now be able to login to the installation media as root from your host machine via ssh."
+    printf "\n\n"
+    animatedPrint "The password you set in the previous step is the password you will use to login."
+    printf "\n\n"
+    animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
+    printf "\n\n"
+    ip a
+    animatedPrint "Once logged in just run this script again WITHOUT the -s flag to continue the installation process"
+    printf "\n\n"
+    sleep 5
+    showLoadingBar "Moving on"
 }
 
 installPKGSForInstaller()
 {
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
+    clear
 }
 
 performPreInsallation() {
@@ -119,6 +138,9 @@ performPostInstallation() {
     showLoadingBar "${LB_POST_INSTALL_MSG}"
 }
 
+########################## PROGRAM #######################
+
+clear
 initColors
 initMessages
 # For a great article on getopts, and other approaches to handling bash arguments:
@@ -142,6 +164,6 @@ done
 clear
 performPreInsallation
 # NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
-#performInstallation
-#performPostInstallation
+performInstallation
+performPostInstallation
 

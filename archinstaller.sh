@@ -85,7 +85,9 @@ installOpenSSH()
 	printf "\n\n"
 	return
     fi
+    showLoadingBar "Installation of ${SSH} will begin in a moment"
     pacman -S openssh --noconfirm
+    clear
     showLoadingBar "Starting sshd"
     systemctl start sshd
     sleep 2

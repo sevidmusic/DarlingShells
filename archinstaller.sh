@@ -29,7 +29,7 @@ initMessages() {
               _|
 
 '
-    HELPMSG="I developed ${SCRIPTNAME} as a guide for myself. It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem. Pasing the -p flag with a filename like: ${SCRIPTNAME} -p /path/to/file; will tell the installer to include the packages in the specified file in the final insallation. Feel free to modify the script to suit your needs. -Sevi D"
+    HELPMSG="I developed ${SCRIPTNAME} as a guide for myself. It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem. Passing the -p flag with a filename like: ${SCRIPTNAME} -p /path/to/file; will tell the installer to include the packages in the specified file in the final insallation. Feel free to modify the script to suit your needs. -Sevi D"
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
     LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'

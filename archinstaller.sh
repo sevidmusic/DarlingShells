@@ -87,11 +87,11 @@ showLoadingBar() {
 
 notifyUser()
 {
-    printf "${NEWLINE}"
+    printf "\n"
     animatedPrint "${1}"
     sleep ${2:-1}
     [[ "${3}" == "dontClear" ]] || clear
-    printf "${NEWLINE}"
+    printf "\n"
 }
 
 setRootPassword()

@@ -101,6 +101,15 @@ setRootPassword()
     printf "passwor_already_set" >> ~/.cache/.installer_pwd
 }
 
+ipInfoMsg() {
+    animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
+    printf "${NEWLINE}"
+    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}"
+    printf "${NEWLINE}"
+    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}"
+    printf "${NEWLINE}"
+}
+
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
@@ -111,12 +120,7 @@ startSSH()
     	printf "${NEWLINE}"
         animatedPrint "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}"
     	printf "${NEWLINE}"
-        animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
-    	printf "${NEWLINE}"
-        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}"
-	    printf "${NEWLINE}"
-        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}"
-	    printf "${NEWLINE}"
+        ipInfoMsg
 	    sleep 2
 	    clear
     	return
@@ -129,11 +133,7 @@ startSSH()
     printf "${NEWLINE}"
     animatedPrint "The password you set in the previous step is the password you will use to login."
     printf "${NEWLINE}"
-    animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
-    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}"
-    printf "${NEWLINE}"
-    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}"
-    printf "${NEWLINE}"
+    ipInfoMsg
     animatedPrint "Once logged in just run this script again WITHOUT the -s flag to continue the installation process"
     printf "${NEWLINE}"
     sleep 5

@@ -85,19 +85,22 @@ showLoadingBar() {
   [[ "${2}" != "dontClear" ]] && clear
 }
 
+notifyUser()
+{
+    printf "${NEWLINE}"
+    animatedPrint "${1}"
+    sleep ${2:-1}
+    [[ "${3}" == "dontClear" ]] || clear
+    printf "${NEWLINE}"
+}
+
 setRootPassword()
 {
-    [[ -f ~/.cache/.installer_pwd ]] && printf "${NEWLINE}" && animatedPrint "${PWD_ISSET}" && sleep 2 && clear && return
-    printf "${NEWLINE}"
-    animatedPrint "${PLS_SET_PWD}"
-    printf "${NEWLINE}"
-    passwd || animatedPrint "${PWD_ERROR_OCCURED}"
-    printf "${NEWLINE}"
-    animatedPrint "${PWD_WAS_SET_MSG1}"
-    printf "${NEWLINE}"
-    animatedPrint "${PWD_WAS_SET_MSG2}"
-    sleep 2
-    clear
+    [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_ISSET}" && return
+    notifyUser "${PLS_SET_PWD}" 1 'dontClear'
+    passwd || notifyUser "${PWD_ERROR_OCCURED}" 1 'dontClear'
+    notifyUser "${PWD_WAS_SET_MSG1}" 1 'dontClear'
+    notifyUser "${PWD_WAS_SET_MSG2}" 3
     printf "passwor_already_set" >> ~/.cache/.installer_pwd
 }
 

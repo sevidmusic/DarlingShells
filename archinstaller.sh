@@ -20,6 +20,7 @@ initColors() {
 }
 
 initMessages() {
+    NEWLINE="\n\n"
     SCRIPTNAME=`basename "$(realpath $0)"`
     BANNER='
 
@@ -86,14 +87,14 @@ showLoadingBar() {
 
 setRootPassword()
 {
-    [[ -f ~/.cache/.installer_pwd ]] && printf "\n\n" && animatedPrint "${PWD_ISSET}" && sleep 2 && clear && return
-    printf "\n\n"
+    [[ -f ~/.cache/.installer_pwd ]] && printf "${NEWLINE}" && animatedPrint "${PWD_ISSET}" && sleep 2 && clear && return
+    printf "${NEWLINE}"
     animatedPrint "${PLS_SET_PWD}"
-    printf "\n\n"
+    printf "${NEWLINE}"
     passwd || animatedPrint "${PWD_ERROR_OCCURED}"
-    printf "\n\n"
+    printf "${NEWLINE}"
     animatedPrint "${PWD_WAS_SET_MSG1}"
-    printf "\n\n"
+    printf "${NEWLINE}"
     animatedPrint "${PWD_WAS_SET_MSG2}"
     sleep 2
     clear
@@ -103,42 +104,46 @@ setRootPassword()
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
-    	printf "\n\n"
-        animatedPrint "${SSH} is already running:"
-    	printf "\n\n"
-        animatedPrint "Location: $(which ssh)"
-    	printf "\n\n"
-        animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
-    	printf "\n\n"
-        animatedPrint "$(ip a)"
-	    printf "\n\n"
+    	printf "${NEWLINE}"
+        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SSH}${CLEARCOLOR}${NOTIFYCOLOR} is already running: ${CLEARCOLOR}"
+    	printf "${NEWLINE}"
+        animatedPrint "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}"
+    	printf "${NEWLINE}"
+        animatedPrint "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}"
+    	printf "${NEWLINE}"
+        animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}IP Info:"
+    	printf "${NEWLINE}"
+        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}"
+	    printf "${NEWLINE}"
+        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}"
+	    printf "${NEWLINE}"
 	    sleep 2
 	    clear
     	return
     fi
     showLoadingBar "Attempting to start sshd"
     systemctl start sshd
-    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "\n\n" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
-    printf "\n\n"
+    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "${NEWLINE}" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
+    printf "${NEWLINE}"
     animatedPrint "ssh is now running, you should now be able to login to the installation media as root from your host machine via ssh."
-    printf "\n\n"
+    printf "${NEWLINE}"
     animatedPrint "The password you set in the previous step is the password you will use to login."
-    printf "\n\n"
+    printf "${NEWLINE}"
     animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
-    printf "\n\n"
-    ip a
+    printf "${NEWLINE}"
+    ip a | grep -E "[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]|[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]"
     animatedPrint "Once logged in just run this script again WITHOUT the -s flag to continue the installation process"
-    printf "\n\n"
+    printf "${NEWLINE}"
     sleep 5
     animatedPrint "The installer will now exit to give you an oppurtunity to login via ssh. Whether you loggin with ssh or not, you can continue the installation process with: ${SCRIPTNAME} or ${SCRIPTNAME} -p /path/to/packagefile"
-    printf "\n\n"
+    printf "${NEWLINE}"
     showLoadingBar "Exiting installer, re-run WTIHOUT -s flag to continue with installation"
     exit 0
 }
 
 
 installWhich() {
-    [[ -f ~/.cache/.installer_which ]] && printf "\n\n" && animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && sleep 2 && clear && return
+    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && sleep 2 && clear && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
     showLoadingBar "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation.${CLEARCOLOR}"
@@ -178,19 +183,19 @@ while getopts ":hs" OPTION; do
   h)
       printf "%s" "${BANNER}"
       animatedPrint "${HELPMSG1}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG2}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG3}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG4}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG5}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG6}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       animatedPrint "${HELPMSG7}" 0.042
-      printf "\n\n"
+      printf "${NEWLINE}"
       exit 1
     ;;
   s)
@@ -206,4 +211,5 @@ performPreInsallation
 # NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
 performInstallation
 performPostInstallation
+
 

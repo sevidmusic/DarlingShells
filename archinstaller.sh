@@ -29,7 +29,13 @@ initMessages() {
               _|
 
 '
-    HELPMSG="I developed ${SCRIPTNAME} as a guide for myself. It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem. Passing the -p flag with a filename like: ${SCRIPTNAME} -p /path/to/file; will tell the installer to include the packages in the specified file in the final insallation. Feel free to modify the script to suit your needs. -Sevi D"
+    HELPMSG1="${CLEARCOLOR}${NOTIFYCOLOR}I developed ${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} as a guide for myself."
+    HELPMSG2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
+    HELPMSG3="Passing the -p flag with a filename like:"
+    HELPMSG4="${CLEARCOLOR}${HIGHLIGHTCOLOR2}${SCRIPTNAME} -p /path/to/file${CLEARCOLOR}${NOTIFYCOLOR}"
+    HELPMSG5="will tell the installer to include the packages in the specified file in the final insallation."
+    HELPMSG6="Feel free to modify the script to suit your needs.${CLEARCOLOR}"
+    HELPMSG7="-Sevi D"
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
     LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'
@@ -166,9 +172,21 @@ while getopts ":hs" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
-      animatedPrint "${HELPMSG}" 0.042
+      animatedPrint "${HELPMSG1}" 0.042
       printf "\n\n"
-    exit 1
+      animatedPrint "${HELPMSG2}" 0.042
+      printf "\n\n"
+      animatedPrint "${HELPMSG3}" 0.042
+      printf "\n\n"
+      animatedPrint "${HELPMSG4}" 0.042
+      printf "\n\n"
+      animatedPrint "${HELPMSG5}" 0.042
+      printf "\n\n"
+      animatedPrint "${HELPMSG6}" 0.042
+      printf "\n\n"
+      animatedPrint "${HELPMSG7}" 0.042
+      printf "\n\n"
+      exit 1
     ;;
   s)
       SSH='openssh'

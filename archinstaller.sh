@@ -39,6 +39,11 @@ initMessages() {
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
     LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'
+    PWD_ISSET="${CLEARCOLOR}${NOTIFYCOLOR}Root password was already set, to reset run: ${CLEARCOLOR}${HIGHLIGHTCOLOR2}passwd${CLEARCOLOR}"
+    PLS_SET_PWD="${CLEARCOLOR}${NOTIFYCOLOR}Please set the root password:${CLEARCOLOR}"
+    PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
+    PWD_WAS_SET_MSG1="${CLEARCOLOR}${NOTIFYCOLOR}The password you just set will ${CLEARCOLOR}${WARNINGCOLOR}NOT${CLEARCOLOR}${NOTIFYCOLOR} persist to the actual installation.${CLEARCOLOR}"
+    PWD_WAS_SET_MSG2="${CLEARCOLOR}${HIGHLIGHTCOLOR2}If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh.${CLEARCOLOR}"
 }
 
 animatedPrint()
@@ -81,15 +86,15 @@ showLoadingBar() {
 
 setRootPassword()
 {
-    [[ -f ~/.cache/.installer_pwd ]] && printf "\n\n" && animatedPrint "Root password was already set, to reset just manually run: passwd" && sleep 2 && clear && return
+    [[ -f ~/.cache/.installer_pwd ]] && printf "\n\n" && animatedPrint "${PWD_ISSET}" && sleep 2 && clear && return
     printf "\n\n"
-    animatedPrint "Please set the root password:"
+    animatedPrint "${PLS_SET_PWD}"
     printf "\n\n"
-    passwd || animatedPrint "${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
+    passwd || animatedPrint "${PWD_ERROR_OCCURED}"
     printf "\n\n"
-    animatedPrint "The password you just set will NOT persist to the actual installation."
+    animatedPrint "${PWD_WAS_SET_MSG1}"
     printf "\n\n"
-    animatedPrint "If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh."
+    animatedPrint "${PWD_WAS_SET_MSG2}"
     sleep 2
     clear
     printf "passwor_already_set" >> ~/.cache/.installer_pwd

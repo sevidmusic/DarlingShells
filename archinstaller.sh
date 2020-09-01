@@ -75,11 +75,11 @@ showLoadingBar() {
 
 setRootPassword()
 {
-    [[ -f ~/.cache/.installer_pwd ]] && animatedPrint "Root password was already set, to reset just manually run: passwd" && return
+    [[ -f ~/.cache/.installer_pwd ]] && printf "\n\n" && animatedPrint "Root password was already set, to reset just manually run: passwd" && sleep 2 && clear && return
     printf "\n\n"
     animatedPrint "Please set the root password:"
     printf "\n\n"
-    passwd || animatedPrint "Password was not set, exiting installer, please start over"
+    passwd || printf "\n\n" && animatedPrint "Password was not set, exiting installer, please start over"
     printf "\n\n"
     animatedPrint "The password you just set will NOT persist to the actual installation."
     printf "\n\n"
@@ -93,12 +93,16 @@ startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
     	printf "\n\n"
-            animatedPrint "${SSH} is already running:"
+        animatedPrint "${SSH} is already running:"
     	printf "\n\n"
-            animatedPrint "Location: $(which ssh)"
+        animatedPrint "Location: $(which ssh)"
     	printf "\n\n"
-            animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
+        animatedPrint "Service: $(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')"
     	printf "\n\n"
+        animatedPrint "$(ip a)"
+	    printf "\n\n"
+	    sleep 2
+	    clear
     	return
     fi
     showLoadingBar "Attempting to start sshd"
@@ -121,11 +125,18 @@ startSSH()
     exit 0
 }
 
-installPKGSForInstaller()
-{
+
+installWhich() {
+    [[ -f ~/.cache/.installer_which ]] && printf "\n\n" && animatedPrint "which is already installed" && sleep 2 && clear && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
-    clear
+    showLoadingBar "which is now installed on the installation media, this will NOT persist onto the actual installation."
+    printf "which_already_installed" >> ~/.cache/.installer_which
+}
+
+installPKGSForInstaller()
+{
+    installWhich
 }
 
 performPreInsallation() {

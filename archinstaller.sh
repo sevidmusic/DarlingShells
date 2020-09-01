@@ -75,16 +75,18 @@ showLoadingBar() {
 
 setRootPassword()
 {
+    [[ -f ~/.cache/.installer_pwd ]] && animatedPrint "Root password was already set, to reset just manually run: passwd" && return
     printf "\n\n"
     animatedPrint "Please set the root password:"
     printf "\n\n"
-    passwd
+    passwd || animatedPrint "Password was not set, exiting installer, please start over"
     printf "\n\n"
     animatedPrint "The password you just set will NOT persist to the actual installation."
     printf "\n\n"
     animatedPrint "If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh."
     sleep 2
     clear
+    printf "passwor_already_set" >> ~/.cache/.installer_pwd
 }
 
 startSSH()
@@ -100,7 +102,8 @@ startSSH()
     	return
     fi
     showLoadingBar "Attempting to start sshd"
-    systemctl start sshd || printf "\n\n" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
+    systemctl start sshd
+    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "\n\n" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
     printf "\n\n"
     animatedPrint "ssh is now running, you should now be able to login to the installation media as root from your host machine via ssh."
     printf "\n\n"
@@ -112,7 +115,10 @@ startSSH()
     animatedPrint "Once logged in just run this script again WITHOUT the -s flag to continue the installation process"
     printf "\n\n"
     sleep 5
-    showLoadingBar "Moving on"
+    animatedPrint "The installer will now exit to give you an oppurtunity to login via ssh. Whether you loggin with ssh or not, you can continue the installation process with: ${SCRIPTNAME} or ${SCRIPTNAME} -p /path/to/packagefile"
+    printf "\n\n"
+    showLoadingBar "Exiting installer, re-run WTIHOUT -s flag to continue with installation"
+    exit 0
 }
 
 installPKGSForInstaller()

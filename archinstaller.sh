@@ -57,7 +57,7 @@ animatedPrint()
   _charCount=0
   for (( i=0; i< ${#_charsToAnimate}; i++ )); do
       ((_charCount++))
-      [[ $_charCount == 80 ]] && _charCount=0 && printf "\n\n "
+      [[ $_charCount == $((_slb_adjustedNumChars - 10)) ]] && _charCount=0 && printf "\n\n "
       # Replace placeholder _ with space | i.e., fix spaces that were replaced
       _currentChar=$(printf "%s" "${_charsToAnimate:$i:1}" | sed -E "s/_/ /g;")
       printf "%s" "${_currentChar}"

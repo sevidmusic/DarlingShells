@@ -122,17 +122,11 @@ startSSH()
     showLoadingBar "Attempting to start sshd"
     systemctl start sshd
     [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "${NEWLINE}" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
-    printf "${NEWLINE}"
-    animatedPrint "ssh is now running, you should now be able to login to the installation media as root from your host machine via ssh."
-    printf "${NEWLINE}"
-    animatedPrint "The password you set in the previous step is the password you will use to login."
-    printf "${NEWLINE}"
+    notifyUser "ssh is now running, you should now be able to login to the installation media as root from your host machine via ssh." 1 'dontClear'
+    notifyUser "The password you set in the previous step is the password you will use to login." 1 'dontClear'
     ipInfoMsg
-    animatedPrint "Once logged in just run this script again WITHOUT the -s flag to continue the installation process"
-    printf "${NEWLINE}"
-    sleep 5
-    animatedPrint "The installer will now exit to give you an oppurtunity to login via ssh. Whether you loggin with ssh or not, you can continue the installation process with: ${SCRIPTNAME} or ${SCRIPTNAME} -p /path/to/packagefile"
-    printf "${NEWLINE}"
+    notifyUser "Once logged in just run this script again WITHOUT the -s flag to continue the installation process" 1 'dontClear'
+    notifyUser "The installer will now exit to give you an oppurtunity to login via ssh. Whether you loggin with ssh or not, you can continue the installation process with: ${SCRIPTNAME} or ${SCRIPTNAME} -p /path/to/packagefile" 1 'dontClear'
     showLoadingBar "Exiting installer, re-run WTIHOUT -s flag to continue with installation"
     exit 0
 }
@@ -178,20 +172,13 @@ while getopts ":hs" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
-      animatedPrint "${HELPMSG1}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG2}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG3}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG4}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG5}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG6}" 0.042
-      printf "${NEWLINE}"
-      animatedPrint "${HELPMSG7}" 0.042
-      printf "${NEWLINE}"
+      notifyUser "${HELPMSG1}" 1 'dontClear'
+      notifyUser "${HELPMSG2}" 1 'dontClear'
+      notifyUser "${HELPMSG3}" 1 'dontClear'
+      notifyUser "${HELPMSG4}" 1 'dontClear'
+      notifyUser "${HELPMSG5}" 1 'dontClear'
+      notifyUser "${HELPMSG6}" 1 'dontClear'
+      notifyUser "${HELPMSG7}" 1 'dontClear'
       exit 1
     ;;
   s)

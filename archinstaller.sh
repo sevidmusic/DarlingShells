@@ -105,11 +105,11 @@ setRootPassword()
 }
 
 ipInfoMsg() {
-    animatedPrint "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
+    notifyUser "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file" 1 'dontClear'
     printf "${NEWLINE}"
-    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}"
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
     printf "${NEWLINE}"
-    animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}"
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3
     printf "${NEWLINE}"
 }
 

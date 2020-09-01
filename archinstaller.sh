@@ -85,7 +85,7 @@ setRootPassword()
     printf "\n\n"
     animatedPrint "Please set the root password:"
     printf "\n\n"
-    passwd || printf "\n\n" && animatedPrint "Password was not set, exiting installer, please start over"
+    passwd || animatedPrint "${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
     printf "\n\n"
     animatedPrint "The password you just set will NOT persist to the actual installation."
     printf "\n\n"
@@ -133,10 +133,10 @@ startSSH()
 
 
 installWhich() {
-    [[ -f ~/.cache/.installer_which ]] && printf "\n\n" && animatedPrint "which is already installed" && sleep 2 && clear && return
+    [[ -f ~/.cache/.installer_which ]] && printf "\n\n" && animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && sleep 2 && clear && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
-    showLoadingBar "which is now installed on the installation media, this will NOT persist onto the actual installation."
+    showLoadingBar "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation.${CLEARCOLOR}"
     printf "which_already_installed" >> ~/.cache/.installer_which
 }
 

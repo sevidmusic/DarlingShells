@@ -106,26 +106,17 @@ setRootPassword()
 
 ipInfoMsg() {
     notifyUser "The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file" 1 'dontClear'
-    printf "${NEWLINE}"
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
-    printf "${NEWLINE}"
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3
-    printf "${NEWLINE}"
 }
 
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
-    	printf "${NEWLINE}"
-        animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SSH}${CLEARCOLOR}${NOTIFYCOLOR} is already running: ${CLEARCOLOR}"
-    	printf "${NEWLINE}"
-        animatedPrint "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}"
-    	printf "${NEWLINE}"
-        animatedPrint "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}"
-    	printf "${NEWLINE}"
+        notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SSH}${CLEARCOLOR}${NOTIFYCOLOR} is already running: ${CLEARCOLOR}" 1 'dontClear'
+        notifyUser "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}" 1 'dontClear'
+        notifyUser "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}" 3
         ipInfoMsg
-	    sleep 2
-	    clear
     	return
     fi
     showLoadingBar "Attempting to start sshd"

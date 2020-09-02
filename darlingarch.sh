@@ -23,6 +23,7 @@ initMessages() {
     NEWLINE="\n\n"
     SCRIPT=`basename "$(realpath $0)"`
     SCRIPTNAME="${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPT}${CLEARCOLOR}${NOTIFYCOLOR}"
+    OPENSSH="${CLEARCOLOR}${HIGHLIGHTCOLOR}openssh${CLEARCOLOR}${NOTIFYCOLOR}"
     BANNER='
    ___           ___             ___           __
   / _ \___ _____/ (_)__  ___ _  / _ | ________/ /
@@ -45,7 +46,7 @@ initMessages() {
     OPENING_IP_INFO_MSG="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):"
     STARTING_SSH_MSG="Attempting to start sshd"
     POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
-    SSH_IS_INSTALLED_MSG="SSH is now running, you should now be able to login via ssh"
+    SSH_IS_INSTALLED_MSG="SSH is running."
     SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
     GETTING_IP_INFO="Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
     POST_SSH_OPENING_MSG1="The installer will now exit to give you an oppurtunity to login via ssh."
@@ -152,7 +153,7 @@ showStartSSHExitMsg()
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
-        notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SSH}${CLEARCOLOR}${NOTIFYCOLOR} is already running:" 1 'dontClear'
+        notifyUser "${SSH} is already running:" 1 'dontClear'
         showStartSSHExitMsg
     fi
     showLoadingBar "${STARTING_SSH_MSG}"
@@ -217,7 +218,7 @@ while getopts ":hs" OPTION; do
       exit 1
     ;;
   s)
-      SSH='openssh'
+      SSH="${OPENSSH}"
     ;;
   \?)
      animatedPrint "Invalid argument: -${OPTARG}" && exit 1

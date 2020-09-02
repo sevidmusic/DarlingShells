@@ -42,11 +42,12 @@ ${CLEARCOLOR}
     PWD_ISSET="${CLEARCOLOR}${NOTIFYCOLOR}Root password was already set, to reset run: ${CLEARCOLOR}${HIGHLIGHTCOLOR2}passwd${CLEARCOLOR}"
     PLS_SET_PWD="${CLEARCOLOR}${NOTIFYCOLOR}Please set the root password:${CLEARCOLOR}"
     PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
-    PWD_WAS_SET_MSG1="${CLEARCOLOR}${NOTIFYCOLOR}The password you just set will ${CLEARCOLOR}${WARNINGCOLOR}NOT${CLEARCOLOR}${NOTIFYCOLOR} persist to the actual installation.${CLEARCOLOR}"
-    PWD_WAS_SET_MSG2="${CLEARCOLOR}${HIGHLIGHTCOLOR2}If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh.${CLEARCOLOR}"
+    PWD_WAS_SET_FOR_ISO_WONT_PERSIST="${CLEARCOLOR}${NOTIFYCOLOR}The password you just set will ${CLEARCOLOR}${WARNINGCOLOR}NOT${CLEARCOLOR}${NOTIFYCOLOR} persist to the actual installation.${CLEARCOLOR}"
+    PWD_WAS_SET_USE_FOR_SSH_LOGIN="${CLEARCOLOR}${HIGHLIGHTCOLOR2}If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh.${CLEARCOLOR}"
     IPINFOMSG1="${CLEARCOLOR}${NOTIFYCOLOR}The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR}"
     STARTING_SSH_MSG="Attempting to start sshd"
     POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
+    SSH_LOGIN_AVAILABLE="${CLEARCOLOR}${NOTIFYCOLOR}You can now log into the installation media as root via ssh.${CLEARCOLOR}"
 }
 
 animatedPrint()
@@ -101,8 +102,8 @@ setRootPassword()
     [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_ISSET}" && return
     notifyUser "${PLS_SET_PWD}" 1 'dontClear'
     passwd || notifyUser "${PWD_ERROR_OCCURED}" 1 'dontClear'
-    notifyUser "${PWD_WAS_SET_MSG1}" 1 'dontClear'
-    notifyUser "${PWD_WAS_SET_MSG2}" 3
+    notifyUser "${PWD_WAS_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
+    notifyUser "${PWD_WAS_SET_USE_FOR_SSH_LOGIN}" 3
     printf "passwor_already_set" >> ~/.cache/.installer_pwd
 }
 
@@ -114,7 +115,7 @@ showIpInfoMsg() {
 }
 
 showPostSSHInstallMsg() {
-    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}You can now log into the installation media as root via ssh.${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${SSH_LOGIN_AVAILABLE}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}The installer will now exit to give you an oppurtunity to login via ssh.${CLEARCOLOR}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Example:" 1 'dontClear'

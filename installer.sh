@@ -45,7 +45,7 @@ initMessages() {
     PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
     PWD_WAS_SET_MSG1="${CLEARCOLOR}${NOTIFYCOLOR}The password you just set will ${CLEARCOLOR}${WARNINGCOLOR}NOT${CLEARCOLOR}${NOTIFYCOLOR} persist to the actual installation.${CLEARCOLOR}"
     PWD_WAS_SET_MSG2="${CLEARCOLOR}${HIGHLIGHTCOLOR2}If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh.${CLEARCOLOR}"
-    IPINFOMSG1="The following is your ip info (obtained via ip a). You may need to add the ip to your HOST machine's /etc/hosts file"
+    IPINFOMSG1="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}).${CLEARCOLOR}"
     STARTING_SSH_MSG="Attempting to start sshd"
     POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
 }
@@ -91,8 +91,8 @@ showLoadingBar() {
 notifyUser()
 {
     printf "\n"
-    animatedPrint "${1}" 0.007
-    sleep ${2:-1}
+    animatedPrint "${1}" 0.009
+    sleep ${2:-2}
     [[ "${3}" == "dontClear" ]] || clear
     printf "\n"
 }
@@ -108,6 +108,7 @@ setRootPassword()
 }
 
 showIpInfoMsg() {
+    showLoadingBar "Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
     notifyUser "${IPINFOMSG1}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3 'dontClear'
@@ -115,7 +116,8 @@ showIpInfoMsg() {
 
 showPostSSHInstallMsg() {
     notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}You can now log into the installation media as root via ssh.${CLEARCOLOR}" 1 'dontClear'
-    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}The installer will now exit to give you an oppurtunity to login via ssh. Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}The installer will now exit to give you an oppurtunity to login via ssh.${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Example:" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPTNAME}${CLEARCOLOR}" 1 'dontClear'
     notifyUser "or" 1 'dontClear'
@@ -124,7 +126,7 @@ showPostSSHInstallMsg() {
 }
 
 showSSHLocationService() {
-    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}${SSH} Location and System Service info:${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}${SSH} location and sshd service info:${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}" 3 'dontClear'
 }
@@ -147,6 +149,7 @@ startSSH()
     showLoadingBar "${STARTING_SSH_MSG}"
     systemctl start sshd
     [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "${NEWLINE}" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}SSH is now running, you should now be able to login via ssh${CLEARCOLOR}"
     showStartSSHExitMsg
 }
 

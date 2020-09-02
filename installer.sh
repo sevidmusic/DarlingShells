@@ -22,14 +22,13 @@ initColors() {
 initMessages() {
     NEWLINE="\n\n"
     SCRIPTNAME=`basename "$(realpath $0)"`
-    BANNER='
-
- _                          ___
-| \ _.._|o._  _   /\ .__|_   | ._  __|_ _.|| _ ._
-|_/(_|| ||| |(_| /--\|(_| | _|_| |_> |_(_|||(/_|
-              _|
-
-'
+    BANNER="
+${CLEARCOLOR}${HIGHLIGHTCOLOR}     _                          ___
+${CLEARCOLOR}${NOTIFYCOLOR}    | \ _.._|o._  _   /\ .__|_   | ._  __|_ _.|| _ ._
+${CLEARCOLOR}${NOTIFYCOLOR}    |_/(_|| ||| |(_| /--\|(_| | _|_| |_> |_(_|||(/_|
+${CLEARCOLOR}${HIGHLIGHTCOLOR}                  _|
+${CLEARCOLOR}
+"
     HELPMSG1="${CLEARCOLOR}${NOTIFYCOLOR}I developed ${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} as a guide for myself."
     HELPMSG2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
     HELPMSG3="Passing the -p flag with a filename like:"
@@ -45,7 +44,7 @@ initMessages() {
     PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error may have occured, you may need to call passwd manually to set the root password${CLEARCOLOR}"
     PWD_WAS_SET_MSG1="${CLEARCOLOR}${NOTIFYCOLOR}The password you just set will ${CLEARCOLOR}${WARNINGCOLOR}NOT${CLEARCOLOR}${NOTIFYCOLOR} persist to the actual installation.${CLEARCOLOR}"
     PWD_WAS_SET_MSG2="${CLEARCOLOR}${HIGHLIGHTCOLOR2}If the -s flag was supplied, then the password you just set can be used to login to the installation media as root via ssh.${CLEARCOLOR}"
-    IPINFOMSG1="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}).${CLEARCOLOR}"
+    IPINFOMSG1="${CLEARCOLOR}${NOTIFYCOLOR}The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR}"
     STARTING_SSH_MSG="Attempting to start sshd"
     POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
 }

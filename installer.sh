@@ -91,7 +91,7 @@ showLoadingBar() {
 notifyUser()
 {
     printf "\n"
-    animatedPrint "${1}"
+    animatedPrint "${1}" 0.007
     sleep ${2:-1}
     [[ "${3}" == "dontClear" ]] || clear
     printf "\n"
@@ -110,48 +110,52 @@ setRootPassword()
 showIpInfoMsg() {
     notifyUser "${IPINFOMSG1}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
-    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3 'dontClear'
 }
 
 showPostSSHInstallMsg() {
-    notifyUser "You can now log into the installation media as root via ssh." 1 'dontClear'
-    notifyUser "The installer will now exit to give you an oppurtunity to login via ssh. Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:"
-    notifyUser "Example:"
-    notifyUser "${SCRIPTNAME}"
-    notifyUser "or"
-    notifyUser "${SCRIPTNAME} -p /path/to/packagefile" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}You can now log into the installation media as root via ssh.${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}The installer will now exit to give you an oppurtunity to login via ssh. Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "Example:" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPTNAME}${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "or" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPTNAME} -p /path/to/packagefile${CLEARCOLOR}" 1 'dontClear'
 
 }
 
 showSSHLocationService() {
+    notifyUser "${CLEARCOLOR}${NOTIFYCOLOR}${SSH} Location and System Service info:${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}" 3 'dontClear'
+}
+
+showStartSSHExitMsg()
+{
+    showSSHLocationService
+    showIpInfoMsg
+    showPostSSHInstallMsg
+    showLoadingBar "${POST_SSH_INSTALL_EXIT_MSG}"
+    exit 0
 }
 
 startSSH()
 {
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
         notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}${SSH}${CLEARCOLOR}${NOTIFYCOLOR} is already running: ${CLEARCOLOR}" 1 'dontClear'
-        showSSHLocationService
-        showIpInfoMsg
-    	return
+        showStartSSHExitMsg
     fi
     showLoadingBar "${STARTING_SSH_MSG}"
     systemctl start sshd
     [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && printf "${NEWLINE}" && animatedPrint "Failed to start sshd. You may need to install/re-install/configure ${SSH}." && exit 1
-    showIpInfoMsg
-    showSSHLocationService
-    showPostSSHInstallMsg
-    showLoadingBar "${POST_SSH_INSTALL_EXIT_MSG}"
-    exit 0
+    showStartSSHExitMsg
 }
 
 
 installWhich() {
-    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && animatedPrint "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && sleep 2 && clear && return
+    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
-    showLoadingBar "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation.${CLEARCOLOR}"
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation.${CLEARCOLOR}"
     printf "which_already_installed" >> ~/.cache/.installer_which
 }
 

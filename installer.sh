@@ -96,11 +96,17 @@ notifyUser()
     printf "\n%s\n" "${1}" >> ~/.cache/.installer_msg_log
 }
 
+notifyUserAndExit()
+{
+    notifyUser "${1}" "${2:-1}" "${3:-CLEAR}"
+    exit "${4:-0}"
+}
+
 setRootPassword()
 {
     [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_ISSET}" && return
     notifyUser "${PLS_SET_PWD}" 1 'dontClear'
-    passwd || notifyUser "${PWD_ERROR_OCCURED}" 1 'dontClear' && exit 1
+    passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1 
     notifyUser "${PWD_WAS_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
     notifyUser "${PWD_WAS_SET_USE_FOR_SSH_LOGIN}" 3
     printf "passwor_already_set" >> ~/.cache/.installer_pwd

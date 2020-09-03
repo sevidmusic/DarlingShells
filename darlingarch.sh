@@ -186,13 +186,29 @@ showTimeSettings()
 
 syncInstallationMediaTime()
 {
-    [[ -f ~/.cache/.installer_im_time_sync ]] && printf "${NEWLINE}" && notifyUser "Installation media time is already synced:" 1 'dontClear' && showTimeSettings && clear && return
+    [[ -f ~/.cache/.installer_im_time_sync ]] && notifyUser "Installation media time is already synced:" 1 'dontClear' && showTimeSettings && clear && return
     showLoadingBar "Syncing time settings for installation media" 'dontClear'
     timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 1 'dontClear'
     notifyUser "Time settings have been updated for installation media:" 2 'dontClear'
     showTimeSettings
     clear
     printf "installation_media_time_already_synced" >> ~/.cache/.installer_im_time_sync
+}
+
+partitionDisk()
+{
+    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && exit 1
+    notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 1 'dontClear'
+    notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
+    notifyUser "Create one partition for SWAP, size should no more than double your available RAM, and at least as much as available RAM." 1 'dontClear'
+    notifyUser "Create one partition for root. This should take up the remiander of the available disk space." 1 'dontClear'
+    showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
+    cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}${CLEARCOLOR}" 1 'dontClear' 1
+    clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME} to continue the installtion." 1 'dontClear'
+    notifyUser "The following disk overview was obtained with ${CLEARCOLOR}${HIGHLIGHTCOLOR3}lsblk${CLEARCOLOR}${NOTIFYCOLOR}" 1 'dontClear'
+    lsblk
+    printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
+    exit 0
 }
 
 performPreInsallation() {
@@ -202,6 +218,7 @@ performPreInsallation() {
     setRootPassword
     [[ -n "${SSH}" ]] && startSSH
     syncInstallationMediaTime
+    partitionDisk
 }
 
 performInstallation() {
@@ -223,7 +240,11 @@ showFlagInfo()
       # -s
       notifyUser "The -s flag will cause ${SCRIPTNAME} to attempt to start ssh via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}systemctl start sshd${CLEARCOLOR}" 1 'dontClear'
       notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -s${CLEARCOLOR}" 1 'dontClear'
-      notifyUser "${SSH} MUST be installed for -s to work." 1 'dontClear'
+      notifyUser "openssh MUST be installed for -s to work." 1 'dontClear'
+      # -l
+      notifyUser "The -l flag will cause ${SCRIPTNAME} to print a log of all the messages shown while the script was running." 1 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -l${CLEARCOLOR}" 1 'dontClear'
+      notifyUser "The -l flag is helpful if you need to review what ${SCRIPTNAME} has done so far." 1 'dontClear'
 }
 
 showHelpMsg()
@@ -241,7 +262,7 @@ initColors
 initMessages
 # For a great article on getopts, and other approaches to handling bash arguments:
 # @see https://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":hs" OPTION; do
+while getopts ":hsl" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
@@ -250,6 +271,11 @@ while getopts ":hs" OPTION; do
     ;;
   s)
       SSH="${OPENSSH}"
+    ;;
+  l)
+      [[ -f ~/.cache/.installer_msg_log ]] || notifyUserAndExit "There are no logged messages" 1 'dontClear'
+      cat ~/.cache/.installer_msg_log | more
+      exit 0
     ;;
   \?)
      animatedPrint "Invalid argument: -${OPTARG}" && exit 1
@@ -261,6 +287,7 @@ performPreInsallation
 # NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
 performInstallation
 performPostInstallation
+
 
 
 

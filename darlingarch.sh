@@ -193,15 +193,27 @@ performPostInstallation() {
     showLoadingBar "${LB_POST_INSTALL_MSG}"
 }
 
+showFlagInfo()
+{
+      showLoadingBar "Loading flag info"
+      printf "%s" "${BANNER}"
+      # -p
+      notifyUser "The -p flag can be used to specify a package file:" 1 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -p /path/to/file${CLEARCOLOR}" 1 'dontClear'
+      notifyUser "Any packages named in the specified file will be included in the final insallation." 1 'dontClear'
+      # -s
+      notifyUser "The -s flag will cause ${SCRIPTNAME} to attempt to start ssh via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}systemctl start sshd${CLEARCOLOR}" 1 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -s${CLEARCOLOR}" 1 'dontClear'
+      notifyUser "${SSH} MUST be installed for -s to work." 1 'dontClear'
+}
+
 showHelpMsg()
 {
       notifyUser "${HELPMSG_OPENING1}" 1 'dontClear'
       notifyUser "${HELPMSG_OPENING2}" 1 'dontClear'
-      notifyUser "The -p flag can be used to specify a package file:" 1 'dontClear'
-      notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -p /path/to/file${CLEARCOLOR}" 1 'dontClear'
-      notifyUser "Any packages named in the specified file will be included in the final insallation." 1 'dontClear'
       notifyUser "${HELPMSG_CLOSING1}" 1 'dontClear'
       notifyUser "${HELPMSG_CLOSING2}" 1 'dontClear'
+      showFlagInfo
 }
 ########################## PROGRAM #######################
 
@@ -214,7 +226,7 @@ while getopts ":hs" OPTION; do
   case "${OPTION}" in
   h)
       printf "%s" "${BANNER}"
-          showHelpMsg
+      showHelpMsg
       exit 1
     ;;
   s)

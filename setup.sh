@@ -41,12 +41,16 @@ sleep 2 && clear
 printf "\n\nMoving ~/DarlingShells to ~/Code/DarlingShells\n\n" && sleep 2
 mv ~/DarlingShells ~/Code/DarlingShells
 
+printf "\n\Moving back into home directory:\n\n"
+cd ~/
 
 sleep 2 && clear
 
 printf "\n\nCurrent directory:\n\n"
 
 pwd
+
+printf "\n\n"
 
 ls -a
 

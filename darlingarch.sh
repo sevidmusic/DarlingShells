@@ -177,12 +177,31 @@ installPKGSForInstaller()
     installWhich
 }
 
+showTimeSettings()
+{
+    notifyUser "$(timedatectl status | grep 'Local')" 1 'dontClear'
+    notifyUser "$(timedatectl status | grep 'Universal')" 1 'dontClear'
+    notifyUser "$(timedatectl status | grep 'RTC')" 2 'dontClear'
+}
+
+syncInstallationMediaTime()
+{
+    [[ -f ~/.cache/.installer_im_time_sync ]] && printf "${NEWLINE}" && notifyUser "Installation media time is already synced:" 1 'dontClear' && showTimeSettings && clear && return
+    showLoadingBar "Syncing time settings for installation media" 'dontClear'
+    timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 1 'dontClear'
+    notifyUser "Time settings have been updated for installation media:" 2 'dontClear'
+    showTimeSettings
+    clear
+    printf "installation_media_time_already_synced" >> ~/.cache/.installer_im_time_sync
+}
+
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
     installPKGSForInstaller
     setRootPassword
     [[ -n "${SSH}" ]] && startSSH
+    syncInstallationMediaTime
 }
 
 performInstallation() {

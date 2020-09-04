@@ -228,11 +228,11 @@ makeExt4Filesystem()
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    #installPKGSForInstaller
-    #setRootPassword
-    #[[ -n "${SSH}" ]] && startSSH
-    #syncInstallationMediaTime
-    #partitionDisk
+    installPKGSForInstaller
+    setRootPassword
+    [[ -n "${SSH}" ]] && startSSH
+    syncInstallationMediaTime
+    partitionDisk
     makeExt4Filesystem
 }
 

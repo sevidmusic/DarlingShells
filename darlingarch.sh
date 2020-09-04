@@ -197,7 +197,7 @@ syncInstallationMediaTime()
 
 partitionDisk()
 {
-    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && exit 1
+    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 1 'dontClear'
     notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
     notifyUser "Create one partition for SWAP, size should no more than double your available RAM, and at least as much as available RAM." 1 'dontClear'
@@ -211,14 +211,29 @@ partitionDisk()
     exit 0
 }
 
+makeExt4Filesystem()
+{
+    [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
+    notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
+    lsblk
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " ROOT_PARTITION_NAME
+    showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
+    # make ext4 filesystem on root partition
+#    mkfs.ext4 "${ROOT_PARTITION_NAME}"
+    showLoadingBar "The filesystem was created successfully"
+    printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
+}
+
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    installPKGSForInstaller
-    setRootPassword
-    [[ -n "${SSH}" ]] && startSSH
-    syncInstallationMediaTime
-    partitionDisk
+    #installPKGSForInstaller
+    #setRootPassword
+    #[[ -n "${SSH}" ]] && startSSH
+    #syncInstallationMediaTime
+    #partitionDisk
+    makeExt4Filesystem
 }
 
 performInstallation() {

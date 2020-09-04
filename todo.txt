@@ -1,10 +1,3 @@
-# Partion Disks (use cfdisk if you want a simple ncurses GUI)
-cfdisk /dev/TARGET_DISK_NAME
-# Use lsblk to verify device and partions (Partitions should be shown under device)
-lsblk
-# Make the file system. This only needs to be done for the root partion, and Home
-# partition if one was created.
-mkfs.ext4 /dev/PARTION_NAME
 # Enable SWAP
 mkswap /dev/PARTION_NAME
 swapon /dev/PARTION_NAME

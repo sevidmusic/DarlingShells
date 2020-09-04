@@ -22,7 +22,7 @@ initColors() {
 initMessages() {
     NEWLINE="\n\n"
     SCRIPT=`basename "$(realpath $0)"`
-    SCRIPTNAME="${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPT}${CLEARCOLOR}${NOTIFYCOLOR}"
+    SCRIPTNAME="${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPT}${CLEARCOLOR}"
     OPENSSH="${CLEARCOLOR}${HIGHLIGHTCOLOR}openssh${CLEARCOLOR}${NOTIFYCOLOR}"
     BANNER='
    ___           ___             ___           __
@@ -31,7 +31,7 @@ initMessages() {
 /____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/
                        /___/
 '
-    HELPMSG_OPENING1="I developed ${SCRIPTNAME} as a guide for myself."
+    HELPMSG_OPENING1="I developed ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} as a guide for myself."
     HELPMSG_OPENING2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
     HELPMSG_CLOSING1="Feel free to modify the script to suit your needs."
     HELPMSG_CLOSING2="-Sevi D"
@@ -50,7 +50,7 @@ initMessages() {
     SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
     GETTING_IP_INFO="Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
     POST_SSH_OPENING_MSG1="The installer will now exit to give you an oppurtunity to login via ssh."
-    POST_SSH_OPENING_MSG2="Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME} without the -s flag:"
+    POST_SSH_OPENING_MSG2="Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} without the -s flag:"
 }
 
 animatedPrint()
@@ -114,7 +114,7 @@ setRootPassword()
     passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
     notifyUser "${PWD_WAS_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
     notifyUser "${PWD_WAS_SET_USE_FOR_SSH_LOGIN}" 3
-    printf "passwor_already_set" >> ~/.cache/.installer_pwd
+    printf "password_already_set" >> ~/.cache/.installer_pwd
 }
 
 showIpInfoMsg() {
@@ -199,12 +199,12 @@ partitionDisk()
 {
     [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 1 'dontClear'
-    notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
+    notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
     notifyUser "Create one partition for SWAP, size should no more than double your available RAM, and at least as much as available RAM." 1 'dontClear'
     notifyUser "Create one partition for root. This should take up the remiander of the available disk space." 1 'dontClear'
     showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
-    cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}${CLEARCOLOR}" 1 'dontClear' 1
-    clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME} to continue the installtion." 1 'dontClear'
+    cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 1 'dontClear' 1
+    clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to continue the installtion." 1 'dontClear'
     notifyUser "The following disk overview was obtained with ${CLEARCOLOR}${HIGHLIGHTCOLOR3}lsblk${CLEARCOLOR}${NOTIFYCOLOR}" 1 'dontClear'
     lsblk
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
@@ -222,7 +222,7 @@ makeExt4Filesystem()
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " ROOT_PARTITION_NAME
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR} " ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     # make ext4 filesystem on root partition
     mkfs.ext4 "${ROOT_PARTITION_NAME}"
@@ -235,21 +235,21 @@ enableSwap()
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}SWAP${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " SWAP_PARTITION_NAME
-    showLoadingBar "Enabling swap via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}mkswap${CLEARCOLOR}${NOTIFYCOLOR} and ${CLEARCOLOR}${HIGHLIGHTCOLOR3}swapon${CLEARCOLOR}"
-#    mkswap /dev/PARTION_NAME
-#    swapon /dev/PARTION_NAME
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR} " SWAP_PARTITION_NAME
+    showLoadingBar "Enabling swap via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}mkswap${CLEARCOLOR} and ${CLEARCOLOR}${HIGHLIGHTCOLOR3}swapon${CLEARCOLOR} on partition ${SWAP_PARTITION_NAME}"
+    mkswap "${SWAP_PARTITION_NAME}"
+    swapon "${SWAP_PARTITION_NAME}"
     printf "${SWAP_PARTITION_NAME}" >> ~/.cache/.installer_swap_enabled
 }
 
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
- #   installPKGSForInstaller
-  #  setRootPassword
-  #  [[ -n "${SSH}" ]] && startSSH
-  #  syncInstallationMediaTime
-  #  partitionDisk
+    installPKGSForInstaller
+    setRootPassword
+    [[ -n "${SSH}" ]] && startSSH
+    syncInstallationMediaTime
+    partitionDisk
     makeExt4Filesystem
     enableSwap
 }
@@ -271,13 +271,13 @@ showFlagInfo()
       notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -p /path/to/file${CLEARCOLOR}" 1 'dontClear'
       notifyUser "Any packages named in the specified file will be included in the final insallation." 1 'dontClear'
       # -s
-      notifyUser "The -s flag will cause ${SCRIPTNAME} to attempt to start ssh via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}systemctl start sshd${CLEARCOLOR}" 1 'dontClear'
+      notifyUser "The -s flag will cause ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to attempt to start ssh via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}systemctl start sshd${CLEARCOLOR}" 1 'dontClear'
       notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -s${CLEARCOLOR}" 1 'dontClear'
       notifyUser "openssh MUST be installed for -s to work." 1 'dontClear'
       # -l
-      notifyUser "The -l flag will cause ${SCRIPTNAME} to print a log of all the messages shown while the script was running." 1 'dontClear'
+      notifyUser "The -l flag will cause ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to print a log of all the messages shown while the script was running." 1 'dontClear'
       notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -l${CLEARCOLOR}" 1 'dontClear'
-      notifyUser "The -l flag is helpful if you need to review what ${SCRIPTNAME} has done so far." 1 'dontClear'
+      notifyUser "The -l flag is helpful if you need to review what ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} has done so far." 1 'dontClear'
 }
 
 showHelpMsg()

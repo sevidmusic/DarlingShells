@@ -1,6 +1,3 @@
-# Enable SWAP
-mkswap /dev/PARTION_NAME
-swapon /dev/PARTION_NAME
 # Mount the file system (Root partition, and if created, Home partition)
 mount /dev/PARTION_NAME /mnt
 # Generate fstab file

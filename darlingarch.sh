@@ -211,12 +211,17 @@ partitionDisk()
     exit 0
 }
 
+showDiskModificationWarning()
+{
+    notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
+    lsblk
+}
+
 makeExt4Filesystem()
 {
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
-    notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
-    lsblk
+    showDiskModificationWarning
     read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     # make ext4 filesystem on root partition
@@ -225,15 +230,28 @@ makeExt4Filesystem()
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
 }
 
+enableSwap()
+{
+    [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
+    notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}SWAP${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
+    showDiskModificationWarning
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " SWAP_PARTITION_NAME
+    showLoadingBar "Enabling swap via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}mkswap${CLEARCOLOR}${NOTIFYCOLOR} and ${CLEARCOLOR}${HIGHLIGHTCOLOR3}swapon${CLEARCOLOR}"
+#    mkswap /dev/PARTION_NAME
+#    swapon /dev/PARTION_NAME
+    printf "${SWAP_PARTITION_NAME}" >> ~/.cache/.installer_swap_enabled
+}
+
 performPreInsallation() {
     printf "%s" "${BANNER}"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    installPKGSForInstaller
-    setRootPassword
-    [[ -n "${SSH}" ]] && startSSH
-    syncInstallationMediaTime
-    partitionDisk
+ #   installPKGSForInstaller
+  #  setRootPassword
+  #  [[ -n "${SSH}" ]] && startSSH
+  #  syncInstallationMediaTime
+  #  partitionDisk
     makeExt4Filesystem
+    enableSwap
 }
 
 performInstallation() {

@@ -3,8 +3,8 @@
 #
 
 
-[[ -f ~/.autorsync ]] && . ~/.autorsync
+[[ -f ~/.autorsync ]] && source ~/.autorsync
 
-[[ -f ~/.bashrc ]] && . ~/.bashrc
+[[ -f ~/.bashrc ]] && source ~/.bashrc
 
-[[ -f ~/.bash_aliases ]] && . ~/.bash_aliases
+[[ -f ~/.bash_aliases ]] && source ~/.bash_aliases

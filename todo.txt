@@ -1,5 +1,3 @@
-# Mount the file system (Root partition, and if created, Home partition)
-mount /dev/PARTION_NAME /mnt
 # Generate fstab file
 mkdir /mnt/etc
 genfstab -U -p /mnt >> /mnt/etc/fstab

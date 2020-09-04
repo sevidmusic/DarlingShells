@@ -235,11 +235,22 @@ enableSwap()
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}SWAP${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR} " SWAP_PARTITION_NAME
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}):" SWAP_PARTITION_NAME
     showLoadingBar "Enabling swap via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}mkswap${CLEARCOLOR} and ${CLEARCOLOR}${HIGHLIGHTCOLOR3}swapon${CLEARCOLOR} on partition ${SWAP_PARTITION_NAME}"
     mkswap "${SWAP_PARTITION_NAME}"
     swapon "${SWAP_PARTITION_NAME}"
     printf "${SWAP_PARTITION_NAME}" >> ~/.cache/.installer_swap_enabled
+}
+
+mountFilesystem()
+{
+    [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
+    notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
+    showDiskModificationWarning
+    read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}):" ROOT_PARTITION_NAME
+    showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
+    mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME} and try again."
+    printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
 }
 
 performPreInsallation() {
@@ -252,6 +263,7 @@ performPreInsallation() {
     partitionDisk
     makeExt4Filesystem
     enableSwap
+    mountFilesystem
 }
 
 performInstallation() {

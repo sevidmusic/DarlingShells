@@ -220,7 +220,7 @@ makeExt4Filesystem()
     read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}:${CLEARCOLOR} " ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     # make ext4 filesystem on root partition
-#    mkfs.ext4 "${ROOT_PARTITION_NAME}"
+    mkfs.ext4 "${ROOT_PARTITION_NAME}"
     showLoadingBar "The filesystem was created successfully"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
 }

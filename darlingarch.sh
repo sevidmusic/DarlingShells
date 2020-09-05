@@ -107,8 +107,16 @@ notifyUserAndExit()
     exit "${4:-0}"
 }
 
+
+showBanner()
+{
+    printf "\n%s\n" "${BANNER}"
+    notifyUser "${1:- }" 1 'dontClear'
+}
+
 setRootPassword()
 {
+    showBanner "-- Pre-installation: Set root password for installation media --"
     [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_ISSET}" && return
     notifyUser "${PLS_SET_PWD}" 1 'dontClear'
     passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
@@ -152,6 +160,7 @@ showStartSSHExitMsg()
 
 startSSH()
 {
+    showBanner "-- Pre-installation: SSH --"
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
         notifyUser "${SSH} is already running:" 1 'dontClear'
         showStartSSHExitMsg
@@ -174,6 +183,7 @@ installWhich() {
 
 installPKGSForInstaller()
 {
+    showBanner "-- Pre-installation: Installing packages need by ${SCRIPTNAME}. These will not persist onto actual installation --"
     installWhich
 }
 
@@ -186,6 +196,7 @@ showTimeSettings()
 
 syncInstallationMediaTime()
 {
+    showBanner "-- Pre-installation: Sync installtion media's time --"
     [[ -f ~/.cache/.installer_im_time_sync ]] && notifyUser "Installation media time is already synced:" 1 'dontClear' && showTimeSettings && clear && return
     showLoadingBar "Syncing time settings for installation media" 'dontClear'
     timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 1 'dontClear'
@@ -197,6 +208,7 @@ syncInstallationMediaTime()
 
 partitionDisk()
 {
+    showBanner "-- Pre-installtion: Patition disk --"
     [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 1 'dontClear'
     notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
@@ -219,6 +231,7 @@ showDiskModificationWarning()
 
 makeExt4Filesystem()
 {
+    showBanner "-- Pre-installtion: Make EXT4 filesystem --"
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
@@ -232,6 +245,7 @@ makeExt4Filesystem()
 
 enableSwap()
 {
+    showBanner "-- Pre-installtion: Enable SWAP --"
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}SWAP${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
@@ -244,6 +258,7 @@ enableSwap()
 
 mountFilesystem()
 {
+    showBanner "-- Pre-installtion: Mount filesystem --"
     [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
@@ -254,7 +269,7 @@ mountFilesystem()
 }
 
 performPreInsallation() {
-    printf "%s" "${BANNER}"
+    showBanner "-- Pre-installation --"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
     installPKGSForInstaller
     setRootPassword
@@ -267,17 +282,19 @@ performPreInsallation() {
 }
 
 performInstallation() {
+    showBanner "-- Installation --"
     showLoadingBar "${LB_INSTALL_MSG}"
 }
 
 performPostInstallation() {
+    showBanner "-- Post-installation --"
     showLoadingBar "${LB_POST_INSTALL_MSG}"
 }
 
 showFlagInfo()
 {
       showLoadingBar "Loading flag info"
-      printf "%s" "${BANNER}"
+      showBanner "-- Help: Flags --"
       # -p
       notifyUser "The -p flag can be used to specify a package file:" 1 'dontClear'
       notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR3} -p /path/to/file${CLEARCOLOR}" 1 'dontClear'
@@ -310,7 +327,7 @@ initMessages
 while getopts ":hsl" OPTION; do
   case "${OPTION}" in
   h)
-      printf "%s" "${BANNER}"
+      showBanner "-- Help --"
       showHelpMsg
       exit 1
     ;;

@@ -150,18 +150,26 @@ showStartSSHExitMsg()
 showDiskModificationWarning()
 {
     notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
-    lsblk
+    showDiskInfo
 }
 
 showTimeSettings()
 {
-    notifyUser "$(timedatectl status | grep 'Local')" 1 'dontClear'
-    notifyUser "$(timedatectl status | grep 'Universal')" 1 'dontClear'
-    notifyUser "$(timedatectl status | grep 'RTC')" 2 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(timedatectl status | grep 'Local')${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(timedatectl status | grep 'Universal')${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(timedatectl status | grep 'RTC' | sed 's/[[:space:]]*$//g')${CLEARCOLOR}" 2 'dontClear'
+}
+
+showDiskInfo()
+{
+    notifyUser "The following partitions are available" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEARCOLOR}" 3
 }
 
 installWhich()
 {
+    showBanner "-- Pre-installation: Installing which --"
     [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
@@ -196,7 +204,8 @@ startSSH()
 
 installPKGSRequiredByInstaller()
 {
-    showBanner "-- Pre-installation: Installing packages need by ${SCRIPTNAME}. These will not persist onto actual installation --"
+    showBanner "-- Pre-installation: Installing packages required by ${SCRIPTNAME}" 1 'dontClear'
+    notifyUser "-- Note: These packages will not persist onto actual installation --"
     installWhich
 }
 
@@ -215,7 +224,7 @@ syncInstallationMediaTime()
 partitionDisk()
 {
     showBanner "-- Pre-installtion: Patition disk --"
-    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." && return
+    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." 1 'dontClear' && showDiskInfo && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 1 'dontClear'
     notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} is designed to install Arch on an ext4 filesystem)" 1 'dontClear'
     notifyUser "Create one partition for SWAP, size should no more than double your available RAM, and at least as much as available RAM." 1 'dontClear'
@@ -223,8 +232,7 @@ partitionDisk()
     showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
     cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 1 'dontClear' 1
     clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to continue the installtion." 1 'dontClear'
-    notifyUser "The following disk overview was obtained with ${CLEARCOLOR}${HIGHLIGHTCOLOR3}lsblk${CLEARCOLOR}${NOTIFYCOLOR}" 1 'dontClear'
-    lsblk
+    showDiskInfo
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
 }
@@ -350,8 +358,4 @@ performPreInsallation
 # NOTE: Use a file to determine which packages are installed in addition to base. i.e. package.list
 performInstallation
 performPostInstallation
-
-
-
-
 

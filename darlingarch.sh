@@ -109,6 +109,7 @@ initMessages() {
 
 showBanner()
 {
+    clear
     printf "\n%s\n" "${BANNER}"
     notifyUser "${1:- }" 1 'dontClear'
 }
@@ -166,7 +167,7 @@ installWhich()
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation." 1 'dontClear'
-    showLoadingBar "Moving on"
+    showLoadingBar "'which' is installed, moving on"
     printf "which_already_installed" >> ~/.cache/.installer_which
 }
 
@@ -178,7 +179,7 @@ setRootPassword()
     passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
     notifyUser "${PWD_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
     notifyUser "${PWD_SET_FOR_ISO_IS_PWD_FOR_SSH}" 1 'dontClear'
-    showLoadingBar "Moving on"
+    showLoadingBar "Root password for installation media is set, moving on"
     printf "password_already_set" >> ~/.cache/.installer_pwd
 }
 

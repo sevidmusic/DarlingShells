@@ -1,8 +1,3 @@
-# Generate fstab file
-mkdir /mnt/etc
-genfstab -U -p /mnt >> /mnt/etc/fstab
-# Verify fstab
-cat /mnt/etc/fstab
 # Update mirrors (Use reflector to automate)
 pacman -Syy
 pacman -S reflector
@@ -28,6 +23,11 @@ pacman -Syy
 #       - nvidia nvidia-utils nvidia-lts
 pacstrap -i /mnt base base-devel linux linux-headers linux-lts linux-lts-headers linux-firmware # if VB include: # virtualbox-guest-utils xf86-video-vmware
 ########################## POST INSTALLATION ##########################
+# Generate fstab file
+mkdir /mnt/etc
+genfstab -U -p /mnt >> /mnt/etc/fstab
+# Verify fstab
+cat /mnt/etc/fstab
 # Chroot into new installation: If this works, so far so good : )
 arch-chroot /mnt
 ######### YOU ARE NOW LOGGED INTO YOUR NEW ARCH INSTALLATION ##########

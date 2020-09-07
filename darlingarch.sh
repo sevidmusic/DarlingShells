@@ -19,40 +19,6 @@ initColors() {
   DARKTEXTCOLOR=$(setColor 30)
 }
 
-initMessages() {
-    NEWLINE="\n\n"
-    SCRIPT=`basename "$(realpath $0)"`
-    SCRIPTNAME="${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPT}${CLEARCOLOR}"
-    OPENSSH="${CLEARCOLOR}${HIGHLIGHTCOLOR}openssh${CLEARCOLOR}${NOTIFYCOLOR}"
-    BANNER='
-   ___           ___             ___           __
-  / _ \___ _____/ (_)__  ___ _  / _ | ________/ /
- / // / _ \/ __/ / / _ \/ _  / / __ |/ __/ __/ _ \
-/____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/
-                       /___/
-'
-    HELPMSG_OPENING1="I developed ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} as a guide for myself."
-    HELPMSG_OPENING2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
-    HELPMSG_CLOSING1="Feel free to modify the script to suit your needs."
-    HELPMSG_CLOSING2="-Sevi D"
-    LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
-    LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
-    LB_POST_INSTALL_MSG='Post-installation will being in a moment'
-    PWD_ISSET="Root password was already set, to reset run: ${CLEARCOLOR}${HIGHLIGHTCOLOR2}passwd${CLEARCOLOR}"
-    PLS_SET_PWD="Please set the root password:"
-    PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error occured, please re-run ${SCRIPTNAME}"
-    PWD_WAS_SET_FOR_ISO_WONT_PERSIST="${CLEARCOLOR}${WARNINGCOLOR}The password you just set will NOT persist onto the actual installation.${CLEARCOLOR}"
-    PWD_WAS_SET_USE_FOR_SSH_LOGIN="If the -s flag was supplied, then the password you just set will be the password you use to login to the installation media as root via ssh."
-    OPENING_IP_INFO_MSG="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):"
-    STARTING_SSH_MSG="Attempting to start sshd"
-    POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
-    SSH_IS_INSTALLED_MSG="SSH is running."
-    SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
-    GETTING_IP_INFO="Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
-    POST_SSH_OPENING_MSG1="The installer will now exit to give you an oppurtunity to login via ssh."
-    POST_SSH_OPENING_MSG2="Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} without the -s flag:"
-}
-
 animatedPrint()
 {
   local _charsToAnimate _speed _currentChar _charCount
@@ -107,6 +73,40 @@ notifyUserAndExit()
     exit "${4:-0}"
 }
 
+initMessages() {
+    NEWLINE="\n\n"
+    SCRIPT=`basename "$(realpath $0)"`
+    SCRIPTNAME="${CLEARCOLOR}${HIGHLIGHTCOLOR}${SCRIPT}${CLEARCOLOR}"
+    OPENSSH="${CLEARCOLOR}${HIGHLIGHTCOLOR}openssh${CLEARCOLOR}${NOTIFYCOLOR}"
+    BANNER='
+   ___           ___             ___           __
+  / _ \___ _____/ (_)__  ___ _  / _ | ________/ /
+ / // / _ \/ __/ / / _ \/ _  / / __ |/ __/ __/ _ \
+/____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/
+                       /___/
+'
+    HELP_MSG_WELCOME1="I developed ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} as a guide for myself."
+    HELP_MSG_WELCOME2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
+    HELP_MSG_WELCOME3="Feel free to modify the script to suit your needs."
+    HELP_MSG_WELCOME4="-Sevi D"
+    LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
+    LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
+    LB_POST_INSTALL_MSG='Post-installation will being in a moment'
+    PWD_IS_ALREADY_SET="Root password was already set, to reset run: ${CLEARCOLOR}${HIGHLIGHTCOLOR2}passwd${CLEARCOLOR}"
+    PLS_SET_PWD="Please set the root password:"
+    PWD_ERROR_OCCURED="${CLEARCOLOR}${WARNINGCOLOR}An error occured, please re-run ${SCRIPTNAME}"
+    PWD_SET_FOR_ISO_WONT_PERSIST="${CLEARCOLOR}${WARNINGCOLOR}The password you just set will NOT persist onto the actual installation.${CLEARCOLOR}"
+    PWD_SET_FOR_ISO_IS_PWD_FOR_SSH="If the -s flag was supplied, then the password you just set will be the password you use to login to the installation media as root via ssh."
+    IP_INFO_MSG="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):"
+    STARTING_SSH_MSG="Attempting to start sshd"
+    POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
+    SSH_IS_INSTALLED_MSG="SSH is running."
+    SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
+    GETTING_IP_INFO="Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
+    POST_SSH_OPENING_MSG1="The installer will now exit to give you an oppurtunity to login via ssh."
+    POST_SSH_OPENING_MSG2="Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} without the -s flag:"
+    SSH_SERVICE_LOCATION_MSG="${SSH:-${OPENSSH}} location and sshd service info:"
+}
 
 showBanner()
 {
@@ -114,20 +114,9 @@ showBanner()
     notifyUser "${1:- }" 1 'dontClear'
 }
 
-setRootPassword()
-{
-    showBanner "-- Pre-installation: Set root password for installation media --"
-    [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_ISSET}" && return
-    notifyUser "${PLS_SET_PWD}" 1 'dontClear'
-    passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
-    notifyUser "${PWD_WAS_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
-    notifyUser "${PWD_WAS_SET_USE_FOR_SSH_LOGIN}" 3
-    printf "password_already_set" >> ~/.cache/.installer_pwd
-}
-
 showIpInfoMsg() {
     showLoadingBar "${GETTING_IP_INFO}" 'dontClear'
-    notifyUser "${OPENING_IP_INFO_MSG}" 1 'dontClear'
+    notifyUser "${IP_INFO_MSG}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3 'dontClear'
 }
@@ -139,12 +128,12 @@ showPostSSHInstallMsg() {
     notifyUser "Example:" 1 'dontClear'
     notifyUser "${SCRIPTNAME}" 1 'dontClear'
     notifyUser "or" 1 'dontClear'
-    notifyUser "${SCRIPTNAME} ${CLEARCOLOR}${HIGHLIGHTCOLOR}-p /path/to/packagefile${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR} -p /path/to/packagefile${CLEARCOLOR}" 1 'dontClear'
 
 }
 
 showSSHLocationService() {
-    notifyUser "${SSH} location and sshd service info:" 1 'dontClear'
+    notifyUser "${SSH_SERVICE_LOCATION_MSG}" 1 'dontClear'
     notifyUser "Location: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which ssh)${CLEARCOLOR}" 1 'dontClear'
     notifyUser "Service:  ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(systemctl list-units --type=service | grep ssh | awk '{ print $1 }')${CLEARCOLOR}" 3 'dontClear'
 }
@@ -156,6 +145,39 @@ showStartSSHExitMsg()
     showPostSSHInstallMsg
     showLoadingBar "${POST_SSH_INSTALL_EXIT_MSG}"
     exit 0
+}
+
+showDiskModificationWarning()
+{
+    notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
+    lsblk
+}
+
+showTimeSettings()
+{
+    notifyUser "$(timedatectl status | grep 'Local')" 1 'dontClear'
+    notifyUser "$(timedatectl status | grep 'Universal')" 1 'dontClear'
+    notifyUser "$(timedatectl status | grep 'RTC')" 2 'dontClear'
+}
+
+installWhich()
+{
+    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
+    showLoadingBar "Installing \"which\" so program locations can be determined"
+    pacman -S which --noconfirm
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation."
+    printf "which_already_installed" >> ~/.cache/.installer_which
+}
+
+setRootPassword()
+{
+    showBanner "-- Pre-installation: Set root password for installation media --"
+    [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_IS_ALREADY_SET}" && return
+    notifyUser "${PLS_SET_PWD}" 1 'dontClear'
+    passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
+    notifyUser "${PWD_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
+    notifyUser "${PWD_SET_FOR_ISO_IS_PWD_FOR_SSH}" 3
+    printf "password_already_set" >> ~/.cache/.installer_pwd
 }
 
 startSSH()
@@ -172,26 +194,10 @@ startSSH()
     showStartSSHExitMsg
 }
 
-
-installWhich() {
-    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
-    showLoadingBar "Installing \"which\" so program locations can be determined"
-    pacman -S which --noconfirm
-    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation."
-    printf "which_already_installed" >> ~/.cache/.installer_which
-}
-
-installPKGSForInstaller()
+installPKGSRequiredByInstaller()
 {
     showBanner "-- Pre-installation: Installing packages need by ${SCRIPTNAME}. These will not persist onto actual installation --"
     installWhich
-}
-
-showTimeSettings()
-{
-    notifyUser "$(timedatectl status | grep 'Local')" 1 'dontClear'
-    notifyUser "$(timedatectl status | grep 'Universal')" 1 'dontClear'
-    notifyUser "$(timedatectl status | grep 'RTC')" 2 'dontClear'
 }
 
 syncInstallationMediaTime()
@@ -221,12 +227,6 @@ partitionDisk()
     lsblk
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
-}
-
-showDiskModificationWarning()
-{
-    notifyUser "${CLEARCOLOR}${WARNINGCOLOR}Get this right, ${SCRIPTNAME}${CLEARCOLOR}${WARNINGCOLOR} does not check this for you, if you mis-type this you may loose data!${CLEARCOLOR}" 1 'dontClear'
-    lsblk
 }
 
 makeExt4Filesystem()
@@ -271,7 +271,7 @@ mountFilesystem()
 performPreInsallation() {
     showBanner "-- Pre-installation --"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
-    installPKGSForInstaller
+    installPKGSRequiredByInstaller
     setRootPassword
     [[ -n "${SSH}" ]] && startSSH
     syncInstallationMediaTime
@@ -311,10 +311,10 @@ showFlagInfo()
 
 showHelpMsg()
 {
-      notifyUser "${HELPMSG_OPENING1}" 1 'dontClear'
-      notifyUser "${HELPMSG_OPENING2}" 1 'dontClear'
-      notifyUser "${HELPMSG_CLOSING1}" 1 'dontClear'
-      notifyUser "${HELPMSG_CLOSING2}" 1 'dontClear'
+      notifyUser "${HELP_MSG_WELCOME1}" 1 'dontClear'
+      notifyUser "${HELP_MSG_WELCOME2}" 1 'dontClear'
+      notifyUser "${HELP_MSG_WELCOME3}" 1 'dontClear'
+      notifyUser "${HELP_MSG_WELCOME4}" 1 'dontClear'
       showFlagInfo
 }
 ########################## PROGRAM #######################
@@ -329,6 +329,7 @@ while getopts ":hsl" OPTION; do
   h)
       showBanner "-- Help --"
       showHelpMsg
+      notifyUserAndExit "Exiting installer"
       exit 1
     ;;
   s)

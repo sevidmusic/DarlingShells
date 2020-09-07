@@ -99,12 +99,11 @@ initMessages() {
     PWD_SET_FOR_ISO_IS_PWD_FOR_SSH="If the -s flag was supplied, then the password you just set will be the password you use to login to the installation media as root via ssh."
     IP_INFO_MSG="The following is your ip info (obtained via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}${NOTIFYCOLOR}):"
     STARTING_SSH_MSG="Attempting to start sshd"
-    POST_SSH_INSTALL_EXIT_MSG="Exiting installer, re-run WTIHOUT -s flag to continue with installation"
+    POST_SSH_SETUP_EXIT_MSG="Exiting installer, re-run ${SCRIPTNAME} WTIHOUT the -s flag to continue the installation process"
     SSH_IS_INSTALLED_MSG="SSH is running."
     SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
     GETTING_IP_INFO="Getting ip info via ${CLEARCOLOR}${HIGHLIGHTCOLOR}ip a${CLEARCOLOR}"
-    POST_SSH_OPENING_MSG1="The installer will now exit to give you an oppurtunity to login via ssh."
-    POST_SSH_OPENING_MSG2="Whether or not you decide to login via ssh, to continue the installation process re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} without the -s flag:"
+    POST_SSH_SETUP_MSG="The installer will now exit to give you an oppurtunity to login via ssh."
     SSH_SERVICE_LOCATION_MSG="${SSH:-${OPENSSH}} location and sshd service info:"
 }
 
@@ -115,7 +114,6 @@ showBanner()
 }
 
 showIpInfoMsg() {
-    showLoadingBar "${GETTING_IP_INFO}" 'dontClear'
     notifyUser "${IP_INFO_MSG}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEARCOLOR}" 1 'dontClear'
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEARCOLOR}" 3 'dontClear'
@@ -123,13 +121,7 @@ showIpInfoMsg() {
 
 showPostSSHInstallMsg() {
     notifyUser "${SSH_LOGIN_AVAILABLE}" 1 'dontClear'
-    notifyUser "${POST_SSH_OPENING_MSG1}" 1 'dontClear'
-    notifyUser "${POST_SSH_OPENING_MSG2}" 1 'dontClear'
-    notifyUser "Example:" 1 'dontClear'
-    notifyUser "${SCRIPTNAME}" 1 'dontClear'
-    notifyUser "or" 1 'dontClear'
-    notifyUser "${SCRIPTNAME}${CLEARCOLOR}${HIGHLIGHTCOLOR} -p /path/to/packagefile${CLEARCOLOR}" 1 'dontClear'
-
+    notifyUser "${POST_SSH_SETUP_MSG}" 1 'dontClear'
 }
 
 showSSHLocationService() {
@@ -143,8 +135,15 @@ showStartSSHExitMsg()
     showSSHLocationService
     showIpInfoMsg
     showPostSSHInstallMsg
-    showLoadingBar "${POST_SSH_INSTALL_EXIT_MSG}"
+    showLoadingBar "${POST_SSH_SETUP_EXIT_MSG}" 'dontClear'
     exit 0
+}
+
+showDiskInfo()
+{
+    notifyUser "The following partitions are available" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEARCOLOR}" 1 'dontClear'
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEARCOLOR}" 3 'dontClear'
 }
 
 showDiskModificationWarning()
@@ -160,20 +159,14 @@ showTimeSettings()
     notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(timedatectl status | grep 'RTC' | sed 's/[[:space:]]*$//g')${CLEARCOLOR}" 2 'dontClear'
 }
 
-showDiskInfo()
-{
-    notifyUser "The following partitions are available" 1 'dontClear'
-    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEARCOLOR}" 1 'dontClear'
-    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEARCOLOR}" 3
-}
-
 installWhich()
 {
     showBanner "-- Pre-installation: Installing which --"
-    [[ -f ~/.cache/.installer_which ]] && printf "${NEWLINE}" && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
+    [[ -f ~/.cache/.installer_which ]] && notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is already installed: ${CLEARCOLOR}${HIGHLIGHTCOLOR}$(which which)${CLEARCOLOR}" && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
-    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation."
+    notifyUser "${CLEARCOLOR}${HIGHLIGHTCOLOR}which${CLEARCOLOR}${NOTIFYCOLOR} is now installed on the installation media, this ${CLEARCOLOR}${WARNINGCOLOR}will NOT persist${CLEARCOLOR}${NOTIFYCOLOR} onto the actual installation." 1 'dontClear'
+    showLoadingBar "Moving on"
     printf "which_already_installed" >> ~/.cache/.installer_which
 }
 
@@ -184,7 +177,8 @@ setRootPassword()
     notifyUser "${PLS_SET_PWD}" 1 'dontClear'
     passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 1 'dontClear' 1
     notifyUser "${PWD_SET_FOR_ISO_WONT_PERSIST}" 1 'dontClear'
-    notifyUser "${PWD_SET_FOR_ISO_IS_PWD_FOR_SSH}" 3
+    notifyUser "${PWD_SET_FOR_ISO_IS_PWD_FOR_SSH}" 1 'dontClear'
+    showLoadingBar "Moving on"
     printf "password_already_set" >> ~/.cache/.installer_pwd
 }
 
@@ -217,7 +211,7 @@ syncInstallationMediaTime()
     timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 1 'dontClear'
     notifyUser "Time settings have been updated for installation media:" 2 'dontClear'
     showTimeSettings
-    clear
+    showLoadingBar "Moving on"
     printf "installation_media_time_already_synced" >> ~/.cache/.installer_im_time_sync
 }
 
@@ -233,46 +227,52 @@ partitionDisk()
     cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 1 'dontClear' 1
     clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to continue the installtion." 1 'dontClear'
     showDiskInfo
+    showLoadingBar "Moving on"
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
 }
 
 makeExt4Filesystem()
 {
-    showBanner "-- Pre-installtion: Make EXT4 filesystem --"
+    showBanner "-- Pre-installtion: Make EXT4 filesystem | User Input Required --"
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
     read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}${NOTIFYCOLOR}):${CLEARCOLOR} " ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
-    # make ext4 filesystem on root partition
-    mkfs.ext4 "${ROOT_PARTITION_NAME}"
-    showLoadingBar "The filesystem was created successfully"
+    showBanner "-- Pre-installtion: Make EXT4 filesystem --"
+    mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "The filesystem could not be created on ${ROOT_PARTITION_NAME}" 1 'dontClear' 1
+    notifyUser "The filesystem was created successfully" 1 'dontClear'
+    showLoadingBar "Moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
 }
 
 enableSwap()
 {
-    showBanner "-- Pre-installtion: Enable SWAP --"
+    showBanner "-- Pre-installtion: Enable SWAP | User Input Required --"
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}SWAP${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
     read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEARCOLOR}):" SWAP_PARTITION_NAME
     showLoadingBar "Enabling swap via ${CLEARCOLOR}${HIGHLIGHTCOLOR3}mkswap${CLEARCOLOR} and ${CLEARCOLOR}${HIGHLIGHTCOLOR3}swapon${CLEARCOLOR} on partition ${SWAP_PARTITION_NAME}"
-    mkswap "${SWAP_PARTITION_NAME}"
-    swapon "${SWAP_PARTITION_NAME}"
+    showBanner "-- Pre-installtion: Enable SWAP --"
+    mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to make SWAP" 1 'dontClear' 1
+    swapon "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to turn on SWAP" 1 'dontClear' 1
+    notifyUser "SWAP was created and enabled successfully"
     printf "${SWAP_PARTITION_NAME}" >> ~/.cache/.installer_swap_enabled
 }
 
 mountFilesystem()
 {
-    showBanner "-- Pre-installtion: Mount filesystem --"
+    showBanner "-- Pre-installtion: Mount filesystem | User Input Required --"
     [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
     notifyUser "Please specify the name of the partition you created for ${CLEARCOLOR}${HIGHLIGHTCOLOR3}root${CLEARCOLOR}${NOTIFYCOLOR}:" 1 'dontClear'
     showDiskModificationWarning
     read -p "Partion Name (e.g.${CLEARCOLOR}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEARCOLOR}):" ROOT_PARTITION_NAME
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
-    mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME} and try again."
+    showBanner "-- Pre-installtion: Mount filesystem --"
+    mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} and try again." 1 'dontClear' 1
+    notifyUser "Filesystem was created successfully"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
 }
 

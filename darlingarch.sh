@@ -211,7 +211,7 @@ syncInstallationMediaTime()
     timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 0 'dontClear'
     notifyUser "Time settings have been updated for installation media:" 2 'dontClear'
     showTimeSettings
-    showLoadingBar "Moving on"
+    showLoadingBar "Time settings synced for isntallation media, moving on"
     printf "installation_media_time_already_synced" >> ~/.cache/.installer_im_time_sync
 }
 
@@ -227,7 +227,6 @@ partitionDisk()
     cfdisk /dev/sdb || notifyUserAndExit "${CLEARCOLOR}${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 0 'dontClear' 1
     clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
     showDiskInfo
-    showLoadingBar "Moving on"
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
 }
@@ -243,7 +242,7 @@ makeExt4Filesystem()
     showBanner "-- Pre-installtion: Make EXT4 filesystem --"
     mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "The filesystem could not be created on ${ROOT_PARTITION_NAME}" 0 'dontClear' 1
     notifyUser "The filesystem was created successfully" 0 'dontClear'
-    showLoadingBar "Moving on"
+    showLoadingBar "Ext4 filesystem created, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
 }
 
@@ -272,7 +271,7 @@ mountFilesystem()
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
     showBanner "-- Pre-installtion: Mount filesystem --"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${CLEARCOLOR}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
-    notifyUser "Filesystem was created successfully"
+    notifyUser "Filesystem was mounted successfully at /mnt"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
 }
 

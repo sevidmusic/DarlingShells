@@ -68,6 +68,7 @@ initTextStyles() {
   ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${LIGHT_CYAN_BG_COLOR}"
   ATTENTIONEFFECTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
   DARKTEXTCOLOR="${CLEAR_ALL_TEXT_STYLES}${DARK_GRAY_FG_COLOR}"
+  BANNER_MSG_COLOR="${GREEN_BG_COLOR}${BLACK_FG_COLOR}"
 }
 
 animatedPrint()
@@ -161,7 +162,7 @@ showBanner()
 {
     clear
     printf "\n%s\n" "${BANNER}"
-    notifyUser "${1:- }" 0 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}--  ${BANNER_MSG_COLOR}${1:- }${CLEAR_ALL_TEXT_STYLES}  --" 0 'dontClear'
 }
 
 showIpInfoMsg() {
@@ -213,7 +214,7 @@ showTimeSettings()
 
 installWhich()
 {
-    showBanner "-- Pre-installation: Installing which --"
+    showBanner "Pre-installation: Installing which"
     [[ -f ~/.cache/.installer_which ]] && notifyUser "${HIGHLIGHTCOLOR}which${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} is already installed: ${HIGHLIGHTCOLOR}$(which which)${CLEAR_ALL_TEXT_STYLES}" && return
     showLoadingBar "Installing \"which\" so program locations can be determined"
     pacman -S which --noconfirm
@@ -224,8 +225,8 @@ installWhich()
 
 installReflector()
 {
-    showBanner "-- Pre-installation: Installing reflector --"
-    [[ -f ~/.cache/.installer_reflector ]] && notifyUser "${HIGHLIGHTCOLOR}reflector${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} is already installed: ${HIGHLIGHTCOLOR}$(reflector reflector)${CLEAR_ALL_TEXT_STYLES}" && return
+    showBanner "Pre-installation: Installing reflector"
+    [[ -f ~/.cache/.installer_reflector ]] && notifyUser "${HIGHLIGHTCOLOR}reflector${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} is already installed: ${HIGHLIGHTCOLOR}$(which reflector)${CLEAR_ALL_TEXT_STYLES}" && return
     showLoadingBar "Installing \"reflector\" to automate configuration of mirrors used by ${HIGHLIGHTCOLOR}pacman${CLEAR_ALL_TEXT_STYLES}"
     pacman -S reflector --noconfirm
     notifyUser "${HIGHLIGHTCOLOR}reflector${NOTIFYCOLOR} is now installed on the installation media, this ${WARNINGCOLOR}will NOT persist${NOTIFYCOLOR} onto the actual installation." 0 'dontClear'
@@ -236,7 +237,7 @@ installReflector()
 
 setRootPassword()
 {
-    showBanner "-- Pre-installation: Set root password for installation media --"
+    showBanner "Pre-installation: Set root password for installation media"
     [[ -f ~/.cache/.installer_pwd ]] && notifyUser "${PWD_IS_ALREADY_SET}" && return
     notifyUser "${PLS_SET_PWD}" 0 'dontClear'
     passwd || notifyUserAndExit "${PWD_ERROR_OCCURED}" 0 'dontClear' 1
@@ -248,7 +249,7 @@ setRootPassword()
 
 startSSH()
 {
-    showBanner "-- Pre-installation: SSH --"
+    showBanner "Pre-installation: SSH"
     if [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -gt 0 ]]; then
         notifyUser "${SSH} is already running:" 0 'dontClear'
         showStartSSHExitMsg
@@ -262,7 +263,7 @@ startSSH()
 
 installPKGSRequiredByInstaller()
 {
-    showBanner "-- Pre-installation: Installing packages required by ${SCRIPTNAME}" 0 'dontClear'
+    showBanner "Pre-installation: Installing packages required by ${SCRIPTNAME}" 0 'dontClear'
     notifyUser "-- Note: These packages will not persist onto actual installation --"
     installWhich
     installReflector
@@ -290,7 +291,7 @@ partitionDisk()
     notifyUser "Create one partition for root. This should take up the remiander of the available disk space." 0 'dontClear'
     showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
     cfdisk /dev/sdb || notifyUserAndExit "${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 0 'dontClear' 1
-    clear && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
+    clear && showBanner "-- Pre-installation: Partion disks | Complete | To make additional changes run ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR} manually --" && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
     showDiskInfo
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
@@ -336,7 +337,7 @@ mountFilesystem()
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
     showBanner "-- Pre-installtion: Mount filesystem --"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
-    notifyUser "Filesystem was mounted successfully at /mnt"
+    notifyUser "Filesystem was mounted successfully at /mnt" 0 'dontClear'
     showLoadingBar "Filesystem mounted, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
 }

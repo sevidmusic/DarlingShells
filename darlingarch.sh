@@ -62,15 +62,12 @@ initTextStyles() {
   LIGHT_CYAN_BG_COLOR=$(setTextStyleCode 106)
   WHITE_BG_COLOR=$(setTextStyleCode 107)
   # Niche Colors
-  WARNINGCOLOR=$(setTextStyleCode 35)
-  NOTIFYCOLOR="${LIGHT_BLUE_FG_COLOR}"
-  HIGHLIGHTCOLOR3=$(setTextStyleCode 41)
-  USRPRMPTCOLOR=$(setTextStyleCode 41)
-  HIGHLIGHTCOLOR=$(setTextStyleCode 41)
-  HIGHLIGHTCOLOR2=$(setTextStyleCode 45)
-  ATTENTIONEFFECT=$(setTextStyleCode 5)
-  ATTENTIONEFFECTCOLOR=$(setTextStyleCode 36)
-  DARKTEXTCOLOR=$(setTextStyleCode 30)
+  WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
+  NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
+  HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}"
+  ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
+  ATTENTIONEFFECTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
+  DARKTEXTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
 }
 
 animatedPrint()
@@ -95,7 +92,7 @@ showLoadingBar() {
   local _slb_inc _slb_windowWidth _slb_numChars _slb_adjustedNumChars _slb_loadingBarLimit
   printf "\n"
   animatedPrint "${1}" .05
-  printf "%s" "${HIGHLIGHTCOLOR3}"
+  printf "%s" "${HIGHLIGHTCOLOR}"
   _slb_inc=0
   _slb_windowWidth=$(tput cols)
   _slb_numChars="${#1}"
@@ -105,7 +102,7 @@ showLoadingBar() {
     animatedPrint ":" .007
     _slb_inc=$((_slb_inc + 1))
   done
-  printf " %s\n" "${CLEAR_ALL_TEXT_STYLES}${ATTENTIONEFFECT}${ATTENTIONEFFECTCOLOR}[100%]${CLEAR_ALL_TEXT_STYLES}"
+  printf " %s\n" "${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${LIGHT_BLUE_BG_COLOR}[100%]${CLEAR_ALL_TEXT_STYLES}"
   sleep 0.23
   [[ "${2}" != "dontClear" ]] && clear
 }
@@ -145,7 +142,7 @@ initMessages() {
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
     LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'
-    PWD_IS_ALREADY_SET="Root password was already set, to reset run: ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR2}passwd${CLEAR_ALL_TEXT_STYLES}"
+    PWD_IS_ALREADY_SET="Root password was already set, to reset run: ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}passwd${CLEAR_ALL_TEXT_STYLES}"
     PLS_SET_PWD="Please set the root password:"
     PWD_ERROR_OCCURED="${CLEAR_ALL_TEXT_STYLES}${WARNINGCOLOR}An error occured, please re-run ${SCRIPTNAME}"
     PWD_SET_FOR_ISO_WONT_PERSIST="${CLEAR_ALL_TEXT_STYLES}${WARNINGCOLOR}The password you just set will NOT persist onto the actual installation.${CLEAR_ALL_TEXT_STYLES}"
@@ -170,7 +167,7 @@ showBanner()
 showIpInfoMsg() {
     notifyUser "${IP_INFO_MSG}" 0 'dontClear'
     notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][.][0-9][.][0-9][.][0-9][0-9][0-9]')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR2}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(ip a | grep -E '[0-9][0-9][0-9][.][0-9][.][0-9][.][0-9]')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
 }
 
 showPostSSHInstallMsg() {
@@ -196,8 +193,8 @@ showStartSSHExitMsg()
 showDiskInfo()
 {
     notifyUser "The following partitions are available" 0 'dontClear'
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
 }
 
 showDiskModificationWarning()
@@ -209,8 +206,8 @@ showDiskModificationWarning()
 showTimeSettings()
 {
     notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(timedatectl status | grep 'Local')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR2}$(timedatectl status | grep 'Universal')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}$(timedatectl status | grep 'RTC' | sed 's/[[:space:]]*$//g')${CLEAR_ALL_TEXT_STYLES}" 2 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(timedatectl status | grep 'Universal')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}$(timedatectl status | grep 'RTC' | sed 's/[[:space:]]*$//g')${CLEAR_ALL_TEXT_STYLES}" 2 'dontClear'
 }
 
 installWhich()
@@ -289,9 +286,9 @@ makeExt4Filesystem()
 {
     showBanner "-- Pre-installtion: Make EXT4 filesystem | User Input Required --"
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
-    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}root${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
+    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}root${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES} " ROOT_PARTITION_NAME
+    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES} " ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     showBanner "-- Pre-installtion: Make EXT4 filesystem --"
     mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "The filesystem could not be created on ${ROOT_PARTITION_NAME}" 0 'dontClear' 1
@@ -304,10 +301,10 @@ enableSwap()
 {
     showBanner "-- Pre-installtion: Enable SWAP | User Input Required --"
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
-    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}SWAP${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
+    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}SWAP${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
-    showLoadingBar "Enabling swap via ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}mkswap${CLEAR_ALL_TEXT_STYLES} and ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}swapon${CLEAR_ALL_TEXT_STYLES} on partition ${SWAP_PARTITION_NAME}"
+    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
+    showLoadingBar "Enabling swap via ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}mkswap${CLEAR_ALL_TEXT_STYLES} and ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}swapon${CLEAR_ALL_TEXT_STYLES} on partition ${SWAP_PARTITION_NAME}"
     showBanner "-- Pre-installtion: Enable SWAP --"
     mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to make SWAP" 0 'dontClear' 1
     swapon "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to turn on SWAP" 0 'dontClear' 1
@@ -319,9 +316,9 @@ mountFilesystem()
 {
     showBanner "-- Pre-installtion: Mount filesystem | User Input Required --"
     [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
-    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}root${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
+    notifyUser "Please specify the name of the partition you created for ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}root${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
+    read -p "Partion Name (e.g.${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
     showBanner "-- Pre-installtion: Mount filesystem --"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
@@ -358,15 +355,15 @@ showFlagInfo()
       showBanner "-- Help: Flags --"
       # -p
       notifyUser "The -p flag can be used to specify a package file:" 0 'dontClear'
-      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3} -p /path/to/file${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR} -p /path/to/file${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
       notifyUser "Any packages named in the specified file will be included in the final insallation." 0 'dontClear'
       # -s
-      notifyUser "The -s flag will cause ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} to attempt to start ssh via ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3}systemctl start sshd${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3} -s${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+      notifyUser "The -s flag will cause ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} to attempt to start ssh via ${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR}systemctl start sshd${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR} -s${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
       notifyUser "openssh MUST be installed for -s to work." 0 'dontClear'
       # -l
       notifyUser "The -l flag will cause ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} to print a log of all the messages shown while the script was running." 0 'dontClear'
-      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3} -l${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
+      notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR} -l${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
       notifyUser "The -l flag is helpful if you need to review what ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} has done so far." 3 'dontClear'
 }
 
@@ -392,7 +389,7 @@ while getopts ":hsl" OPTION; do
       showHelpMsg
       showBanner "-- Help --"
       notifyUser "${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} will now exit." 0 'dontClear'
-      notifyUser "Tip: Run ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR3} -l${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
+      notifyUser "Tip: Run ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${HIGHLIGHTCOLOR} -l${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
       showLoadingBar "Exiting installer"
       exit 1
     ;;

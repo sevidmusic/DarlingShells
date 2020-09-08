@@ -271,7 +271,7 @@ installPKGSRequiredByInstaller()
 
 syncInstallationMediaTime()
 {
-    showBanner "-- Pre-installation: Sync installtion media's time --"
+    showBanner "Pre-installation: Sync installtion media's time"
     [[ -f ~/.cache/.installer_im_time_sync ]] && notifyUser "Installation media time is already synced:" 0 'dontClear' && showTimeSettings && clear && return
     showLoadingBar "Syncing time settings for installation media" 'dontClear'
     timedatectl set-ntp true || notifyUser "Time seetinggs for installation media were not synced, please re-run ${SCRIPTNAME}" 0 'dontClear'
@@ -283,7 +283,7 @@ syncInstallationMediaTime()
 
 partitionDisk()
 {
-    showBanner "-- Pre-installtion: Patition disk --"
+    showBanner "Pre-installtion: Partition disk"
     [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." 0 'dontClear' && showDiskInfo && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 0 'dontClear'
     notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME}${NOTIFYCOLOR} is designed to install Arch on an ext4 filesystem)" 0 'dontClear'
@@ -291,7 +291,7 @@ partitionDisk()
     notifyUser "Create one partition for root. This should take up the remiander of the available disk space." 0 'dontClear'
     showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
     cfdisk /dev/sdb || notifyUserAndExit "${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 0 'dontClear' 1
-    clear && showBanner "-- Pre-installation: Partion disks | Complete | To make additional changes run ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR} manually --" && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
+    clear && showBanner "Pre-installation: Partion disks | Complete | To make additional changes run ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR} manually" && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
     showDiskInfo
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
     exit 0
@@ -299,13 +299,13 @@ partitionDisk()
 
 makeExt4Filesystem()
 {
-    showBanner "-- Pre-installtion: Make EXT4 filesystem | User Input Required --"
+    showBanner "Pre-installtion: Make EXT4 filesystem | User Input Required"
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}root${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES}" ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
-    showBanner "-- Pre-installtion: Make EXT4 filesystem --"
+    showBanner "Pre-installtion: Make EXT4 filesystem"
     mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "The filesystem could not be created on ${ROOT_PARTITION_NAME}" 0 'dontClear' 1
     notifyUser "The filesystem was created successfully" 0 'dontClear'
     showLoadingBar "Ext4 filesystem created, moving on"
@@ -314,13 +314,13 @@ makeExt4Filesystem()
 
 enableSwap()
 {
-    showBanner "-- Pre-installtion: Enable SWAP | User Input Required --"
+    showBanner "Pre-installtion: Enable SWAP | User Input Required"
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}SWAP${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
     showLoadingBar "Enabling swap via ${HIGHLIGHTCOLOR}mkswap${CLEAR_ALL_TEXT_STYLES} and ${HIGHLIGHTCOLOR}swapon${CLEAR_ALL_TEXT_STYLES} on partition ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}"
-    showBanner "-- Pre-installtion: Enable SWAP --"
+    showBanner "Pre-installtion: Enable SWAP"
     mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to make SWAP" 0 'dontClear' 1
     swapon "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to turn on SWAP" 0 'dontClear' 1
     notifyUser "SWAP was created and enabled successfully"
@@ -335,7 +335,7 @@ mountFilesystem()
     showDiskModificationWarning
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
-    showBanner "-- Pre-installtion: Mount filesystem --"
+    showBanner "Pre-installtion: Mount filesystem"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
     notifyUser "Filesystem was mounted successfully at /mnt" 0 'dontClear'
     showLoadingBar "Filesystem mounted, moving on"
@@ -356,7 +356,7 @@ updateMirrors()
 }
 
 performPreInsallation() {
-    showBanner "-- Pre-installation --"
+    showBanner "Pre-installation"
     showLoadingBar "${LB_PRE_INSTALL_MSG}"
     installPKGSRequiredByInstaller
     setRootPassword
@@ -367,6 +367,17 @@ performPreInsallation() {
     enableSwap
     mountFilesystem
     updateMirrors
+}
+
+runPacstrap()
+{
+    showBanner "Installtion: Run ${HIGHLIGHTCOLOR}pacstrap"
+    [[ -f ~/.cache/.installer_pacstrap_already_run ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
+    notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
+    # pacstrap /mnt base base-devel linux linux-firmware linux-headers linux-lts linux-lts-headers
+    notifyUser "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} ran successfully, to install additional packages, use ${HIGHLIGHTCOLOR}pacman -S PACKAGE_NAME${BANNER_MSG_COLOR} once logged into the new Arch installation." 0 'dontClear'
+    showLoadingBar "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} already ran, moving on"
+    printf "pacstrap_already_ran_use_pacman_to_install_additional_packages_make_sure_your_logged_into_new_installation_via_arch_chroot" >> ~/.cache/.installer_pacstrap_already_run
 }
 
 performInstallation() {

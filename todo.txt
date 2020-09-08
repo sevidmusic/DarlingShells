@@ -1,9 +1,3 @@
-# Update mirrors (Use reflector to automate)
-pacman -Syy
-pacman -S reflector
-# NOTE: To get a list of countries run: reflector --list-countries
-reflector -c "COUNTRY" -a MAX_HOURS_UP --sort rate --save /etc/pacman.d/mirrorlist
-pacman -Syy
 ########################## ACTUAL INSTALLATION ##########################
 # Install base and kernals, installing kernals now allows pacstrap to
 # configure kernals via mkinitcpio so you dont have to do so manually later.

@@ -329,7 +329,7 @@ enableSwap()
 
 mountFilesystem()
 {
-    showBanner "-- Pre-installtion: Mount filesystem | User Input Required --"
+    showBanner "Pre-installtion: Mount filesystem | User Input Required"
     [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}root${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
@@ -340,6 +340,18 @@ mountFilesystem()
     notifyUser "Filesystem was mounted successfully at /mnt" 0 'dontClear'
     showLoadingBar "Filesystem mounted, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
+}
+
+updateMirrors()
+{
+    showBanner "Pre-installtion: Configure mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} with ${HIGHLIGHTCOLOR}reflector"
+    [[ -f ~/.cache/.installer_mirrors_are_up_to_date ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
+    # NOTE: To get a list of countries run: reflector --list-countries
+    reflector -c "United States" -a 5 --sort rate --save /etc/pacman.d/mirrorlist || notifyUserAndExit "reflector was not able to configure the mirrors for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Please re-run ${SCRIPTNAME}. If problem persists try re-installing reflector with ${HIGHLIGHTCOLOR}pacman -Syy reflector" 0 'dontClear' 1
+    pacman -Syy || notifyUserAndExit "mirrors could not be updated for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Either re-run ${SCRIPTNAME}${BANNER_MSG_COLOR} or manually run ${HIGHLIGHTCOLOR}pacman -Syy" 1 'dontClear' 1
+    notifyUser "Mirrors were configured and updated succesffully." 0 'dontClear'
+    showLoadingBar "Mirrors are up to date, moving on"
+    printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_mirrors_are_up_to_date
 }
 
 performPreInsallation() {

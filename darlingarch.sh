@@ -257,6 +257,7 @@ startSSH()
     showLoadingBar "${STARTING_SSH_MSG}"
     systemctl start sshd
     [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && notifyUser "Failed to start sshd. You may need to install/re-install/configure ${SSH}." 0 'dontClear' && exit 1
+    showBanner "Pre-installation: SSH is installed and running"
     notifyUser "${SSH_IS_INSTALLED_MSG}" 0 'dontClear'
     showStartSSHExitMsg
 }
@@ -369,12 +370,40 @@ performPreInsallation() {
     updateMirrors
 }
 
+showPacstrapFailedMsg()
+{
+    notifyUser "${HIGHLIGHTCOLOR}pacstrap${WARNINGCOLOR} failed to perform installation." 0 'dontClear'
+    notifyUser "Make sure you have a ${HIGHLIGHTCOLOR}~/pacstrap.dap${WARNINGCOLOR} file with at least the following packages specified:" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}base${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}base-devel${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}linux${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}linux-headers${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}linux-firmware${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}linux-lts${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}linux-lts-headers${WARNINGCOLOR}" 0 'dontClear'
+    notifyUser "${HIGHLIGHTCOLOR}networkmanager${WARNINGCOLOR}" 0 'dontClear'
+    notifyUserAndExit "Also, please make sure each package is specified on it's own line in ${HIGHLIGHTCOLOR}~/pacstrap.dap"
+}
+
+validatePacstrapDapFile()
+{
+    grep -Fxq 'base' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'base-devel' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'linux' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'linux-headers' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'linux-firmware' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'linux-lts' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'linux-lts-headers' ~/pacstrap.dap || showPacstrapFailedMsg
+    grep -Fxq 'networkmanager' ~/pacstrap.dap || showPacstrapFailedMsg
+}
+
 runPacstrap()
 {
     showBanner "Installtion: Run ${HIGHLIGHTCOLOR}pacstrap"
     [[ -f ~/.cache/.installer_pacstrap_already_run ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
     notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
-    # pacstrap /mnt base base-devel linux linux-firmware linux-headers linux-lts linux-lts-headers
+    validatePacstrapDapFile
+    #pacstrap /mnt < ~/pacstrap.dap || showPacstrapFailedMsg
     notifyUser "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} ran successfully, to install additional packages, use ${HIGHLIGHTCOLOR}pacman -S PACKAGE_NAME${BANNER_MSG_COLOR} once logged into the new Arch installation." 0 'dontClear'
     showLoadingBar "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} already ran, moving on"
     printf "pacstrap_already_ran_use_pacman_to_install_additional_packages_make_sure_your_logged_into_new_installation_via_arch_chroot" >> ~/.cache/.installer_pacstrap_already_run

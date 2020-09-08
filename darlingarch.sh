@@ -63,8 +63,8 @@ initTextStyles() {
   WHITE_BG_COLOR=$(setTextStyleCode 107)
   # Niche Colors
   WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
-  NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
-  HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}"
+  NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${LIGHT_BLUE_FG_COLOR}"
+  HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}${BLACK_FG_COLOR}"
   ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${LIGHT_CYAN_BG_COLOR}"
   ATTENTIONEFFECTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
   DARKTEXTCOLOR="${CLEAR_ALL_TEXT_STYLES}${DARK_GRAY_FG_COLOR}"
@@ -193,6 +193,7 @@ showStartSSHExitMsg()
 showDiskInfo()
 {
     notifyUser "The following partitions are available" 0 'dontClear'
+    notifyUser "$(fdisk -l | grep 'Device' | head -1)" 0 'dontClear'
     notifyUser "${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
     notifyUser "${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
 }

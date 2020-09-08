@@ -400,10 +400,10 @@ validatePacstrapDapFile()
 runPacstrap()
 {
     showBanner "Installtion: Run ${HIGHLIGHTCOLOR}pacstrap"
-    [[ -f ~/.cache/.installer_pacstrap_already_run ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
+    [[ -f ~/.cache/.installer_pacstrap_already_run ]] && notifyUser "${HIGHLIGHTCOLOR}pacstrap${NOTIFYCOLOR} already ran." && return
     notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
     validatePacstrapDapFile
-    #pacstrap /mnt < ~/pacstrap.dap || showPacstrapFailedMsg
+    pacstrap /mnt < ~/pacstrap.dap || showPacstrapFailedMsg
     notifyUser "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} ran successfully, to install additional packages, use ${HIGHLIGHTCOLOR}pacman -S PACKAGE_NAME${BANNER_MSG_COLOR} once logged into the new Arch installation." 0 'dontClear'
     showLoadingBar "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} already ran, moving on"
     printf "pacstrap_already_ran_use_pacman_to_install_additional_packages_make_sure_your_logged_into_new_installation_via_arch_chroot" >> ~/.cache/.installer_pacstrap_already_run

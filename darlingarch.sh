@@ -346,6 +346,7 @@ updateMirrors()
 {
     showBanner "Pre-installtion: Configure mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} with ${HIGHLIGHTCOLOR}reflector"
     [[ -f ~/.cache/.installer_mirrors_are_up_to_date ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
+    notifyUser "${WARNINGCOLOR}This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE" 0 'dontClear'
     # NOTE: To get a list of countries run: reflector --list-countries
     reflector -c "United States" -a 5 --sort rate --save /etc/pacman.d/mirrorlist || notifyUserAndExit "reflector was not able to configure the mirrors for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Please re-run ${SCRIPTNAME}. If problem persists try re-installing reflector with ${HIGHLIGHTCOLOR}pacman -Syy reflector" 0 'dontClear' 1
     pacman -Syy || notifyUserAndExit "mirrors could not be updated for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Either re-run ${SCRIPTNAME}${BANNER_MSG_COLOR} or manually run ${HIGHLIGHTCOLOR}pacman -Syy" 1 'dontClear' 1
@@ -365,6 +366,7 @@ performPreInsallation() {
     makeExt4Filesystem
     enableSwap
     mountFilesystem
+    updateMirrors
 }
 
 performInstallation() {

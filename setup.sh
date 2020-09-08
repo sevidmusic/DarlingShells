@@ -29,6 +29,7 @@ rsync -c ~/DarlingShells/.bash_profile ~/.bash_profile && chmod 755 ~/.bash_prof
 rsync -c ~/DarlingShells/.tmux.conf ~/.tmux.conf && chmod 755 ~/.tmux.conf
 rsync -c ~/DarlingShells/.vimrc ~/.vimrc && chmod 755 ~/.vimrc
 rsync -c ~/DarlingShells/darlingarch.sh ~/darlingarch.sh && chmod 755 ~/darlingarch.sh
+rsync -c ~/DarlingShells/pacstrap.dap ~/pacstrap.dap && chmod 755 ~/pacstrap.dap
 rsync -c ~/DarlingShells/htoprc /root/.config/htop/htoprc && chmod 755 /root/.config/htop/htoprc
 
 sleep 2 && clear

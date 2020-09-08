@@ -222,6 +222,18 @@ installWhich()
     printf "which_already_installed" >> ~/.cache/.installer_which
 }
 
+installReflector()
+{
+    showBanner "-- Pre-installation: Installing reflector --"
+    [[ -f ~/.cache/.installer_reflector ]] && notifyUser "${HIGHLIGHTCOLOR}reflector${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} is already installed: ${HIGHLIGHTCOLOR}$(reflector reflector)${CLEAR_ALL_TEXT_STYLES}" && return
+    showLoadingBar "Installing \"reflector\" to automate configuration of mirrors used by ${HIGHLIGHTCOLOR}pacman${CLEAR_ALL_TEXT_STYLES}"
+    pacman -S reflector --noconfirm
+    notifyUser "${HIGHLIGHTCOLOR}reflector${NOTIFYCOLOR} is now installed on the installation media, this ${WARNINGCOLOR}will NOT persist${NOTIFYCOLOR} onto the actual installation." 0 'dontClear'
+    showLoadingBar "'reflector' is installed, moving on"
+    printf "reflector_already_installed" >> ~/.cache/.installer_reflector
+}
+
+
 setRootPassword()
 {
     showBanner "-- Pre-installation: Set root password for installation media --"
@@ -253,6 +265,7 @@ installPKGSRequiredByInstaller()
     showBanner "-- Pre-installation: Installing packages required by ${SCRIPTNAME}" 0 'dontClear'
     notifyUser "-- Note: These packages will not persist onto actual installation --"
     installWhich
+    installReflector
 }
 
 syncInstallationMediaTime()
@@ -324,6 +337,7 @@ mountFilesystem()
     showBanner "-- Pre-installtion: Mount filesystem --"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
     notifyUser "Filesystem was mounted successfully at /mnt"
+    showLoadingBar "Filesystem mounted, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
 }
 

@@ -383,6 +383,7 @@ runPacstrap()
 performInstallation() {
     showBanner "-- Installation --"
     showLoadingBar "${LB_INSTALL_MSG}"
+    runPacstrap
 }
 
 performPostInstallation() {

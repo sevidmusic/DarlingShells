@@ -346,14 +346,14 @@ mountFilesystem()
 updateMirrors()
 {
     showBanner "Pre-installtion: Configure mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} with ${HIGHLIGHTCOLOR}reflector"
-    [[ -f ~/.cache/.installer_mirrors_are_up_to_date ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
+    [[ -f ~/.cache/.installer_mirrors_are_up_to_date ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${NOTIFYCOLOR} are already configured and up to date." && return
     notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
     # NOTE: To get a list of countries run: reflector --list-countries
     reflector -c "United States" -a 5 --sort rate --save /etc/pacman.d/mirrorlist || notifyUserAndExit "${HIGHLIGHTCOLOR}reflector${WARNINGCOLOR} was not able to configure the mirrors for ${HIGHLIGHTCOLOR}pacman${WARNINGCOLOR}. Please re-run ${SCRIPTNAME}${WARNINGCOLOR}. If problem persists try re-installing ${HIGHLIGHTCOLOR}reflector${WARNINGCOLOR} with ${HIGHLIGHTCOLOR}pacman -Syy reflector" 0 'dontClear' 1
     pacman -Syy || notifyUserAndExit "${WARNINGCOLOR}mirrors could not be updated for ${HIGHLIGHTCOLOR}pacman${WARNINGCOLOR}. Either re-run ${SCRIPTNAME}${WARNINGCOLOR} or manually run ${HIGHLIGHTCOLOR}pacman -Syy" 1 'dontClear' 1
     notifyUser "Mirrors were configured and updated succesffully." 0 'dontClear'
     showLoadingBar "Mirrors are up to date, moving on"
-    printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_mirrors_are_up_to_date
+    printf "mirrors_are_up_to_date" >> ~/.cache/.installer_mirrors_are_up_to_date
 }
 
 performPreInsallation() {
@@ -404,8 +404,8 @@ runPacstrap()
     notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
     validatePacstrapDapFile
     pacstrap /mnt < ~/pacstrap.dap || showPacstrapFailedMsg
-    notifyUser "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} ran successfully, to install additional packages, use ${HIGHLIGHTCOLOR}pacman -S PACKAGE_NAME${BANNER_MSG_COLOR} once logged into the new Arch installation." 0 'dontClear'
-    showLoadingBar "${HIGHLIGHTCOLOR}pacstrap${BANNER_MSG_COLOR} already ran, moving on"
+    notifyUser "${HIGHLIGHTCOLOR}pacstrap${NOTIFYCOLOR} ran successfully, to install additional packages, use ${HIGHLIGHTCOLOR}pacman -S PACKAGE_NAME${NOTIFYCOLOR} once logged into the new Arch installation." 0 'dontClear'
+    showLoadingBar "${HIGHLIGHTCOLOR}pacstrap${NOTIFYCOLOR} already ran, moving on"
     printf "pacstrap_already_ran_use_pacman_to_install_additional_packages_make_sure_your_logged_into_new_installation_via_arch_chroot" >> ~/.cache/.installer_pacstrap_already_run
 }
 
@@ -415,9 +415,29 @@ performInstallation() {
     runPacstrap
 }
 
+makeMNTETCDir()
+{
+    [[ -d /mnt/etc ]] && notifyUser "${HIGHLIGHTCOLOR}/mnt/etc${NOTIFYCOLOR} already exists." 0 'dontClear' && return
+    mkdir /mnt/etc || notifyUserAndExit "${WARNINGCOLOR}Failed to create ${HIGHLIGHTCOLOR}/mnt/etc${WARNINGCOLOR}. Please re-run ${SCRIPTNAME}${WARNINGCOLOR}. If problem persists you may need to poweroff the computer and start over." 1 'dontClear' 1
+    notifyUser "Created /mnt/etc successfully" 0 'dontClear'
+}
+
+configureFstab()
+{
+    showBanner "Post-installation: Generate fstab"
+    [[ -f ~/.cache/.installer_fstab_generated ]] && notifyUser "fstab was already generated at ${HIGHLIGHTCOLOR}/mnt/etc/fstab" && return
+    makeMNTETCDir
+    genfstab -U -p /mnt >> /mnt/etc/fstab
+    [[ -f /mnt/etc/fstab ]] || notifyUserAndExit "${WARNINGCOLOR}Failed to generate fstab. Please re-run ${SCRIPTNAME}${WARNINGCOLOR}. If problem persists you may need to poweroff and start over." 1 'dontClear' 1
+    notifyUser "${HIGHLIGHTCOLOR}fstab${NOTIFYCOLOR} was generated successfully at ${HIGHLIGHTCOLOR}/mnt/etc/fstab" 0 'dontClear'
+    showLoadingBar "${HIGHLIGHTCOLOR}fstab${NOTIFYCOLOR} was generated at ${HIGHLIGHTCOLOR}/mnt/etc/fstab${NOTIFYCOLOR}, moving on"
+    printf "fstab_generated" >> ~/.cache/.installer_fstab_generated
+}
+
 performPostInstallation() {
     showBanner "-- Post-installation --"
     showLoadingBar "${LB_POST_INSTALL_MSG}"
+    # configureFstab
 }
 
 showFlagInfo()

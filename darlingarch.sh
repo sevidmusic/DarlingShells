@@ -307,7 +307,7 @@ makeExt4Filesystem()
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES}" ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     showBanner "Pre-installtion: Make EXT4 filesystem"
-    mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "The filesystem could not be created on ${ROOT_PARTITION_NAME}" 0 'dontClear' 1
+    mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "${WARNINGCOLOR}The filesystem could not be created on ${HIGHLIGHTCOLOR}${ROOT_PARTITION_NAME}" 0 'dontClear' 1
     notifyUser "The filesystem was created successfully" 0 'dontClear'
     showLoadingBar "Ext4 filesystem created, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystemExt4
@@ -322,8 +322,8 @@ enableSwap()
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
     showLoadingBar "Enabling swap via ${HIGHLIGHTCOLOR}mkswap${CLEAR_ALL_TEXT_STYLES} and ${HIGHLIGHTCOLOR}swapon${CLEAR_ALL_TEXT_STYLES} on partition ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}"
     showBanner "Pre-installtion: Enable SWAP"
-    mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to make SWAP" 0 'dontClear' 1
-    swapon "${SWAP_PARTITION_NAME}" || notifyUserAndExit "Failed to turn on SWAP" 0 'dontClear' 1
+    mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "${WARNINGCOLOR}Failed to make SWAP on ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}" 0 'dontClear' 1
+    swapon "${SWAP_PARTITION_NAME}" || notifyUserAndExit "${WARNINGCOLOR}Failed to turn on SWAP device ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}" 0 'dontClear' 1
     notifyUser "SWAP was created and enabled successfully"
     printf "${SWAP_PARTITION_NAME}" >> ~/.cache/.installer_swap_enabled
 }
@@ -337,7 +337,7 @@ mountFilesystem()
     read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
     showBanner "Pre-installtion: Mount filesystem"
-    mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "Failed to mount ${ROOT_PARTITION_NAME}, please re-run ${SCRIPTNAME}${NOTIFYCOLOR} and try again." 0 'dontClear' 1
+    mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "${WARNINGCOLOR}Failed to mount ${HIGHLIGHTCOLOR}${ROOT_PARTITION_NAME}${WARNINGCOLOR}, please re-run ${SCRIPTNAME}${WARNINGCOLOR} and try again." 0 'dontClear' 1
     notifyUser "Filesystem was mounted successfully at /mnt" 0 'dontClear'
     showLoadingBar "Filesystem mounted, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_filesystem_mounted
@@ -349,8 +349,8 @@ updateMirrors()
     [[ -f ~/.cache/.installer_mirrors_are_up_to_date ]] && notifyUser "The mirrors used by ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR} are already configured and up to date." && return
     notifyUser "${WARNINGCOLOR}--    This may take awhile, DO NOT QUIT TILL THIS STEP IS COMPLETE    --" 0 'dontClear'
     # NOTE: To get a list of countries run: reflector --list-countries
-    reflector -c "United States" -a 5 --sort rate --save /etc/pacman.d/mirrorlist || notifyUserAndExit "reflector was not able to configure the mirrors for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Please re-run ${SCRIPTNAME}. If problem persists try re-installing reflector with ${HIGHLIGHTCOLOR}pacman -Syy reflector" 0 'dontClear' 1
-    pacman -Syy || notifyUserAndExit "mirrors could not be updated for ${HIGHLIGHTCOLOR}pacman${BANNER_MSG_COLOR}. Either re-run ${SCRIPTNAME}${BANNER_MSG_COLOR} or manually run ${HIGHLIGHTCOLOR}pacman -Syy" 1 'dontClear' 1
+    reflector -c "United States" -a 5 --sort rate --save /etc/pacman.d/mirrorlist || notifyUserAndExit "${HIGHLIGHTCOLOR}reflector${WARNINGCOLOR} was not able to configure the mirrors for ${HIGHLIGHTCOLOR}pacman${WARNINGCOLOR}. Please re-run ${SCRIPTNAME}${WARNINGCOLOR}. If problem persists try re-installing ${HIGHLIGHTCOLOR}reflector${WARNINGCOLOR} with ${HIGHLIGHTCOLOR}pacman -Syy reflector" 0 'dontClear' 1
+    pacman -Syy || notifyUserAndExit "${WARNINGCOLOR}mirrors could not be updated for ${HIGHLIGHTCOLOR}pacman${WARNINGCOLOR}. Either re-run ${SCRIPTNAME}${WARNINGCOLOR} or manually run ${HIGHLIGHTCOLOR}pacman -Syy" 1 'dontClear' 1
     notifyUser "Mirrors were configured and updated succesffully." 0 'dontClear'
     showLoadingBar "Mirrors are up to date, moving on"
     printf "${ROOT_PARTITION_NAME}" >> ~/.cache/.installer_mirrors_are_up_to_date

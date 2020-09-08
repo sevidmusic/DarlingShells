@@ -2,21 +2,21 @@
 
 set -o posix
 
-setColor() {
+setTextStyleCode() {
   printf "\e[%sm" "${1}"
 }
 
-initColors() {
-  WARNINGCOLOR=$(setColor 35)
-  CLEARCOLOR=$(setColor 0)
-  NOTIFYCOLOR=$(setColor 33)
-  HIGHLIGHTCOLOR3=$(setColor 41)
-  USRPRMPTCOLOR=$(setColor 41)
-  HIGHLIGHTCOLOR=$(setColor 41)
-  HIGHLIGHTCOLOR2=$(setColor 45)
-  ATTENTIONEFFECT=$(setColor 5)
-  ATTENTIONEFFECTCOLOR=$(setColor 36)
-  DARKTEXTCOLOR=$(setColor 30)
+initTextStyles() {
+  WARNINGCOLOR=$(setTextStyleCode 35)
+  CLEARCOLOR=$(setTextStyleCode 0)
+  NOTIFYCOLOR=$(setTextStyleCode 33)
+  HIGHLIGHTCOLOR3=$(setTextStyleCode 41)
+  USRPRMPTCOLOR=$(setTextStyleCode 41)
+  HIGHLIGHTCOLOR=$(setTextStyleCode 41)
+  HIGHLIGHTCOLOR2=$(setTextStyleCode 45)
+  ATTENTIONEFFECT=$(setTextStyleCode 5)
+  ATTENTIONEFFECTCOLOR=$(setTextStyleCode 36)
+  DARKTEXTCOLOR=$(setTextStyleCode 30)
 }
 
 animatedPrint()
@@ -327,7 +327,7 @@ showHelpMsg()
 ########################## PROGRAM #######################
 
 clear
-initColors
+initTextStyles
 initMessages
 # For a great article on getopts, and other approaches to handling bash arguments:
 # @see https://wiki.bash-hackers.org/howto/getopts_tutorial

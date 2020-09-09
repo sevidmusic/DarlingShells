@@ -291,13 +291,17 @@ syncInstallationMediaTime()
 partitionDisk()
 {
     showBanner "Pre-installtion: Partition disk"
-    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with cfdisk, to make additional changes run cfdisk again manually." 0 'dontClear' && showDiskInfo && return
+    [[ -f ~/.cache/.installer_cfdisk ]] && notifyUser "Disks were already partitioned with ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR}, to make additional changes run cfdisk again manually." 0 'dontClear' && showDiskInfo && return
     notifyUser "In a moment, cfdisk will start so you can partition the disk. This step is really important, so get it right." 0 'dontClear'
     notifyUser "You will want to partition the disk as follows: (Remember, ${SCRIPTNAME}${NOTIFYCOLOR} is designed to install Arch on an ext4 filesystem)" 0 'dontClear'
     notifyUser "Create one partition for SWAP, size should no more than double your available RAM, and at least as much as available RAM." 0 'dontClear'
     notifyUser "Create one partition for root. This should take up the remiander of the available disk space." 0 'dontClear'
     showLoadingBar "Loading cfdisk so you can partition the disk, you will be given an oppurtunity to review the partitions before moving on with the installtion"
-    cfdisk /dev/sdb || notifyUserAndExit "${WARNINGCOLOR}Warning: cfdisk failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 0 'dontClear' 1
+    showBanner "Pre-installtion: Partition disk | ${WARNINGCOLOR}User Input Required"
+    notifyUser "Please specify the name of the disk you wish to partition. ${WARNINGCOLOR}If you are unsure about this consult the Arch Wiki${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}:" 0 'dontClear'
+    showDiskModificationWarning
+    read -p "Disk name (e.g.${HIGHLIGHTCOLOR}sdb${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES}" DISK_NAME
+    cfdisk "/dev/${DISK_NAME}" || notifyUserAndExit "${WARNINGCOLOR}Warning: ${HIGHLIGHTCOLOR}cfdisk${WARNINGCOLOR} failed to start, please make sure it is installed then re-run ${SCRIPTNAME}" 0 'dontClear' 1
     clear && showBanner "Pre-installation: Partion disks | Complete | To make additional changes run ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR} manually" && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
     showDiskInfo
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk

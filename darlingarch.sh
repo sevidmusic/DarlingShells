@@ -440,10 +440,20 @@ configureFstab()
     printf "fstab_generated" >> ~/.cache/.installer_fstab_generated
 }
 
+moveIntoInstallation()
+{
+    showBanner "Post-installation: Moving into new Arch Installation ${WARNINGCOLOR}DONT QUIT, WERE CLOSE, BUT WE'RE NOT DONE YET"
+    [[ -f ~/.cache/.installer_chroted_into_new_install ]] && notifyUser "${GREEN_BG_COLOR}${BLACK_FG_COLOR}You are already logged into your new installation." && return
+    arch-chroot /mnt || notifyUserAndExit "${WARNINGCOLOR}Failed to login to new installation, probably best to poweroff and start over." 0 'dontClear' 1
+    notifyUser "${GREEN_BG_COLOR}${BLACK_FG_COLOR}You are now logged into your new Arch installation as root" 0 'dontClear'
+    printf "logged_into_new_installation_successfully" >> ~/.cache/.installer_chroted_into_new_install
+}
+
 performPostInstallation() {
     showBanner "-- Post-installation --"
     showLoadingBar "${LB_POST_INSTALL_MSG}"
     configureFstab
+    moveIntoInstallation
 }
 
 showFlagInfo()

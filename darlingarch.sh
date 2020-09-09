@@ -442,11 +442,15 @@ configureFstab()
 
 moveIntoInstallation()
 {
-    showBanner "Post-installation: Moving into new Arch Installation ${WARNINGCOLOR}DONT QUIT, WERE CLOSE, BUT WE'RE NOT DONE YET"
-    [[ -f ~/.cache/.installer_chroted_into_new_install ]] && notifyUser "${GREEN_BG_COLOR}${BLACK_FG_COLOR}You are already logged into your new installation." && return
-    arch-chroot /mnt || notifyUserAndExit "${WARNINGCOLOR}Failed to login to new installation, probably best to poweroff and start over." 0 'dontClear' 1
-    notifyUser "${GREEN_BG_COLOR}${BLACK_FG_COLOR}You are now logged into your new Arch installation as root" 0 'dontClear'
-    printf "logged_into_new_installation_successfully" >> ~/.cache/.installer_chroted_into_new_install
+    showBanner "Post-installation: Moving into new Arch Installation"
+    notifyUser "${WARNINGCOLOR}--    DONT QUIT, WERE CLOSE, BUT WE'RE NOT DONE YET    --" 0 'dontClear'
+    notifyUser "${WARNINGCOLOR}You are about to be logged into your new Arch Installation." 0 'dontClear'
+    notifyUser "${WARNINGCOLOR}It is very important that you complete the appropriate post-installation steps laid out on the Arch wiki once you are logged in." 0 'dontClear'
+    notifyUser "${WARNINGCOLOR}${BLACK_FG_COLOR}Not doing so could make your new installation unusable!${CLEAR_ALL_TEXT_STYLES}" 5 'dontClear'
+    showLoadingBar "Logging in"
+    arch-chroot /mnt || notifyUserAndExit "${WARNINGCOLOR}Either you exited immediately, or ${SCRIPTNAME}${WARNINGCOLOR} failed to login to new installation. If it was in fact a filure, you may need to poweroff and start over!" 0 'dontClear' 1
+    notifyUser "${GREEN_BG_COLOR}${BLACK_FG_COLOR}As long as you successfully completed the appropriate post-installation steps laid out by the Arch wiki, then your new Arch installation should be ready to use." 0 'dontClear'
+    notifyUser "${WARNINGCOLOR}If you are certian that everything is in order, you can poweroff, reboot, and begin enjoying your new Arch Installation" 0 'dontClear' 0
 }
 
 performPostInstallation() {

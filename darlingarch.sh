@@ -108,6 +108,12 @@ showLoadingBar() {
   [[ "${2}" != "dontClear" ]] && clear
 }
 
+exitOrContinue()
+{
+    [[ -n "${CONTINUE}" ]] && return
+    exit "${1:-0}"
+}
+
 notifyUser()
 {
     printf "\n${NOTIFYCOLOR}"
@@ -121,7 +127,7 @@ notifyUser()
 notifyUserAndExit()
 {
     notifyUser "${1}" "${2:-1}" "${3:-CLEAR}"
-    exit "${4:-0}"
+    exitOrContinue "${4:-0}"
 }
 
 initMessages() {
@@ -188,7 +194,7 @@ showStartSSHExitMsg()
     showIpInfoMsg
     showPostSSHInstallMsg
     showLoadingBar "${POST_SSH_SETUP_EXIT_MSG}" 'dontClear'
-    exit 0
+    exitOrContinue 0
 }
 
 showDiskInfo()
@@ -256,7 +262,7 @@ startSSH()
     fi
     showLoadingBar "${STARTING_SSH_MSG}"
     systemctl start sshd
-    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && notifyUser "Failed to start sshd. You may need to install/re-install/configure ${SSH}." 0 'dontClear' && exit 1
+    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && notifyUser "Failed to start sshd. You may need to install/re-install/configure ${SSH}." 0 'dontClear' && exitOrContinue 1
     showBanner "Pre-installation: SSH is installed and running"
     notifyUser "${SSH_IS_INSTALLED_MSG}" 0 'dontClear'
     showStartSSHExitMsg
@@ -295,7 +301,7 @@ partitionDisk()
     clear && showBanner "Pre-installation: Partion disks | Complete | To make additional changes run ${HIGHLIGHTCOLOR}cfdisk${NOTIFYCOLOR} manually" && notifyUser "Please review the partions you just created, if everything looks good re-run ${SCRIPTNAME}${NOTIFYCOLOR} to continue the installtion." 0 'dontClear'
     showDiskInfo
     printf "disks_already_partitioned_to_partition_again_run_cfdisk_manually" >> ~/.cache/.installer_cfdisk
-    exit 0
+    exitOrContinue 0
 }
 
 makeExt4Filesystem()
@@ -437,7 +443,7 @@ configureFstab()
 performPostInstallation() {
     showBanner "-- Post-installation --"
     showLoadingBar "${LB_POST_INSTALL_MSG}"
-    # configureFstab
+    configureFstab
 }
 
 showFlagInfo()
@@ -473,16 +479,10 @@ initTextStyles
 initMessages
 # For a great article on getopts, and other approaches to handling bash arguments:
 # @see https://wiki.bash-hackers.org/howto/getopts_tutorial
-while getopts ":hsl" OPTION; do
+while getopts ":Cslh" OPTION; do
   case "${OPTION}" in
-  h)
-      showBanner "-- Help --"
-      showHelpMsg
-      showBanner "-- Help --"
-      notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
-      notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
-      showLoadingBar "Exiting installer"
-      exit 1
+  C)
+      CONTINUE="dontExit"
     ;;
   s)
       SSH="${OPENSSH}"
@@ -490,6 +490,15 @@ while getopts ":hsl" OPTION; do
   l)
       [[ -f ~/.cache/.installer_msg_log ]] || notifyUserAndExit "There are no logged messages" 0 'dontClear'
       cat ~/.cache/.installer_msg_log | more
+      exit 0
+    ;;
+  h)
+      showBanner "-- Help --"
+      showHelpMsg
+      showBanner "-- Help --"
+      notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
+      notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
+      showLoadingBar "Exiting installer"
       exit 0
     ;;
   \?)

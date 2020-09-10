@@ -319,7 +319,7 @@ makeExt4Filesystem()
     [[ -f ~/.cache/.installer_filesystemExt4 ]] && notifyUser "The filesystem was already created on $(cat ~/.cache/.installer_filesystemExt4)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}root${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES}" ROOT_PARTITION_NAME
+    read -p "${HIGHLIGHTCOLOR}Root${CLEAR_ALL_TEXT_STYLES} Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${NOTIFYCOLOR}):${CLEAR_ALL_TEXT_STYLES}" ROOT_PARTITION_NAME
     showLoadingBar "Createing EXT4 filesystem on ${ROOT_PARTITION_NAME}"
     showBanner "Pre-installtion: Make EXT4 filesystem"
     mkfs.ext4 "${ROOT_PARTITION_NAME}" || notifyUserAndExit "${WARNINGCOLOR}The filesystem could not be created on ${HIGHLIGHTCOLOR}${ROOT_PARTITION_NAME}" 0 'dontClear' 1
@@ -334,7 +334,7 @@ enableSwap()
     [[ -f ~/.cache/.installer_swap_enabled ]] && notifyUser "SWAP was already created and enabled on $(cat ~/.cache/.installer_swap_enabled)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}SWAP${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
+    read -p "${HIGHLIGHTCOLOR}SWAP${CLEAR_ALL_TEXT_STYLES} Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb1${CLEAR_ALL_TEXT_STYLES}):" SWAP_PARTITION_NAME
     showLoadingBar "Enabling swap via ${HIGHLIGHTCOLOR}mkswap${CLEAR_ALL_TEXT_STYLES} and ${HIGHLIGHTCOLOR}swapon${CLEAR_ALL_TEXT_STYLES} on partition ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}"
     showBanner "Pre-installtion: Enable SWAP"
     mkswap "${SWAP_PARTITION_NAME}" || notifyUserAndExit "${WARNINGCOLOR}Failed to make SWAP on ${HIGHLIGHTCOLOR}${SWAP_PARTITION_NAME}" 0 'dontClear' 1
@@ -349,7 +349,7 @@ mountFilesystem()
     [[ -f ~/.cache/.installer_filesystem_mounted ]] && notifyUser "Filesystem was already mounted from $(cat ~/.cache/.installer_filesystem_mounted)" && return
     notifyUser "Please specify the name of the partition you created for ${HIGHLIGHTCOLOR}root${NOTIFYCOLOR}:" 0 'dontClear'
     showDiskModificationWarning
-    read -p "Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
+    read -p "${HIGHLIGHTCOLOR}Root${CLEAR_ALL_TEXT_STYLES} Partion Name (e.g.${HIGHLIGHTCOLOR}/dev/sdb2${CLEAR_ALL_TEXT_STYLES}):" ROOT_PARTITION_NAME
     showLoadingBar "Mounting root filesystem from ${ROOT_PARTITION_NAME} "
     showBanner "Pre-installtion: Mount filesystem"
     mount "${ROOT_PARTITION_NAME}" /mnt || notifyUserAndExit "${WARNINGCOLOR}Failed to mount ${HIGHLIGHTCOLOR}${ROOT_PARTITION_NAME}${WARNINGCOLOR}, please re-run ${SCRIPTNAME}${WARNINGCOLOR} and try again." 0 'dontClear' 1

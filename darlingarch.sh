@@ -207,13 +207,14 @@ showDiskListing()
 
 showDiskInfo()
 {
-    local _sdi_limit _sdi_inc
+    local _sdi_limit _sdi_inc _sdi_listing
     _sdi_limit="$(fdisk -l | grep 'dev' | wc -l)"
     _sdi_inc=1
     notifyUser "The following is an overview of the available disks, and their respective partitions." 0 'dontClear'
     while [[ "${_sdi_inc}" -le "${_sdi_limit}" ]]
     do
-        notifyUser "$(showDiskListing $_sdi_inc)" 0 'dontClear'
+        _sdi_listing="$(showDiskListing $_sdi_inc)"
+        notifyUser "${_sdi_listing}" 0 'dontClear'
         _sdi_inc=$(( $_sdi_inc + 1 ))
     done
 }

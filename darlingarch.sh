@@ -62,10 +62,10 @@ initTextStyles() {
   LIGHT_CYAN_BG_COLOR=$(setTextStyleCode 106)
   WHITE_BG_COLOR=$(setTextStyleCode 107)
   # Niche Colors
-  WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
+  WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${YELLOW_BG_COLOR}${BLACK_FG_COLOR}"
   NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
   HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}${BLACK_FG_COLOR}"
-  BANNER_MSG_COLOR="${GREEN_BG_COLOR}${BLINK_TEXT_ON}${BLACK_FG_COLOR}"
+  BANNER_MSG_COLOR="${CLEAR_ALL_TEXT_STYLES}${GREEN_BG_COLOR}${BLINK_TEXT_ON}${BLACK_FG_COLOR}"
 }
 
 animatedPrint()
@@ -145,7 +145,7 @@ initMessages() {
     HELP_MSG_WELCOME3="Feel free to modify the script to suit your needs."
     HELP_MSG_WELCOME4="-Sevi D | https://github.com/sevidmusic | sdmwebsdm@gmail.com"
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
-    LB_INSTALL_MSG='Insallation of ${DISTRO}${NOTIFYCOLOR} will begin in a moment'
+    LB_INSTALL_MSG="Installation of ${DISTRO}${NOTIFYCOLOR} will begin in a moment"
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'
     PWD_IS_ALREADY_SET="Root password was already set, to reset run: ${HIGHLIGHTCOLOR}passwd${CLEAR_ALL_TEXT_STYLES}"
     PLS_SET_PWD="Please set the root password:"
@@ -171,7 +171,8 @@ showBanner()
     printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_3}"
     printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_4}"
     printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_5}"
-    notifyUser "${CLEAR_ALL_TEXT_STYLES}--  ${BANNER_MSG_COLOR}${1:- }${CLEAR_ALL_TEXT_STYLES}  --" 0 'dontClear'
+    printf "\n"
+    notifyUser "${CLEAR_ALL_TEXT_STYLES}${BANNER_MSG_COLOR}${1:- }${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
 }
 
 showIpInfoMsg() {
@@ -482,7 +483,7 @@ performPostInstallation() {
 showFlagInfo()
 {
       showLoadingBar "Loading flag info"
-      showBanner "-- Help: Flags --"
+      showBanner "Help: Flags"
       # -p
       notifyUser "The -p flag can be used to specify a package file:" 0 'dontClear'
       notifyUser "${SCRIPTNAME}${HIGHLIGHTCOLOR} -p /path/to/file${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
@@ -526,9 +527,9 @@ while getopts ":Cslh" OPTION; do
       exitOrContinue 0 "forceExit"
     ;;
   h)
-      showBanner "-- Help --"
+      showBanner "Help"
       showHelpMsg
-      showBanner "-- Help --"
+      showBanner "Help"
       notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
       notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
       showLoadingBar "Exiting installer"

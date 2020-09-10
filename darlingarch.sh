@@ -110,6 +110,7 @@ showLoadingBar() {
 
 exitOrContinue()
 {
+    [[ "${2}" == "forceExit" ]] && exit "${1:-0}"
     [[ -n "${CONTINUE}" ]] && return
     exit "${1:-0}"
 }
@@ -127,7 +128,7 @@ notifyUser()
 notifyUserAndExit()
 {
     notifyUser "${1}" "${2:-1}" "${3:-CLEAR}"
-    exitOrContinue "${4:-0}"
+    exitOrContinue "${4:-0}" "${5:-default}"
 }
 
 initMessages() {
@@ -194,7 +195,7 @@ showStartSSHExitMsg()
     showIpInfoMsg
     showPostSSHInstallMsg
     showLoadingBar "${POST_SSH_SETUP_EXIT_MSG}" 'dontClear'
-    exitOrContinue 0
+    exitOrContinue 0 "forceExit"
 }
 
 showDiskInfo()

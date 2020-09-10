@@ -263,7 +263,7 @@ startSSH()
     fi
     showLoadingBar "${STARTING_SSH_MSG}"
     systemctl start sshd
-    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && notifyUser "Failed to start sshd. You may need to install/re-install/configure ${SSH}." 0 'dontClear' && exitOrContinue 1
+    [[ "$(systemctl list-units --type=service | grep ssh | wc -l)" -lt 1 ]] && notifyUser "Failed to start sshd. You may need to install/re-install/configure ${SSH}." 0 'dontClear' && exitOrContinue 1 "forceExit"
     showBanner "Pre-installation: SSH is installed and running"
     notifyUser "${SSH_IS_INSTALLED_MSG}" 0 'dontClear'
     showStartSSHExitMsg
@@ -509,7 +509,7 @@ while getopts ":Cslh" OPTION; do
   l)
       [[ -f ~/.cache/.installer_msg_log ]] || notifyUserAndExit "There are no logged messages" 0 'dontClear'
       cat ~/.cache/.installer_msg_log | more
-      exit 0
+      exitOrContinue 0 "forceExit"
     ;;
   h)
       showBanner "-- Help --"
@@ -518,10 +518,10 @@ while getopts ":Cslh" OPTION; do
       notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
       notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
       showLoadingBar "Exiting installer"
-      exit 0
+      exitOrContinue 0 "forceExit"
     ;;
   \?)
-     animatedPrint "Invalid argument: -${OPTARG}" && exit 1
+     animatedPrint "Invalid argument: -${OPTARG}" && exitOrContinue 1 "forceExit"
     ;;
   esac
 done

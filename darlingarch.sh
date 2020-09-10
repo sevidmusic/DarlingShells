@@ -62,10 +62,10 @@ initTextStyles() {
   LIGHT_CYAN_BG_COLOR=$(setTextStyleCode 106)
   WHITE_BG_COLOR=$(setTextStyleCode 107)
   # Niche Colors
-  WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
+  WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
   NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${LIGHT_BLUE_FG_COLOR}"
   HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}${BLACK_FG_COLOR}"
-  ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${LIGHT_CYAN_BG_COLOR}"
+  ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${LIGHT_CYAN_BG_COLOR}"
   ATTENTIONEFFECTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
   DARKTEXTCOLOR="${CLEAR_ALL_TEXT_STYLES}${DARK_GRAY_FG_COLOR}"
   BANNER_MSG_COLOR="${GREEN_BG_COLOR}${BLACK_FG_COLOR}"
@@ -117,7 +117,8 @@ exitOrContinue()
 
 notifyUser()
 {
-    printf "\n${NOTIFYCOLOR}"
+    [[ "${4}" != 'no_newline' ]] && printf "\n"
+    printf "${NOTIFYCOLOR}"
     animatedPrint "${1}" 0.009
     sleep ${2:-2}
     [[ "${3}" == "dontClear" ]] || clear
@@ -134,15 +135,13 @@ notifyUserAndExit()
 initMessages() {
     NEWLINE="\n\n"
     SCRIPT=`basename "$(realpath $0)"`
-    SCRIPTNAME="${HIGHLIGHTCOLOR}${SCRIPT}${CLEAR_ALL_TEXT_STYLES}"
-    OPENSSH="${HIGHLIGHTCOLOR}openssh${NOTIFYCOLOR}"
-    BANNER='
-   ___           ___             ___           __
-  / _ \___ _____/ (_)__  ___ _  / _ | ________/ /
- / // / _ \/ __/ / / _ \/ _  / / __ |/ __/ __/ _ \
-/____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/
-                       /___/
-'
+    SCRIPTNAME="${HIGHLIGHTCOLOR}${BOLD_TEXT_ON}${SCRIPT}${CLEAR_ALL_TEXT_STYLES}"
+    OPENSSH="${HIGHLIGHTCOLOR}${BOLD_TEXT_ON}openssh${CLEAR_ALL_TEXT_STYLES}"
+    BANNER_1='   ___           ___             ___           __ '
+    BANNER_2='  / _ \___ _____/ (_)__  ___ _  / _ | ________/ / '
+    BANNER_3=' / // / _ \/ __/ / / _ \/ _  / / __ |/ __/ __/ _ \'
+    BANNER_4='/____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/'
+    BANNER_5='                       /___/                      '
     HELP_MSG_WELCOME1="I developed ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} as a guide for myself."
     HELP_MSG_WELCOME2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
     HELP_MSG_WELCOME3="Feel free to modify the script to suit your needs."
@@ -169,6 +168,11 @@ showBanner()
 {
     clear
     printf "\n%s\n" "${BANNER}"
+    printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_1}"
+    printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_2}"
+    printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_3}"
+    printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_4}"
+    printf "\n%s" "${BANNER_MSG_COLOR}${BOLD_TEXT_ON}${BLINK_TEXT_ON}${BANNER_5}"
     notifyUser "${CLEAR_ALL_TEXT_STYLES}--  ${BANNER_MSG_COLOR}${1:- }${CLEAR_ALL_TEXT_STYLES}  --" 0 'dontClear'
 }
 

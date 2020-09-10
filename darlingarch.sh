@@ -214,7 +214,7 @@ showDiskInfo()
     while [[ "${_sdi_inc}" -le "${_sdi_limit}" ]]
     do
         _sdi_listing="$(showDiskListing $_sdi_inc)"
-        notifyUser "${_sdi_listing}" 0 'dontClear'
+        notifyUser "${_sdi_listing/Disk/${HIGHLIGHTCOLOR}Disk}" 0 'dontClear'
         _sdi_inc=$(( $_sdi_inc + 1 ))
     done
 }

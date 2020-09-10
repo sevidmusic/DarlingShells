@@ -63,12 +63,9 @@ initTextStyles() {
   WHITE_BG_COLOR=$(setTextStyleCode 107)
   # Niche Colors
   WARNINGCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${RED_BG_COLOR}${BLACK_FG_COLOR}"
-  NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${BOLD_TEXT_ON}${LIGHT_BLUE_FG_COLOR}"
+  NOTIFYCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
   HIGHLIGHTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_BG_COLOR}${BLACK_FG_COLOR}"
-  ATTENTIONEFFECT="${CLEAR_ALL_TEXT_STYLES}${BLINK_TEXT_ON}${LIGHT_CYAN_BG_COLOR}"
-  ATTENTIONEFFECTCOLOR="${CLEAR_ALL_TEXT_STYLES}${LIGHT_BLUE_FG_COLOR}"
-  DARKTEXTCOLOR="${CLEAR_ALL_TEXT_STYLES}${DARK_GRAY_FG_COLOR}"
-  BANNER_MSG_COLOR="${GREEN_BG_COLOR}${BLACK_FG_COLOR}"
+  BANNER_MSG_COLOR="${GREEN_BG_COLOR}${BLINK_TEXT_ON}${BLACK_FG_COLOR}"
 }
 
 animatedPrint()
@@ -144,19 +141,19 @@ initMessages() {
     BANNER_5='                       /___/                      '
     DISTRO="${HIGHLIGHTCOLOR}Arch Linux"
     HELP_MSG_WELCOME1="I developed ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} as a guide for myself."
-    HELP_MSG_WELCOME2="It walks me through the process of installing ${DISTRO}${NOTIFYCOLOR} on a ${HIGHLIGHTCOLOR}Legacy BIOS${NOTIFYCOLOR} using ${HIGHLIGHTCOLOR}ext4${NOTIFYCOLOR} for a filesystem."
+    HELP_MSG_WELCOME2="${SCRIPTNAME}${NOTIFYCOLOR} is a simple installer that will guide you through process of installing ${DISTRO}${NOTIFYCOLOR} on a ${HIGHLIGHTCOLOR}Legacy BIOS${NOTIFYCOLOR} using ${HIGHLIGHTCOLOR}ext4${NOTIFYCOLOR} for a filesystem."
     HELP_MSG_WELCOME3="Feel free to modify the script to suit your needs."
-    HELP_MSG_WELCOME4="-Sevi D"
+    HELP_MSG_WELCOME4="-Sevi D | https://github.com/sevidmusic | sdmwebsdm@gmail.com"
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'
-    LB_INSTALL_MSG='Insallation of Arch Linx will begin in a moment'
+    LB_INSTALL_MSG='Insallation of ${DISTRO}${NOTIFYCOLOR} will begin in a moment'
     LB_POST_INSTALL_MSG='Post-installation will being in a moment'
     PWD_IS_ALREADY_SET="Root password was already set, to reset run: ${HIGHLIGHTCOLOR}passwd${CLEAR_ALL_TEXT_STYLES}"
     PLS_SET_PWD="Please set the root password:"
     PWD_ERROR_OCCURED="${WARNINGCOLOR}An error occured, please re-run ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}"
     PWD_SET_FOR_ISO_WONT_PERSIST="${WARNINGCOLOR}The password you just set will NOT persist onto the actual installation.${CLEAR_ALL_TEXT_STYLES}"
-    PWD_SET_FOR_ISO_IS_PWD_FOR_SSH="If the -s flag was supplied, then the password you just set will be the password you use to login to the installation media as root via ssh."
+    PWD_SET_FOR_ISO_IS_PWD_FOR_SSH="If the ${HIGHLIGHTCOLOR}-s${NOTIFYCOLOR} flag was supplied, then the password you just set will be the password you use to login to the installation media as root via ssh."
     IP_INFO_MSG="The following is your ip info (obtained via ${HIGHLIGHTCOLOR}ip a${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR}):"
-    STARTING_SSH_MSG="Attempting to start sshd"
+    STARTING_SSH_MSG="Attempting to start sshd via ${HIGHLIGHTCOLOR}systemctl start sshd"
     POST_SSH_SETUP_EXIT_MSG="Exiting installer, re-run ${SCRIPTNAME} WTIHOUT the -s flag to continue the installation process"
     SSH_IS_INSTALLED_MSG="SSH is running."
     SSH_LOGIN_AVAILABLE="You can now log into the installation media as root via ssh."
@@ -205,10 +202,15 @@ showStartSSHExitMsg()
 
 showDiskInfo()
 {
-    notifyUser "The following partitions are available" 0 'dontClear'
-    notifyUser "$(fdisk -l | grep 'Device' | head -1)" 0 'dontClear'
-    notifyUser "${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==1{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 0 'dontClear'
-    notifyUser "${HIGHLIGHTCOLOR}$(fdisk -l | awk '/dev.*Linux/{i++}i==2{print; exit}')${CLEAR_ALL_TEXT_STYLES}" 3 'dontClear'
+    local _sdi_limit _sdi_inc
+    _sdi_limit="$(fdisk -l | grep 'dev' | wc -l)"
+    _sdi_inc=1
+    while [[ "${_sdi_inc}" -le "${_sdi_limit}" ]]
+    do
+        fdisk -l | grep 'dev' | awk "/dev.*/{i++}i==${_sdi_inc}{print; exit}"; _sdi_inc=$(( $_sdi_inc + 1 ))
+    done
+    notifyUser "The following is an overview of the available disks, and their respective partitions." 0 'dontClear'
+
 }
 
 showDiskModificationWarning()

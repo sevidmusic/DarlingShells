@@ -200,17 +200,22 @@ showStartSSHExitMsg()
     exitOrContinue 0 "forceExit"
 }
 
+showDiskListing()
+{
+    fdisk -l | grep 'dev' | awk "/dev.*/{i++}i==${1}{print; exit}"
+}
+
 showDiskInfo()
 {
     local _sdi_limit _sdi_inc
     _sdi_limit="$(fdisk -l | grep 'dev' | wc -l)"
     _sdi_inc=1
+    notifyUser "The following is an overview of the available disks, and their respective partitions." 0 'dontClear'
     while [[ "${_sdi_inc}" -le "${_sdi_limit}" ]]
     do
-        fdisk -l | grep 'dev' | awk "/dev.*/{i++}i==${_sdi_inc}{print; exit}"; _sdi_inc=$(( $_sdi_inc + 1 ))
+        notifyUser "$(showDiskListing $_sdi_inc)" 0 'dontClear'
+        _sdi_inc=$(( $_sdi_inc + 1 ))
     done
-    notifyUser "The following is an overview of the available disks, and their respective partitions." 0 'dontClear'
-
 }
 
 showDiskModificationWarning()

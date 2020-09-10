@@ -142,8 +142,9 @@ initMessages() {
     BANNER_3=' / // / _ \/ __/ / / _ \/ _  / / __ |/ __/ __/ _ \'
     BANNER_4='/____/\_._/_/ /_/_/_//_/\_. / /_/ |_/_/  \__/_//_/'
     BANNER_5='                       /___/                      '
+    DISTRO="${HIGHLIGHTCOLOR}Arch Linux"
     HELP_MSG_WELCOME1="I developed ${SCRIPTNAME}${CLEAR_ALL_TEXT_STYLES}${NOTIFYCOLOR} as a guide for myself."
-    HELP_MSG_WELCOME2="It walks me through the process of installing Arch linux on a legacy BIOS using ext4 for a filesystem."
+    HELP_MSG_WELCOME2="It walks me through the process of installing ${DISTRO}${NOTIFYCOLOR} on a ${HIGHLIGHTCOLOR}Legacy BIOS${NOTIFYCOLOR} using ${HIGHLIGHTCOLOR}ext4${NOTIFYCOLOR} for a filesystem."
     HELP_MSG_WELCOME3="Feel free to modify the script to suit your needs."
     HELP_MSG_WELCOME4="-Sevi D"
     LB_PRE_INSTALL_MSG='Pre-installation will begin in a moment'

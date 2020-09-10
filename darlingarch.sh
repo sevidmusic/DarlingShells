@@ -217,6 +217,7 @@ showDiskInfo()
         notifyUser "${_sdi_listing/Disk/${HIGHLIGHTCOLOR}Disk}" 0 'dontClear'
         _sdi_inc=$(( $_sdi_inc + 1 ))
     done
+    sleep 5
 }
 
 showDiskModificationWarning()

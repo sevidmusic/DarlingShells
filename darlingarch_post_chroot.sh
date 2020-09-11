@@ -168,13 +168,37 @@ showFlagInfo()
       notifyUser "The -l flag is helpful if you need to review what ${SCRIPTNAME}${NOTIFYCOLOR} has done so far." 3 'dontClear'
 }
 
-showHelpMsg()
+showWelcomeMessage()
 {
     showBanner "Welcome to ${DISTRO}${BANNER_MSG_COLOR}"
     notifyUser "If your running this script it is assumed that you successflly performed the ${DISTRO}${NOTIFYCOLOR} installation and succesfully used ${HIGHLIGHTCOLOR}arch-chroot${NOTIFYCOLOR} to login to the new installation as root." 0 'dontClear'
     notifyUser "This script will perform the necessary post installation steps. Once it is complete you should be able to poweroff the computer, remove the installation media, reboot, and begin enjoying your new ${DISTRO}${NOTIFYCOLOR} installation." 0 'dontClear'
-    [[ "${1}" == 'noFlags' ]] || showFlagInfo
 }
+
+showHelpMsg()
+{
+    showBanner "Help"
+    showLoadingBar "Loading help"
+    showWelcomeMessage
+    [[ "${1}" == 'noFlags' ]] || showFlagInfo
+    showBanner "Help"
+    notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
+    notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
+    showLoadingBar "Exiting installer"
+}
+
+configureTime()
+{
+    showBanner "${SCRIPTNAME}${BANNER_MSG_COLOR}: Configure Time"
+    [[ -f ~/.cache/.config_time ]] && notifyUser "Time is aleady configured." && return
+    notifyUser "Setting timezone" 0 'dontClear'
+    ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+    notifyUser "Syncing hardware clock" 0 'dontClear'
+    hwclock --systohc
+    showLoadingBar "Time was already configured, moving on."
+    printf "time_already_configured" >> ~/.cache/.config_time
+}
+
 ########################## PROGRAM #######################
 
 clear
@@ -190,12 +214,7 @@ while getopts ":lh" OPTION; do
       exitOrContinue 0 "forceExit"
     ;;
   h)
-      showBanner "Help"
       showHelpMsg
-      showBanner "Help"
-      notifyUser "${SCRIPTNAME}${NOTIFYCOLOR} will now exit." 0 'dontClear'
-      notifyUser "Tip: Run ${SCRIPTNAME}${HIGHLIGHTCOLOR} -l${NOTIFYCOLOR} to quickly view the preivous help messages, as well as any other messages output by ${SCRIPTNAME}" 0 'dontClear'
-      showLoadingBar "Exiting installer"
       exitOrContinue 0 "forceExit"
     ;;
   \?)
@@ -205,12 +224,10 @@ while getopts ":lh" OPTION; do
 done
 clear
 
-showHelpMsg 'noFlags'
-notifyUser "Setting timezone" 0 'dontClear'
-ln -sf /usr/share/zoneinfo/America/New_York /etc/localtime
+showWelcomeMessage
 
-notifyUser "Sync hardware clock" 0 'dontClear'
-hwclock --systohc
+configureTime
+
 
 notifyUser "Setting up locale" 0 'dontClear'
 sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen

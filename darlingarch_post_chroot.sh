@@ -199,6 +199,61 @@ configureTime()
     printf "time_already_configured" >> ~/.cache/.config_time
 }
 
+configureLocale()
+{
+    showBanner "Localization"
+    [[ -f ~/.cache/.installer_locale ]] && notifyUser "Localization was already configured." && return
+    notifyUser "Setting up localization" 0 'dontClear'
+    sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
+    locale-gen
+    echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+    showLoadingBar "Localization was configured, moving on"
+    printf "" >> ~/.cache/.installer_locale
+}
+
+configureNetwork()
+{
+    showBanner ""
+    [[ -f ~/.cache/.installer_network_configured ]] && notifyUser "" && return
+    notifyUser "Setting up network" 0 'dontClear'
+    notifyUser "Plese enter the name you wish to assign to you computer, i.e. the hostname:"
+    read -p "Desired hostname (${WARNINGCOLOR}all lowercase, no spaces${NOTIFYCOLOR}): " HOST_NAME
+    echo "${HOST_NAME}" >> /etc/hostname
+    echo "127.0.0.1        localhost" >> /etc/hosts
+    echo "::1              localhost" >> /etc/hosts
+    echo "127.0.1.1        ${HOST_NAME}.localdomain ${HOST_NAME}" >> /etc/hosts
+    cat /etc/hosts
+    sleep 3
+    notifyUser "Enabling NetworkManager" 0 'dontClear'
+    systemctl enable NetworkManager
+    showLoadingBar ""
+    printf "" >> ~/.cache/.installer_network_configured
+}
+
+configureRootPassword()
+{
+    showBanner "Set ${HIGHLIGHTCOLOR}root${BANNER_MSG_COLOR} password"
+    [[ -f ~/.cache/.installer_root_pwd ]] && notifyUser "Root password was already set, to reset run: ${HIGHLIGHTCOLOR}passwd" && return
+    notifyUser "Setting root password" 0 'dontClear'
+    passwd
+    showLoadingBar "Root password was set, moving on"
+    printf "" >> ~/.cache/.installer_root_pwd
+}
+
+configureGrub()
+{
+    showBanner "Install and configure ${HIGHLIGHTCOLOR}grub"
+    [[ -f ~/.cache/.installer_grub ]] && notifyUser "Grub was already installed and configured on: ${HIGHLIGHTCOLOR}$(cat ~/.cache/.installer_grub)" && return
+    notifyUser "Setting up ${HIGHLIGHTCOLOR}grub${NOTIFYCOLOR} bootloader" 0 'dontClear'
+    pacman -S grub
+    notifyUser "Please enter the name of the disk ${DISTRO}${NOTIFYCOLOR} is being installed on. (e.g., ${HIGHLIGHTCOLOR}sdb${NOTIFYCOLOR})"
+    read -p "Disk name (e.g., ${HIGHLIGHTCOLOR}sdb${CLEAR_ALL_TEXT_STYLES}): " DISK_NAME
+    grub-install -v --target=i386-pc "/dev/${DISK_NAME}"
+    grub-mkconfig -o /boot/grub/grub.cfg
+    showLoadingBar "Grub was installed and configured on ${HIGHLIGHTCOLOR}${DISK_NAME}${NOTIFYCOLOR}, moving on"
+    printf "${DISK_NAME}" >> ~/.cache/.installer_grub
+}
+
 ########################## PROGRAM #######################
 
 clear
@@ -228,29 +283,17 @@ showWelcomeMessage
 
 configureTime
 
+configureLocale
 
-notifyUser "Setting up locale" 0 'dontClear'
-sed -i 's/#en_US.UTF-8 UTF-8/en_US.UTF-8 UTF-8/g' /etc/locale.gen
-locale-gen
-echo "LANG=en_US.UTF-8" >> /etc/locale.conf
+configureNetwork
 
-notifyUser "Setting up network" 0 'dontClear'
-echo "darlingarch" >> /etc/hostname
-echo "127.0.0.1        localhost" >> /etc/hosts
-echo "::1              localhost" >> /etc/hosts
-echo "127.0.1.1        darlingarch.localdomain darlingarch" >> /etc/hosts
-cat /etc/hosts
-sleep 3
+configureRootPassword
 
-notifyUser "Enableing NetworkManager" 0 'dontClear'
-systemctl enable NetworkManager
+configureGrub
 
-notifyUser "Setting root password" 0 'dontClear'
-passwd
+showLoadingBar "Finishing up"
 
-notifyUser "Setting up GURB bootloader" 0 'dontClear'
-pacman -S grub
-grub-install -v --target=i386-pc /dev/sdb
-grub-mkconfig -o /boot/grub/grub.cfg
+showBanner "Finishing up"
 
+notifyUserAndExit "If no errors occured, then you can safely ${HIGHLIGHTCOLOR}exit${NOTIFYCOLOR}, ${HIGHLIGHTCOLOR}umount ${DISK_NAME:-DISKNAME}${NOTIFYCOLOR}, ${HIGHLIGHTCOLOR}poweroff${NOTIFYCOLOR} the computer, ${HIGHLIGHTCOLOR}remove the installation media${NOTIFYCOLOR}, and reboot into your new ${DISTRO}${NOTIFYCOLOR} installation." 0
 

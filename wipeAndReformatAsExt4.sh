@@ -118,7 +118,7 @@ while getopts "hsd:" OPTION; do
       insertLines
       animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-s Show available drives/devices via lsblk${CLEARCOLOR}"
       insertLines
-      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-d <arg> Name of the drive/device to wipe and reformat as Ext4${CLEARCOLOR}"
+      animatedPrint "${CLEARCOLOR}${NOTIFYCOLOR}-d <arg> Name of the drive/device to wipe and reformat as Ext4. For example: sdb${CLEARCOLOR}"
       insertLines
    exit
     ;;
